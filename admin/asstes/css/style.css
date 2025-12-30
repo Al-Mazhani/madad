@@ -1,0 +1,428 @@
+@font-face {
+   font-family: 'Noto Kufi Arabic Thin';
+   src: url('../fonts/noto-kufi-arabic_5.2.9/webfonts/noto-kufi-arabic-arabic-400-normal.woff') format('truetype');
+}
+
+* {
+   margin: 0px;
+   padding: 0px;
+   font-family: 'Noto Kufi Arabic Thin', sans-serif;
+
+}
+
+a {
+   text-decoration: none;
+   color: var(--color-text-secondary);
+
+   font-weight: 200;
+}
+
+:root {
+   --color-bg: #ffff;
+   --color-text: #000000;
+   --color-text-secondary: #444444;
+   --color-primary: #000000;
+   --color-secondary: #FFFFFF;
+   --background-header: #ebebeb;
+   --btn: #3bad9a;
+   --btn-hover: #2e8c7cd4;
+   --transition: 0.30s;
+   --box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+   --Radius: 0.5rem;
+
+}
+
+html {
+   scroll-behavior: smooth;
+}
+
+body {
+   width: 100%;
+   height: 100%;
+   background-color: var(--color-secondary);
+   color: var(--color-text-secondary);
+   font-size: 16px;
+}
+
+main {
+   width: 100%;
+}
+
+header {
+   background-color: var(--background-header);
+   z-index: 3847594385;
+   width: 100%;
+   height: 6rem;
+   border-radius: var(--Radius);
+}
+
+.container {
+   width: 80%;
+   margin: 0px auto;
+
+
+}
+
+.success {
+   color: var(--btn);
+}
+
+.Notsuccess {
+   color: #8b1c23 ;
+  font-size: 1.2rem;
+}
+
+header .container {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+header .container .logo-image a h1 {
+   color: var(--btn);
+}
+
+ul {
+   display: flex;
+   width: 70%;
+   justify-content: space-between;
+}
+
+ul li {
+   width: 50%;
+   list-style: none;
+   display: flex;
+   color: var(--btn);
+   margin: 0px 1rem;
+}
+
+ul li a {
+   width: 100%;
+   padding: 0.7rem 0.5rem;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin: 0.3rem 0rem;
+   transition: var(--transition);
+   transition: var(--transition);
+}
+
+ul li :hover {
+   color: var(--btn-hover);
+}
+
+
+/* start page admin */
+/* .container .main-title {
+   margin-bottom: 1rem;
+   } */
+
+.container .main-content {
+   width: 100%;
+   height: 15vh;
+   display: flex;
+   justify-content: space-between;
+   position: relative;
+   padding-top: 3rem;
+
+}
+
+.container .header {
+   width: 100%;
+   background-color: black;
+   height: 5vh;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 1rem;
+}
+
+.container .main-content .add-new-book {
+   position: absolute;
+   top: 3rem;
+   left: -80px;
+   width: 25%;
+   height: 30%;
+   border: none;
+   background-color: var(--btn);
+}
+
+.main-content .box-admin {
+   width: 18%;
+   height: 100%;
+   font-size: 1.3rem;
+   border-radius: var(--Radius);
+   border: 2px dotted var(--color-text-secondary);
+   background-color: var(--background-header);
+
+}
+
+.main-content .box-admin a {
+   width: 100%;
+   height: 100%;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   color: var(--color-bg);
+}
+
+.main-content .box-admin a span {
+   padding-left: 0.8rem;
+}
+
+.container .search-book {
+   width: 500px;
+   height: 50px;
+   background-color: var(--color-bg);
+   background-color: var(--background-header);
+   border-radius: 30px;
+   padding: 0.1rem;
+}
+
+.container .search-book form {
+   width: 100%;
+   height: 100%;
+   border-radius: 30px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.container .search-book form input {
+   width: 80%;
+   border-radius: 30px;
+   border: none;
+   outline: none;
+   padding: 10px;
+   font-size: 1.1rem;
+   padding-right: 20px;
+   color: var(--color-text-secondary);
+   background-color: var(--background-header);
+}
+
+.container .search-book form .submit-search {
+   border-radius: 30px;
+   width: 19%;
+   height: 98%;
+   margin: 2px 2px 2px 2px;
+   font-size: 1.5rem;
+   background-color: var(--btn);
+   color: var(--color-bg);
+   cursor: pointer;
+   text-align: center;
+   padding-bottom: 1rem;
+   border: none;
+
+}
+
+.container .search-book form .submit-search:hover {
+   background-color: var(--btn-hover);
+}
+
+.container .table-books {
+   width: 90vw;
+   position: relative;
+   left: 3rem;
+   height: 60vh;
+   border-radius: var(--Radius);
+   overflow-y: scroll;
+}
+
+.container .table-books table {
+   width: 100%;
+   border-collapse: collapse;
+   text-align: center;
+   border-radius: var(--Radius);
+}
+
+.container .table-books table thead tr {
+   background-color: var(--background-header);
+   position: sticky;
+   top: 0;
+   border-radius: var(--Radius);
+}
+
+.container .table-books table thead tr th {
+   padding: 0.7rem;
+}
+
+.container .table-books table tbody td {
+   padding: 0.5rem;
+
+}
+
+.container .table-books table tbody tr {
+   background-color: #f9f9f9;
+   border-bottom: 1px solid var(--color-text-secondary);
+}
+
+.container .table-books table tbody tr .btn {
+   padding: 0.5rem 1.5rem;
+   border-radius: var(--Radius);
+   border: none;
+   cursor: pointer;
+
+
+}
+
+.container .table-books table tbody tr .delete,
+.container .table-books table tbody tr .update {
+   color: var(--color-text-secondary);
+   background-color: #f9f9f9;
+   font-size: 1rem;
+}
+
+
+
+/* end page admin */
+
+
+/* start page add book */
+.container .box-add-book {
+   width: 100%;
+   margin: 0 auto;
+   height: fit-content;
+   margin-top: 2rem;
+   padding: 1.5rem;
+   border-radius: var(--Radius);
+   box-shadow: var(--box-shadow);
+
+}
+
+.container .box-add-book .adminForm form {
+   width: 100%;
+}
+
+.container .box-add-book .adminForm input {
+   width: 100%;
+}
+
+.container .box-add-book form .adminForm label {
+   position: relative;
+   left: 44%;
+}
+
+/* Upload Button */
+#fileInput,
+#fileInputBook {
+   display: none;
+}
+
+.upload-btn {
+   padding: 10px 20px;
+   background-color: var(--background-header);
+   color: var(--color-text-secondary);
+   cursor: pointer;
+   border-radius: 6px;
+   width: 80%;
+   margin: 0px auto;
+   display: block;
+   text-align: center;
+   margin-top: 0.5rem;
+   transition: var(--transition);
+}
+
+.fileinputImageAuthor {
+   position: relative;
+   top: 15px;
+}
+
+
+.container .box-add-book form {
+   width: 100%;
+   height: auto;
+   text-align: center;
+}
+
+.container .box-add-book form .content-the-four-input {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   gap: 1.5rem;
+   margin-bottom: 1rem;
+}
+
+.container .box-add-book form .fisrt-section {
+   width: 50%;
+}
+
+.container .box-add-book form .box-form {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   margin-bottom: 1rem;
+}
+
+.container .box-add-book form .box-form label,
+.container .box-add-book .adminForm label {
+   margin-bottom: 0.3rem;
+   font-weight: 600;
+   color: var(--color-text);
+}
+
+/* Inputs */
+.container .box-add-book form .box-form input,
+.container .box-add-book form .box-form select,
+.container .box-add-book form .box-form textarea,
+.container .box-add-book .adminForm input {
+   width: 100%;
+   border-radius: var(--Radius);
+   outline: none;
+   border: 1px solid #ccc;
+   padding: 0.6rem;
+   transition: var(--transition);
+   font-size: 0.95rem;
+}
+
+.container .box-add-book form .box-form input:focus,
+.container .box-add-book form .box-form textarea:focus,
+.container .box-add-book form .box-form select:focus,
+.container .box-add-book .adminForm input:focus {
+   border-color: var(--btn);
+}
+
+/* Textarea */
+.container .box-add-book form .box-form textarea {
+   min-height: 120px;
+   resize: vertical;
+}
+
+/* Button */
+.container .box-add-book form button {
+   width: 100%;
+   border: none;
+   border-radius: var(--Radius);
+   background-color: var(--btn);
+   color: var(--color-bg);
+   font-size: 1.1rem;
+   margin-top: 0.5rem;
+   padding: 0.8rem;
+   cursor: pointer;
+   transition: var(--transition);
+}
+
+.container .box-add-book form button:hover {
+   background-color: var(--btn-hover);
+}
+
+/* Messages */
+.success,
+.notSuccess {
+   padding: 0.7rem;
+   border-radius: var(--Radius);
+   margin-bottom: 1rem;
+   font-weight: 600;
+}
+
+.success {
+   background-color: #3bad9a;
+   color: #fff;
+}
+
+.notSuccess {
+   background-color: #d9534f;
+   color: #fff;
+}
+
+/* end page add book */

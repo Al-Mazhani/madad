@@ -1,0 +1,790 @@
+@font-face {
+   font-family: 'Noto Kufi Arabic Thin';
+   src: url('../fonts/noto-kufi-arabic_5.2.9/webfonts/noto-kufi-arabic-arabic-400-normal.woff') format('truetype');
+}
+
+* {
+   margin: 0px;
+   padding: 0px;
+   font-family: 'Noto Kufi Arabic Thin', sans-serif;
+
+}
+
+a {
+   text-decoration: none;
+   color: var(--color-text-secondary);
+
+   font-weight: 200;
+}
+
+:root {
+   --color-bg: #ffff;
+   --color-text: #000000;
+   --color-text-secondary: #444444;
+   --color-primary: #000000;
+   --color-secondary: #FFFFFF;
+   --background-header: #ebebeb;
+   --btn: #3bad9a;
+   --btn-hover: #2e8c7cd4;
+   --transition: 0.30s;
+   --box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+   --Radius: 0.5rem;
+
+}
+
+html {
+   scroll-behavior: smooth;
+}
+
+body {
+   width: 100%;
+   height: 100%;
+   background-color: var(--color-secondary);
+   color: var(--color-text-secondary);
+   font-size: 16px;
+}
+
+header {
+   background-color: var(--background-header);
+   position: fixed;
+   z-index: 3847594385;
+   margin-bottom: 80px;
+   width: 100%;
+   height: 70px;
+
+}
+
+.container {
+   width: 80%;
+   margin: 0px auto;
+
+
+}
+
+header .container {
+   height: 100%;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+header .container .logo-image a h1 {
+   color: var(--btn);
+}
+
+ul {
+   display: flex;
+
+
+}
+
+ul li {
+   list-style: none;
+   margin-right: 20px;
+}
+
+ul li a {
+   transition: var(--transition);
+}
+
+ul li a:hover {
+   color: var(--btn-hover);
+}
+
+.btn {
+   background-color: var(--btn);
+   color: var(--color-bg);
+   padding: 10px;
+   margin: 5px;
+   border-radius: 0.4rem;
+}
+
+.btn:hover {
+   background-color: var(--btn-hover);
+}
+
+.to-log-in {
+   background-color: var(--background-header);
+   color: var(--btn);
+   border: 1px solid var(--btn);
+   transition: var(--transition);
+}
+
+.to-log-in:hover {
+   background-color: var(--btn);
+   color: var(--color-bg);
+}
+
+/* Start Content Home */
+.content {
+   text-align: center;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   gap: 20px;
+   justify-content: center;
+   background-color: var(--btn);
+   color: var(--color-bg);
+   width: 100%;
+   height: 600px;
+
+
+}
+
+.content .search-box,
+.search-authors,
+.search-book {
+   width: 700px;
+   height: 60px;
+   background-color: var(--color-bg);
+   border-radius: 30px;
+}
+
+.content .search-box form,
+.search-authors form,
+.search-book form {
+   width: 100%;
+   height: 100%;
+   border-radius: 30px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.content .search-box form input,
+.search-authors form input,
+.search-book form input {
+   width: 80%;
+   border-radius: 30px;
+   border: none;
+   outline: none;
+   padding: 10px;
+   font-size: 1.1rem;
+   padding-right: 20px;
+   color: var(--color-text-secondary);
+}
+
+.content .search-box form .submit-search,
+.search-authors form .submit-search,
+.search-book form .submit-search {
+   border-radius: 30px;
+   width: 19%;
+   height: 98%;
+   margin: 2px 2px 2px 2px;
+   font-size: 1.5rem;
+   background-color: var(--btn);
+   color: var(--color-bg);
+   cursor: pointer;
+   border: none;
+
+}
+
+.content .search-box form .submit-search:hover,
+.search-authors form .submit-search:hover,
+.search-book form .submit-search:hover {
+   background-color: var(--btn-hover);
+}
+
+
+.container .about-us {
+   width: 100%;
+   height: 400px;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   color: var(--btn);
+}
+
+.about-us .box-about {
+   width: 20%;
+   height: 80%;
+   text-align: center;
+}
+
+.about-us .box-about img {
+   width: 100%;
+   height: 50%;
+}
+
+.container .book_results {
+   width: 100%;
+   height: 100px;
+   border: 0.01rem solid var(--btn);
+   margin-bottom: 100px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 20px;
+}
+
+.book_results .result-books {
+   width: 34%;
+   height: 100%;
+   text-align: center;
+   margin: auto 0px;
+
+}
+
+.book_results .result-books:first-child a,
+.book_results .result-books:first-child p {
+   color: var(--btn) !important;
+}
+
+.book_results .result-books a:hover {
+   color: var(--btn);
+}
+
+.book_results .result-books img {
+   width: 100%;
+   height: 50%;
+}
+
+.books_madad {
+   width: 100%;
+   height: 100%;
+   display: grid;
+   grid-template-columns: 1fr 1fr 1fr 1fr;
+   gap: 20px;
+   margin-bottom: 100px;
+
+}
+
+.books_madad .box_madad {
+   width: 200px;
+   height: 350px;
+   padding: 10px;
+   border-radius: 7px;
+   box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+   transition: var(--transition);
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+   align-items: center;
+}
+
+.books_madad .box_madad img {
+   width: 100%;
+   height: 300px;
+   object-fit: cover;
+   border-radius: 6px;
+}
+
+.books_madad .box_madad .book_title {
+   font-size: 18px;
+   font-weight: bold;
+   color: var(--color-text-secondary) !important;
+   transition: var(--transition);
+}
+
+.books_madad .box_madad .author {
+   font-size: 14px;
+   color: #555;
+
+}
+
+.books_madad .box_madad .book_title:hover,
+.books_madad .box_madad .author:hover {
+   text-decoration: underline;
+}
+
+.books_madad .box_madad a {
+   color: var(--btn) !important;
+   display: block;
+
+}
+
+.books_madad .box_madad:hover {
+   transform: translateY(-10px);
+}
+
+.books_madad .link-book {
+   width: 100%;
+   height: 80%;
+}
+
+.books_madad .box_madad a img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+}
+
+
+
+/* End Content Home */
+
+/* Start page books */
+.header-books {
+   width: 100%;
+   height: 50px;
+   border-radius: var(--Radius);
+   background-color: var(--background-header);
+   display: flex;
+   align-items: center;
+   padding: 5px 20px;
+   position: relative;
+   top: 100px;
+   gap: 20px;
+   margin-bottom: 150px;
+}
+.container .title-highest {
+   position: relative;
+   top: 100px;
+}
+.header-books ul {
+   width: 100%;
+}
+
+.container .title-section-book {
+   margin: 30px 0px;
+}
+
+.header-books .rang-author{
+   padding: 5px;
+   width: fit-content;
+   border-radius: 10px;
+   border: none;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+   outline: none;
+   cursor: pointer;
+   color: var(--color-text-secondary);
+   text-align: center;
+}
+
+
+/* end page books */
+
+.container .search-book,
+.container .search-authors {
+   margin: 30px 0px;
+}
+
+/* start page author */
+.container .search-authors,
+.container .search-book {
+   box-shadow: 0 0 10px 3px var(--background-header);
+}
+
+.container .all_authors {
+   width: 100%;
+   height: 100%;
+}
+
+.all_authors table {
+   width: 100%;
+   margin-top: 50px;
+   margin-bottom: 6rem;
+
+}
+
+.all_authors table caption {
+   font-size: 22px;
+   font-weight: 700;
+   text-align: start;
+}
+
+.container .all_authors tr {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+}
+
+.container .all_authors tr td {
+   margin: 5px 0px;
+   padding: 10px;
+   width: 100%;
+   background-color: var(--background-header);
+   border-radius: 5px;
+}
+
+.container .all_authors tr td a {
+   padding-right: 10px;
+}
+
+.container .all_authors tr td a:hover {
+   text-decoration: underline;
+}
+
+/* end page author */
+
+/* Start Page book Dititles */
+.container .title_book_info {
+   padding-top: 100px;
+   font-size: 1.5rem;
+}
+.title-like-you-book{
+ margin: 1.5rem 0rem;
+}
+.container .book-main {
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   padding-top: 1rem;
+}
+
+.container .book-main .book_info {
+   width: 75%;
+   height: 65vh;
+   background-color: var(--background-header);
+   border-radius: 7px;
+   padding: 10px;
+   display: grid;
+   grid-template-columns: 1fr 1fr;
+   grid-template-rows: auto auto;
+   gap: 10px;
+   position: relative;
+
+}
+
+.container .book-main .last-book {
+   width: 20%;
+   height: 65vh;
+   padding: 5px;
+   background-color: var(--background-header);
+   border-radius: 0.2rem;
+   overflow: hidden;
+}
+
+.container .book-main .last-book ul {
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   height: 100%;
+}
+
+.container .book-main .last-book ul li {
+   width: 90%;
+   margin: 0px auto;
+   display: flex;
+   justify-content: space-between;
+}
+
+.container .book-main .last-book ul li a:hover {
+   text-decoration: underline;
+   color: var(--color-text-secondary);
+
+}
+
+.container .book-main .last-book ul li i {
+   color: var(--btn);
+   font-size: 1.1rem;
+}
+
+.container .book-main .book_info .img_book {
+   width: 50%;
+   height: 100%;
+   border-radius: 7px;
+   border: 1px solid var(--color-text-secondary);
+   grid-column: 1;
+   grid-row: 1;
+}
+
+.container .book-main .book_info .img_book img {
+   width: 100%;
+   height: 100%;
+   border-radius: 7px;
+   object-fit: cover;
+}
+
+.container .book-main .book_info .ditles {
+   width: 100%;
+   position: relative;
+   left: 10rem;
+   height: 100%;
+   grid-column: 2;
+   grid-row: 1;
+}
+
+.container .book-main .book_info .ditles table {
+   width: 100%;
+   height: 100%;
+}
+
+.container .book-main .book_info .ditles table tr {
+   display: flex;
+   justify-content: space-between;
+}
+
+.container .book-main .book_info .action_book {
+   width: 50%;
+   height: 100px;
+   grid-column: 1 / span 2;
+   grid-row: 2;
+   position: relative;
+   bottom:  40px;
+   right: 270px;
+   display: flex;
+   justify-content: space-evenly;
+   align-items: center;
+   position: relative;
+}
+.container .info_book .action_book {
+   display: flex;
+   background-color: var(--background-header);
+   margin: 0.5rem 0px;
+   padding: 1rem;
+   border-radius: var(--Radius)  ;
+}
+.container .book-main .book_info .action_book .sharing , .action_book a  {
+   width: 70px;
+   height: 70px;
+   margin: 0rem 10rem;
+   padding: 1rem;
+   border-radius: 50%;
+ display: flex;
+   flex-direction: column;
+   align-items: center;
+   text-align: center;
+   gap: 10px;
+   color: var(--color-text-secondary);
+   background-color: var(--background-header);
+   border: 0.1rem solid var(--btn);
+   cursor: pointer;
+   font-size: 1rem;
+   box-shadow: var(--box-shadow);
+   transition: var(--transition);
+}
+.container .book-main .book_info .action_book .btn-like-book {
+   border: none;
+   font-size: 1.8rem;
+   position: relative;
+   width: fit-content;
+   right: 11rem;
+}
+
+.container .book-main .book_info .action_book .btn-like-book:hover  {
+   background-color: var(--background-header);
+   color: var(--color-text-secondary);
+}
+
+.container .book-main .book_info .action_book button:hover , .action_book a:hover {
+   background-color: var(--btn-hover);
+   color: var(--color-bg);
+}
+
+.container .book_descrption {
+   width: 100%;
+   height: fit-content;
+   text-align: start;
+   border-radius: 7px;
+   padding: 10px;
+   margin: 20px 0px;
+   background-color: var(--background-header);
+}
+
+.container .book_descrption h2 {
+   width: fit-content;
+   margin: 10px 0px;
+   border-bottom: 1px solid var(--btn);
+}
+
+/* End Page book Dititles */
+/* Start Page Profile authro */
+.authro-card {
+   width: 100%;
+   height: 100%;
+   /* background: #eee; */
+   background-color: var(--background-header);
+   position: relative;
+   top: 100px;
+   margin-bottom: 8rem;
+   padding: 1rem;
+   border-radius: 0.5rem;
+}
+
+.authro-card .header-authro {
+   width: 100%;
+   height: 150px;
+   display: flex;
+   margin-bottom: 1rem;
+}
+
+.authro-card .authro-name {
+   margin-right: 1.5rem;
+}
+
+.authro-card .authro-name h1 {
+   font-size: 1.5rem;
+   margin-top: 0.5rem;
+}
+
+.authro-card .authro-name p {
+   margin-right: 0.5rem;
+   margin-top: 1rem;
+   font-size: 1.2rem;
+}
+
+.authro-card .author-bio {
+   width: 100%;
+   height: fit-content;
+}
+
+.authro-card .img_author {
+   width: 150px;
+   height: 150px;
+   border-radius: 50%;
+   border: 1px solid var(--color-text-secondary);
+}
+
+.authro-card .img_author img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   border-radius: 50%;
+}
+
+.container .authro-stats {
+   width: 103%;
+   height: 50px;
+   background-color: var(--background-header);
+   border-radius: var(--Radius);
+   margin: 2rem 0rem;
+}
+
+.container .authro-stats ul {
+   width: 100%;
+   height: 100%;
+   align-items: center;
+   display: flex;
+}
+
+.container .authro-stats ul li {
+   border: 1px solid var(--btn);
+   width: 10rem;
+   height: 70%;
+   text-align: center;
+   border-radius: var(--Radius);
+   cursor: pointer;
+}
+
+/* End Page Profile authro */
+/* start Page Profile user */
+.container .profile-box {
+   position: relative;
+   top: 150px;
+   right: 360px;
+   width: 40%;
+   height: 30vh;
+   background-color: var(--background-header);
+   padding: 1rem;
+   border-radius: var(--Radius);
+}
+.container .profile-box .update-profile{
+   position: absolute;
+   top: 2rem;
+   right: 26rem;
+   padding: 0.5rem 1.5rem;
+   border-radius: var(--Radius);
+   background-color: var(--btn);
+   border: none;
+   font-size: 1rem;
+   color: var(--color-bg);
+   cursor: pointer;
+}
+.container .profile-box form {
+   display: flex;
+   flex-direction: column;
+   height: 100%;
+   width: 30%;
+}
+.container .profile-box form input{
+   width: 100%;
+   padding: 0.5rem;
+   border-radius: var(--Radius);
+   border: none;
+   background-color: var(--background-header);
+   color: var(--color-text-secondary);
+
+}
+.container .profile-box form input:focus{
+   outline: 1px solid var(--btn);
+}
+.container .profile-box form input:read-only{
+   outline: none;
+   border-bottom: 1px solid var(--color-text-secondary);
+}
+/* end Page Profile user */
+
+/* Start Page Register */
+.container .register {
+   width: 50%;
+   margin: 0px auto;
+   height: 400px;
+   position: relative;
+   top: 10rem;
+   text-align: center;
+   border-radius: var(--Radius);
+   background-color: var(--background-header);
+   box-shadow: var(--box-shadow);
+}
+
+.container .register form {
+   width: 100%;
+   height: 100%;
+   display: flex;
+   flex-direction: column;
+}
+
+.container .register form label {
+   text-align: start;
+   padding-right: 1.5rem;
+}
+
+.container .register form input,
+.container .register form select  ,.container .register .btn-register{
+   width: 90%;
+   margin: 0.3rem auto;
+   border-radius: var(--Radius);
+   padding: 0.5rem;
+   border: none;
+}
+
+.container .register form input:focus,
+.container .register form select:focus {
+   outline: 1px solid var(--btn);
+}
+
+.container .register form   .btn-register {
+   background-color: var(--btn) !important;
+   color: var(--color-bg);
+   font-size: 1.1rem;
+   border: none;
+   cursor: pointer;
+}
+
+/* End Page Register */
+/*Footer page */
+footer {
+   width: 100%;
+   height: 250px;
+   background-color: var(--background-header);
+}
+footer .logo-footer {
+   width: 10%;
+   height: 50%;
+   position: relative;
+   top: 1rem;
+   right: 45%;
+}
+footer .logo-footer img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   border-radius: var(--Radius);
+}
+footer .links {
+   width: 100%;
+   height: 50%;
+   display: flex;
+   justify-content: center;
+   align-items:center ;
+}
+footer .links a {
+   color: var(--btn);
+   transition: var(--transition);
+   margin: 0px 1rem;
+}
+footer .links a:hover {
+   color: var(--btn-hover);
+   text-decoration: underline;
+}
+/*Footer page */
