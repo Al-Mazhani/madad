@@ -12,6 +12,7 @@ class ControllBook
     {
         if (!filter_var($id, FILTER_VALIDATE_INT)) {
             include __DIR__ . '/../view/errorURL.php';
+
             exit();
         }
         $cleanID = filter_var($id, FILTER_SANITIZE_NUMBER_INT);

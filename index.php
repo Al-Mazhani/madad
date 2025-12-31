@@ -1,18 +1,18 @@
     <?php
     session_start();
 
-    include_once  'model/ModelBook.php';
-    include_once  'model/ModelUser.php';
-    include_once  'model/ModelAuthor.php';
-    include_once  'model/ModelAdmin.php';
-    include_once  'Controller/controllBook.php';
-    include_once  'Controller/controllerAuthor.php';
-    include_once  'Controller/controllAdmin.php';
-    include_once  'Controller/ControllUser.php';
+    include_once  'src/app/model/ModelBook.php';
+    include_once  'src/app/model/ModelUser.php';
+    include_once  'src/app/model/ModelAuthor.php';
+    include_once  'src/app/model/ModelAdmin.php';
+    include_once  'src/app/Controller/controllBook.php';
+    include_once  'src/app/Controller/controllerAuthor.php';
+    include_once  'src/app/Controller/controllAdmin.php';
+    include_once  'src/app/Controller/ControllUser.php';
     include_once  'functions/functions.php';
-    require_once  'database/database.php';
+    require_once  'config/database.php';
     include 'validated/Request.php';
-    include 'helpers/handlingFiles.php';
+    include 'src/app/helpers/handlingFiles.php';
 
 
     $database  = databaseConnection();
@@ -84,7 +84,7 @@
                     }
                 }
 
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::books->value:
                 $allBooks = $controllBook->getInfoBookAndAuthor();
@@ -93,17 +93,17 @@
                     $id = $_GET['id_category'];
                     $bookByCategory = $controllBook->getBookByCategory($id);
                 }
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::authors->value:
                 $allAuthor = $controllAuthor->getAll();
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::register->value:
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_register'])) {
                     $error = $controllUser->insert($_POST['username'], $_POST['email'], $_POST['password']);
                 }
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::login->value:
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -119,7 +119,7 @@
                         }
                     }
                 }
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
 
             case Route::book_ditles->value:
@@ -137,7 +137,7 @@
                 $infoBook = $controllBook->getInfoBookByID($id);
                 // $id_category = $infoBook['id_category'];
                 $bookByCategory = $controllBook->getBookByCategory(1);
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::info_author->value:
                 if (isset($_GET['authroID'])) {
@@ -146,7 +146,7 @@
 
                 $infoAuthor = $controllAuthor->findOneByid($id);
                 // $allBooksAuthor = $controllAuthor->findMoreOne($id);
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::category->value:
                 if (isset($_GET['id_category'])) {
@@ -162,10 +162,10 @@
                 }
                 $allCategory = $controllBook->getAllCategory();
                 $search = $controllBook->search($name);
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::profile->value:
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             // Admin
             case Route::homePageAdmin->value:
@@ -174,11 +174,11 @@
                     $id = $_POST['idDeleletBook'];
                     $controllBook->deleteBook($id);
                 }
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::pageAdmin->value:
                 $allAdmins = $controllAdmin->show();
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::pageAdminAddBook->value:
 
@@ -197,7 +197,7 @@
                 }
                 $allCategory = $controllBook->getAllCategory();
                 $authors = $controllAuthor->getAll();
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::pageAdminAddAdmin->value:
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -208,11 +208,11 @@
                         $controllAdmin->insert($username, $email, $password);
                     }
                 }
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::managemtAuthor->value:
                 $allAuthors = $controllAuthor->getAll();
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::addAuthor->value:
                 if (isset($_POST['addauthor'])) {
@@ -221,7 +221,7 @@
                     $bioAuthro = $_POST['bio'];
                     $Message = $controllAuthor->addAuthor($nameAuthor, $imageURLAuthro, $bioAuthro);
                 }
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::updateBook->value:
                 $authors  = $controllAuthor->getAll();
@@ -262,18 +262,18 @@
                         $oldImage
                     );
                 }
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::ManagementUsers->value:
                 $allUsers = $controllUser->show();
                 if(isset($_GET['id'])){
                     $controllUser->findByID($_GET['id']);
                 }
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             default:
-                require_once('view/errorURL.php');
+                require_once('src/app/view/errorURL.php');
         }
     } else {
-        require_once('view/errorURL.php');
+        require_once('src/app/view/errorURL.php');
     }
