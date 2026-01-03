@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="public/fontawesome/css/fontawesome.min.css">
     <link rel="stylesheet" href="public/fontawesome/css/brands.min.css">
     <link rel="stylesheet" href="public/fontawesome/css/solid.min.css">
-    <link rel="icon" href="../public/images/iconMidad.png" type="image/png">
+    <link rel="icon" href="public/images/iconMidad.png" type="image/png">
 
 </head>
 
@@ -23,7 +23,7 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="home">الصفحة الرائيسية <i class="fa-solid fa-house"></i></a></li>
+                    <li><a href="homeAdmin">الصفحة الرائيسية <i class="fa-solid fa-house"></i></a></li>
                     <li><a href="magagement-atuhor">المؤلفين<i class="fa-solid fa-user"></i></a></li>
                     <li><a href="ManagementUsers">المستخدمين<i class="fa-solid fa-user"></i></a></li>
                     <li><a href="admin">الادمن<i class="fa-solid fa-user"></i></a></li>

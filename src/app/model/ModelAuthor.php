@@ -19,7 +19,7 @@ class ModelAuthor extends BaseModel
 
   function loadInfoAuthorByID($id)
   {
-    $stmt = $this->database->prepare("SELECT * FROM authors WHERE id_author = ?");
+    $stmt = $this->database->prepare("SELECT * FROM view_info_author WHERE id_author = ?");
     $stmt->execute([$id]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }

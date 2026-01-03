@@ -1,29 +1,20 @@
 <?php
-class ControllerAuthor
+class ControllerAuthor extends BaseController
 {
   private $model;
   function __construct($model)
   {
     $this->model = $model;
   }
-  private function validateID($id)
-  {
-    if (!filter_var($id, FILTER_VALIDATE_INT)) {
-      header('location: errorURL');
-      exit();
-    }
-    $cleanID = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-    if ($cleanID < 0) {
-      header('location: errorURL');
-      exit();
-    }
-    return $cleanID;
-  }
   public function findOneByid($id)
   {
 
     $this->validateID($id);
-    return $this->model->loadInfoAuthorByID($id);
+    $resultGetAuthorByID = $this->model->loadInfoAuthorByID($id);
+    if(empty($resultGetAuthorByID)){
+      $this->NotAllowDisplayPage();
+    }
+    return $resultGetAuthorByID;
   }
   public function findMoreOne($id)
   {
@@ -42,17 +33,11 @@ class ControllerAuthor
     if (empty($bio)) {
       return "يرجاء إدخال وصف المؤلف";
     }
-    $nameImage = $imageURLAuthro['name'];
-    $imageTmp = $imageURLAuthro['tmp_name'];
-    $imgExt = strtolower(pathinfo($nameImage, PATHINFO_EXTENSION));
-    $allowed =  ['jpg', 'jpeg', 'png', 'webp'];
-    if (!in_array($imgExt, $allowed)) {
-      return "خطأ في تحميل الصورة";
+    $feedbeekUploadImage = HandlingFiles::uploadImage($imageURLAuthro, __DIR__ . '/../../../uploads/Author_profile/', 'uploads/Author_profile/');
+    if (isset($feedbeekUploadImage['hasInputEmpty'])) {
+      return   $feedbeekUploadImage;
     }
-    $NewNameImage = uniqid() . "." . $imgExt;
-    $imgFolder = __DIR__ . '/../uploads/Author_profile/';
-    $pathImage = 'uploads/Author_profile/' . $NewNameImage;
-    move_uploaded_file($imageTmp, $imgFolder . $NewNameImage);
+    $pathImage =  $feedbeekUploadImage['pathImage'];
     $result = $this->model->insert($nameAuthor, $pathImage, $bio);
     return ($result) ? "تم إضافة المؤلف بنجاح" : "فشل إضافة المؤلف";
   }

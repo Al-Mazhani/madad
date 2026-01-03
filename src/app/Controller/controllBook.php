@@ -1,60 +1,94 @@
 <?php
-
-class ControllBook
+class ControllBook extends BaseController
 {
     private $modelBook;
     public function __construct($model)
     {
         $this->modelBook = $model;
     }
-    // Check IF ID has error
-    private function validateID($id)
+    private function  validateCreateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
     {
-        if (!filter_var($id, FILTER_VALIDATE_INT)) {
-            include __DIR__ . '/../view/errorURL.php';
+        if (empty($bookName)) {
+            return ['hasInputEmpty' => 'يرجاء كتابة اسم الكتاب'];
+        }
+        if (empty($id_author)) {
+            return ['hasInputEmpty' => 'يرجاء تحدد المؤلف'];
+        }
+        if (empty($year)) {
+            return ['hasInputEmpty' => 'يرجاء تحديد السنة'];
+        }
+        if (!filter_var($id_category, FILTER_VALIDATE_INT)) {
+            return ['hasInputEmpty' => 'يرجاء تحديد الفئة'];
+        }
+        if (empty($pages)) {
+            return ['hasInputEmpty' => 'يرجاءإدخال عدد الصفحات'];
+        }
+        if ($pages  <= 20) {
+            return ['hasInputEmpty' => 'ادخل عدد اكبر من 20'];
+        }
+        if (empty($file_type)) {
+            return ['hasInputEmpty' => 'يرجاء تحدد نوع الملف'];
+        }
+        if (empty($description)) {
+            return ['hasInputEmpty' => 'يرجاءإدخال وصف الكتاب'];
+        }
+        if (!isset($image) || $image['size'] == 0) {
+            return ['hasFileEmpty' => 'يرجاء إدخال الصورة'];
+        }
 
-            exit();
+        if (empty($language)) {
+            return ['hasInputEmpty' => 'يرجاء تحدد اللغة'];
         }
-        $cleanID = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-        if ($cleanID < 0) {
-            include __DIR__ . '/../view/errorURL.php';
-            exit;
+        if (!isset($book) || $book['size'] == 0) {
+            return ['hasFileEmpty' => 'يرجاء إدخال الكتاب'];
         }
-        return $cleanID;
+        return null;
     }
-    // If Get ID Integer In Check in Database If Not exists  Not Display  Page. 
-    function   NotSDiplayPageWithoutID(): void
+    private function processBookData(&$bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
     {
-        include __DIR__ . '/../view/errorURL.php';
-        exit();
+        $bookName = strtolower(trim($bookName));
+    }
+    private  function uploadImage($image)
+    {
+        $feedBackUploadImage = HandlingFiles::uploadImage($image, __DIR__ . '/../../../uploads/image_book/', 'uploads/image_book/');
+        return $feedBackUploadImage;
+    }
+    private  function uploadBook($book)
+    {
+        $feedBackUploadBook = HandlingFiles::uploadBook($book, __DIR__ . '/../../../uploads/book_url/', 'uploads/book_url/');
+        return $feedBackUploadBook;
     }
     public function getAll()
     {
         $allBooks = $this->modelBook->loadAllBooks();
         return $allBooks;
     }
-    function  getInfoBookAndAuthor()
+    public function  getInfoBookAndAuthor()
     {
         return $this->modelBook->join_books_authors();
     }
-    function getAllCategory()
+    public function getAllCategory()
     {
         return $this->modelBook->loadCategory();
     }
-    function getBookAuthor($id)
+    public function getBookAuthor($id)
     {
 
         $this->validateID($id);
         $resultBookWithAuthor = $this->modelBook->loadBookByAuthorID($id);
         if (empty($resultBookWithAuthor)) {
-            $this->NotSDiplayPageWithoutID();
+            $this->NotAllowDisplayPage();
         }
         return $resultBookWithAuthor;
     }
     public function findByID($id)
     {
         $this->validateID($id);
-        return $this->modelBook->findOneByid($id);
+        $resutlFindByID = $this->modelBook->findOneByid($id);
+        if (empty($resutlFindByID)) {
+            $this->NotAllowDisplayPage();
+        }
+        return $resutlFindByID;
     }
     public function deleteBook($id)
     {
@@ -66,16 +100,16 @@ class ControllBook
     //  Check If Come From Server And  No Error
     public function updateBook($id, $bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language, $oldFileSize, $oldBook, $oldImage)
     {
-        $hasError =  request::validateCreateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language);
+        $hasError =  $this->validateCreateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language);
         if (!isset($hasError['hasFileEmpty'])) {
-            // return $hasError;
+            return $hasError;
         }
 
         // Use  Data Book After Prossing
         if ($image['size'] == 0) {
             $pathImage = $oldImage;
         } else {
-            $feedBackUploadImage = HandlingFiles::uploadImage($image, __DIR__ . '/../uploads/image_book/', 'uploads/image_book/');
+            $feedBackUploadImage = $this->uploadImage($image);
             if (isset($feedBackUploadImage['hasInputEmpty'])) {
                 return $feedBackUploadImage;
             } else {
@@ -86,7 +120,7 @@ class ControllBook
             $file_size = $oldFileSize;
             $pathBook = $oldBook;
         } else {
-            $feedBackUploadBook = HandlingFiles::uploadBook($book, __DIR__ . '/../uploads/book_url/', 'uploads/book_url/');
+            $feedBackUploadBook = $this->uploadBook($book);
             if (isset($feedBackUploadBook['hasInputEmpty'])) {
                 return  $feedBackUploadBook;
             }
@@ -100,28 +134,31 @@ class ControllBook
 
     public function addBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
     {
-        $hasError = request::validateCreateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language);
+        $hasError = $this->validateCreateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language);
         if (!empty($hasError)) {
             return $hasError;
         }
-        // Use  Data Book After Prossing 
-        $feedBackUploadImage = HandlingFiles::uploadImage($image, __DIR__ . '/../uploads/image_book/', 'uploads/image_book/');
-        $feedBackUploadBook = HandlingFiles::uploadBook($book, __DIR__ . '/../uploads/book_url/', 'uploads/book_url/');
+
+        // Upload Image
+        $feedBackUploadImage = $this->uploadImage($image);
+        // Upload Book
+        $feedBackUploadBook = $this->uploadBook($book);
         if (isset($feedBackUploadBook['hasInputEmpty'])) {
             return  $feedBackUploadBook;
         }
+
+        $pathImage = $feedBackUploadImage['pathImage'];
+
         if (isset($feedBackUploadImage['hasInputEmpty'])) {
             return $feedBackUploadImage;
         }
+
         $file_size = $feedBackUploadBook['file_size'];
         $pathBook = $feedBackUploadBook['PathBook'];
-        $pathImage = $feedBackUploadImage['pathImage'];
+
         $result = $this->modelBook->insertBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $file_size, $pathImage, $pathBook, $language);
-        if ($result) {
-            return ['successAddBook' => 'تم إضافة الكتاب بنجاح'];
-        } else {
-            return ['NotsuccessAddBook' => 'فشل إضافة الكتاب'];
-        }
+        
+        return ($result) ? ['successAddBook' => 'تم إضافة الكتاب بنجاح'] :  ['NotsuccessAddBook' => 'فشل إضافة الكتاب'];
     }
 
 
@@ -146,7 +183,7 @@ class ControllBook
 
         $resultInfoBook = $this->modelBook->infoBook($idBook);
         if (empty($resultInfoBook)) {
-            $this->NotSDiplayPageWithoutID();
+            $this->NotAllowDisplayPage();
         }
         return $resultInfoBook;
     }

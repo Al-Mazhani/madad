@@ -5,6 +5,7 @@
     include_once  'src/app/model/ModelUser.php';
     include_once  'src/app/model/ModelAuthor.php';
     include_once  'src/app/model/ModelAdmin.php';
+    include_once  'src/app/Controller/BaseController.php';
     include_once  'src/app/Controller/controllBook.php';
     include_once  'src/app/Controller/controllerAuthor.php';
     include_once  'src/app/Controller/controllAdmin.php';
@@ -40,7 +41,7 @@
         case book_ditles = '/Madad/book_ditles';
         case info_author = '/Madad/info_author';
         case profile = '/Madad/profile';
-        case homePageAdmin = '/Madad/homeAdimn';
+        case homePageAdmin = '/Madad/homeAdmin';
         case managemtAuthor = '/Madad/magagement-atuhor';
         case ManagementUsers = '/Madad/ManagementUsers';
         case addAuthor = '/Madad/addAuthor';
@@ -80,7 +81,7 @@
                     $_SESSION['user_id'] = $getToken['user_id'];
                     $_SESSION['username'] = $getToken['username'];
                     $_SESSION['email'] = $getToken['email'];
-                    if(isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['email'])){
+                    if (isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['email'])) {
                     }
                 }
 
@@ -101,7 +102,7 @@
                 break;
             case Route::register->value:
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_register'])) {
-                    $error = $controllUser->insert($_POST['username'], $_POST['email'], $_POST['password']);
+                    $error = $controllUser->create($_POST['username'], $_POST['email'], $_POST['password']);
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
@@ -205,7 +206,7 @@
                         $username = $_POST['adminName'];
                         $email = $_POST['adminEmail'];
                         $password = $_POST['adminPassword'];
-                        $controllAdmin->insert($username, $email, $password);
+                        $controllAdmin->create($username, $email, $password);
                     }
                 }
                 require_once('src/app/view/' . $route[$URL]);
@@ -266,7 +267,7 @@
                 break;
             case Route::ManagementUsers->value:
                 $allUsers = $controllUser->show();
-                if(isset($_GET['id'])){
+                if (isset($_GET['id'])) {
                     $controllUser->findByID($_GET['id']);
                 }
                 require_once('src/app/view/' . $route[$URL]);

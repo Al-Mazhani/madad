@@ -26,12 +26,16 @@ include(__DIR__ . '/../includes/header.php'); ?>
                 <ul>
                     <li>
                         <span>الكتب</span>
-                        <span>(<?php echo $infoAuthor['total_book']?>)</span>
+                        <span>(<?php echo $infoAuthor['allBooks'] ?>)</span>
                     </li>
 
                     <li>
                         <span>اجمالي التحميل</span>
-                        <span>(<?php echo $infoAuthor['total_downloads'] ?>)</span>
+                        <span>(<?php echo $infoAuthor['downloads'] ?>)</span>
+                    </li>
+                    <li>
+                        <span>اجمالي التحميل</span>
+                        <span>(<?php echo $infoAuthor['readers'] ?>)</span>
                     </li>
                 </ul>
             </div>
@@ -42,20 +46,20 @@ include(__DIR__ . '/../includes/header.php'); ?>
             <h2>كتب له</h2>
             <div class="books_madad">
                 <!-- Start -->
-                 <?php if(is_array($allBooksAuthor)):?>
-                <?php foreach ($allBooksAuthor as $book): ?>
-                    <div class="box_madad" title="<?= $book['title'] ?>">
-                        <a href="book_ditles?bookID=<?= $book['id_book'] ?>" class="link-book">
-                            <img src="<?= $book['image'] ?>" alt="<?= $book['title'] ?>" loading="lazy">
-                        </a>
-                        <a href="book_ditles?bookID=<?= $book['id_book'] ?>" class="book_title" title="<?= $book['title'] ?>"> <?= $book['title'] ?></a>
-                        <a href="info_author?authroID=<?= $book['id_author'] ?>" class="author" title="<?= $book['name'] ?>"> <?= $book['name'] ?></a>
-                    </div>
-                <?php endforeach; ?>
-                <?php else:?>
-              <p>ليس لديه كتب</p>
-                    <?php endif;?>
-                    <!-- End -->
+                <?php if (is_array($allBooksAuthor)): ?>
+                    <?php foreach ($allBooksAuthor as $book): ?>
+                        <div class="box_madad" title="<?= $book['title'] ?>">
+                            <a href="book_ditles?bookID=<?= $book['id_book'] ?>" class="link-book">
+                                <img src="<?= $book['image'] ?>" alt="<?= $book['title'] ?>" loading="lazy">
+                            </a>
+                            <a href="book_ditles?bookID=<?= $book['id_book'] ?>" class="book_title" title="<?= $book['title'] ?>"> <?= $book['title'] ?></a>
+                            <a href="info_author?authroID=<?= $book['id_author'] ?>" class="author" title="<?= $book['name'] ?>"> <?= $book['name'] ?></a>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>ليس لديه كتب</p>
+                <?php endif; ?>
+                <!-- End -->
             </div>
         </div>
     </section>

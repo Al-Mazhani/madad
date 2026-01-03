@@ -4,7 +4,7 @@
         <div class="container">
             <div class="main-content">
                 <div class="box-author add-new-book">
-                    <a href="addBook">
+                    <a href="addAuthor">
                         <span> إضافة مؤلف</span><i class="fa-solid fa-book-medical"></i>
 
                     </a>

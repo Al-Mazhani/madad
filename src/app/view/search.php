@@ -5,11 +5,10 @@
         <div class="header-books">
             <ul>
                 <?php foreach ($allCategory as $rang): ?>
-                    <li class="rang-author"><a href="category?id_category=<?php echo $rang['id_category'] ?>"><?php echo $rang['title_category'] ?> </a></li>
+                    <li class="rang-author"><a href="category?id_category=<?= (int)$rang['id_category'] ?>"><?php echo htmlspecialchars($rang['title_category']) ?> </a></li>
                 <?php endforeach; ?>
             </ul>
         </div>
-
     </section>
     <section class="container">
         <h2>ابحث عن كتاب</h2>
@@ -24,12 +23,12 @@
         <div class="books_madad">
             <?php if ($search): ?>
                 <?php foreach ($search as $book): ?>
-                    <div class="box_madad" title="<?= $book['title'] ?>">
-                        <a href="book_ditles?bookID=<?= $book['id_book'] ?>" class="link-book">
-                            <img src="<?= $book['image'] ?>" alt="<?= $book['title'] ?>" loading="lazy">
+                    <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
+                        <a href="book_ditles?bookID=<?= (int)$book['id_book'] ?>" class="link-book">
+                            <img src="<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
                         </a>
-                        <a href="book_ditles?bookID=<?= $book['id_book'] ?>" class="book_title" title="<?= $book['title'] ?>"> <?= $book['title'] ?></a>
-                        <a href="info_author?authroID=<?= $book['id_author'] ?>" class="author" title="<?= $book['name'] ?>"> <?= $book['name'] ?></a>
+                        <a href="book_ditles?bookID=<?= (int)$book['id_book'] ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
+                        <a href="info_author?authroID=<?= (int)$book['id_author'] ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>

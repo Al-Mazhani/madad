@@ -1,0 +1,5 @@
+SELECT authors.id_author, authors.name, authors.bio, authors.image, count(books.readBook), count(books.downloads)
+FROM authors
+JOIN books ON authors.id_author = books.author_id
+WHERE authors.id_author = 1
+ORDER  by books.author_id

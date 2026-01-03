@@ -54,27 +54,5 @@ class request
         }
         return true;
     }
-    public static function validateRegister($username, $email, $password)
-    {
-        $lenghtPassword =  strlen($password);
-        $lenghtUserName =  strlen($username);
-        if (empty($username)) {
-            return ['emptyName' => "يرجاء املاء حقل الاسم"];
-        }
-        if ($lenghtUserName < 3 || $lenghtUserName >= 30) {
-            return ['lenghtUsername' => 'يرجاء ان يكون الاسم بين 3 و 30 حرف'];
-        }
-        if (empty($email)) {
-            return ['emptyEmail' => 'يرجاءاملاء حقل البريد الالكتروني'];
-        }
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return ['invalidEmail' => 'يرجاء املاء حقل البريد'];
-        }
-        if (empty($password)) {
-            return ['emptyPassword' => 'يرجاء إملاء حقل كلمة المرور'];
-        }
-        if ($lenghtPassword   < 10  && $lenghtPassword >= 15) {
-            return ['lenghtPassword' => 'يرجاء املا كلمة المرور  بين 10 و 15 حرف'];
-        }
-    }
+
 }

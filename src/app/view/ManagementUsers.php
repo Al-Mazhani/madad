@@ -27,7 +27,7 @@
                         <th>رقم المستخدم </th>
                         <th> اسم المستخدم</th>
                         <th> البريد الالكتروني</th>
-                        <th> كلمة المرور</th>
+                        <th> الدور</th>
                         <th> تاريخ انشاء الحساب</th>
                         <th> الحدث</th>
                     </tr>
@@ -38,7 +38,7 @@
                             <td><?php echo $users['user_id'] ?></td>
                             <td><?php echo $users['username'] ?></td>
                             <td><?php echo $users['email'] ?></td>
-                            <td><?php echo $users['password'] ?></td>
+                            <td><?php echo $users['role'] ?></td>
                             <td><?php echo $users['created_at'] ?></td>
                             <td class="action-btn">
                                 <button class="btn delete" onclick="window.location='?id=<?= $users['user_id'] ?>'"><i class="fa-solid fa-trash"></i></button>

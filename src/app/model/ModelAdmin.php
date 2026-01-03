@@ -12,7 +12,7 @@ class  ModelAdmin
     {
         $query = "SELECT * FROM admins";
         $stmt = $this->database->prepare($query);
-        $stmt->execute();
+        // $stmt->execute();
          $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
          return $data;
     }
