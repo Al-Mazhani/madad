@@ -47,6 +47,7 @@ class ControllBook extends BaseController
     private function processBookData(&$bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
     {
         $bookName = strtolower(trim($bookName));
+        
     }
     private  function uploadImage($image)
     {
@@ -74,8 +75,8 @@ class ControllBook extends BaseController
     public function getBookAuthor($id)
     {
 
-        $this->validateID($id);
-        $resultBookWithAuthor = $this->modelBook->loadBookByAuthorID($id);
+        $cleanID = $this->validateID($id);
+        $resultBookWithAuthor = $this->modelBook->loadBookByAuthorID($cleanID);
         if (empty($resultBookWithAuthor)) {
             $this->NotAllowDisplayPage();
         }
@@ -83,8 +84,8 @@ class ControllBook extends BaseController
     }
     public function findByID($id)
     {
-        $this->validateID($id);
-        $resutlFindByID = $this->modelBook->findOneByid($id);
+       $cleanID = $this->validateID($id);
+        $resutlFindByID = $this->modelBook->findOneByid($cleanID);
         if (empty($resutlFindByID)) {
             $this->NotAllowDisplayPage();
         }
@@ -93,8 +94,8 @@ class ControllBook extends BaseController
     public function deleteBook($id)
     {
 
-        $this->validateID($id);
-        return $this->modelBook->delete($id);
+         $cleanID  = $this->validateID($id);
+        return $this->modelBook->delete($cleanID);
     }
 
     //  Check If Come From Server And  No Error
@@ -155,7 +156,7 @@ class ControllBook extends BaseController
 
         $file_size = $feedBackUploadBook['file_size'];
         $pathBook = $feedBackUploadBook['PathBook'];
-
+        $public_id = $this->Generate4UUID();
         $result = $this->modelBook->insertBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $file_size, $pathImage, $pathBook, $language);
         
         return ($result) ? ['successAddBook' => 'تم إضافة الكتاب بنجاح'] :  ['NotsuccessAddBook' => 'فشل إضافة الكتاب'];

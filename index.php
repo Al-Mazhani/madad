@@ -1,6 +1,5 @@
     <?php
     session_start();
-
     include_once  'src/app/model/ModelBook.php';
     include_once  'src/app/model/ModelUser.php';
     include_once  'src/app/model/ModelAuthor.php';
@@ -14,10 +13,10 @@
     require_once  'config/database.php';
     include 'validated/Request.php';
     include 'src/app/helpers/handlingFiles.php';
-
-
+    
+    
     $database  = databaseConnection();
-
+    
     $ModelUser = new ModelUser($database);
     $controllUser = new ControllUser($ModelUser);
     $ModelAdmin = new ModelAdmin($database);
@@ -26,6 +25,7 @@
     $controllBook = new ControllBook($ModelBook);
     $ModelAuthor = new ModelAuthor($database);
     $controllAuthor = new ControllerAuthor($ModelAuthor);
+
     $URL = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $parts = explode('/', $URL);
     $query = $_GET['query'] ?? '';
