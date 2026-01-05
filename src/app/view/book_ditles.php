@@ -17,7 +17,7 @@ include(__DIR__ . '/../includes/header.php'); ?>
             <tbody>
               <tr>
                 <td>مؤلف</td>
-                <td> <?php echo htmlspecialchars($infoBook['author_name']) ?> </td>
+                <td> <?php echo htmlspecialchars($infoBook['name']) ?> </td>
               </tr>
               <tr>
                 <td>القسم</td>
@@ -56,15 +56,15 @@ include(__DIR__ . '/../includes/header.php'); ?>
         <h3>كتب أخرى</h3>
         <ul>
           <?php foreach ($OtherBooks as $books): ?>
-            <li> <a href="book_ditles?bookID=<?= (int)$books['id_book'] ?>"> <?= htmlspecialchars($books['title']) ?></a> <i class="fas fa-book"></i></li>
+            <li> <a href="book_ditles?bookID=<?= $books['book_public_id'] ?>"> <?= htmlspecialchars($books['title']) ?></a> <i class="fas fa-book"></i></li>
           <?php endforeach; ?>
         </ul>
       </div>
     </div>
     <section class="info_book">
       <div class="action_book">
-        <a href="<?php echo htmlspecialchars($infoBook['book_url']); ?>" download data-id="<?php echo (int)$infoBook['id_book'] ?> " onclick="incrementDownload(this)"><i class="fas fa-download"></i> <?php echo htmlspecialchars($infoBook['downloads']) ?></a>
-        <a href="<?php echo htmlspecialchars($infoBook['book_url']); ?>" target="_blank" data-id="<?php echo (int)$infoBook['id_book'] ?>" onclick="incrementReadBook(this)"> <i class="fa-solid fa-book-open"></i> <?php echo htmlspecialchars($infoBook['readBook']) ?></a>
+        <a href="<?php echo htmlspecialchars($infoBook['book_url']); ?>" download data-id="<?php echo (int)$infoBook['book_public_id'] ?> " onclick="incrementDownload(this)"><i class="fas fa-download"></i> <?php echo htmlspecialchars($infoBook['downloads']) ?></a>
+        <a href="<?php echo htmlspecialchars($infoBook['book_url']); ?>" target="_blank" data-id="<?php echo (int)$infoBook['book_public_id'] ?>" onclick="incrementReadBook(this)"> <i class="fa-solid fa-book-open"></i> <?php echo htmlspecialchars($infoBook['readBook']) ?></a>
         <button class="sharing"><i class="fas fa-share-alt"></i>مشاركة</button>
         <button class="btn-like-book"><i class="fas fa-thumbs-up"></i></button>
       </div>
@@ -79,11 +79,11 @@ include(__DIR__ . '/../includes/header.php'); ?>
     <div class="books_madad">
       <?php foreach ($bookByCategory as $book): ?>
         <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
-          <a href="book_ditles?bookID=<?= (int)$book['id_book'] ?>" class="link-book">
+          <a href="book_ditles?bookID=<?= $book['book_public_id'] ?>" class="link-book">
             <img src="<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
           </a>
-          <a href="book_ditles?bookID=<?= (int)$book['id_book'] ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
-          <a href="info_author?authroID=<?= (int)$book['id_author'] ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
+          <a href="book_ditles?bookID=<?= (int)$book['book_public_id'] ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
+          <a href="info_author?authroID=<?= (int)$book['author_public_id'] ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
         </div>
       <?php endforeach; ?>
     </div>

@@ -38,14 +38,14 @@ class ModelBook   extends BaseModel
   // Load This Data To Show In Page Books With Author
   public function join_books_authors()
   {
-    $query = "SELECT * FROM viewBookWithuthor";
+    $query = "SELECT * FROM base_view_book";
     $stmt = $this->database->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
   function loadBookByAuthorID($id)
   {
-    $query = "SELECT * FROM viewBookWithuthor where id_author = :id";
+    $query = "SELECT * FROM base_view_book where author_public_id = :id";
     $stmt = $this->database->prepare($query);
     $stmt->execute(['id' => $id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -54,16 +54,15 @@ class ModelBook   extends BaseModel
   // Load This Category By ID In Page Categroy
   public function loadBookByCateogryID($id)
   {
-    $query = "SELECT * FROM view_book_category_by_ID where id_category =:id";
+    $query = "SELECT * FROM base_view_book where category_public_id =:id";
     $stmt = $this->database->prepare($query);
-    $stmt->bindParam(':id', $id, PDO::PARAM_INT);;
-    // $stmt->execute();
+    $stmt->execute([':id' => $id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
 
   //just Table  Like Book
-  function like($idUser, $idBook)
+  public function like($idUser, $idBook)
   {
     $queryLike = "INSERT INTO likes_book (id_user,id_book,likes) VALUES (???)";
     $stmt = $this->database->prepare($queryLike);
@@ -72,7 +71,7 @@ class ModelBook   extends BaseModel
   // Load Info Book  By ID Book To Show  in Page Dititles book
   function infoBook($idBook)
   {
-    $queryInfoBook = "SELECT * FROM view_info_book where id_book =  :id";
+    $queryInfoBook = "SELECT * FROM book_info_view where book_public_id  =  :id";
     $stmt = $this->database->prepare($queryInfoBook);
     $stmt->bindParam(':id', $idBook, PDO::PARAM_INT);
     $stmt->execute();

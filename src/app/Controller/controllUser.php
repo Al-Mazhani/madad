@@ -60,11 +60,19 @@
         }
 
         // Clean Data User
-        private function ProcceDataUser(&$username, &$email, &$password)
+        private function ProcceDataUser(&$username, &$email, &$password,&$token)
         {
             $username = strtolower(trim($username));
             $email = strtolower(filter_var($email, FILTER_SANITIZE_EMAIL));
             $password = password_hash(trim($password), PASSWORD_BCRYPT);
+            $token = $this->Generate4UUID();
+        }
+        private function SetCookieAndSessionToUser( $token,$username)
+        {
+            setcookie('remember_token', $token, time() + 86400 * 30, "/");
+            $_SESSION['username'] = $username;
+            header("Location:/Madad/");
+            exit();
         }
         public function create($username, $email, $password)
         {
@@ -72,15 +80,11 @@
             if ($validateRegisterUser) {
                 return $validateRegisterUser;
             }
-            $token = session_id();
-            $this->ProcceDataUser($username, $email, $password);
+            $this->ProcceDataUser($username, $email, $password,$token);
             $resultRegister =  $this->Model->insert($username, $email, $password, $token, 'user');
 
             if ($resultRegister) {
-                setcookie('remember_token', $token, time() + 86400 * 30, "/");
-                $_SESSION['username'] = $username;
-                header("Location:home");
-                exit();
+                $this->SetCookieAndSessionToUser($token,$username);
             } else {
                 return ['invalidRegister' => 'فشل انشاء حساب'];
             }

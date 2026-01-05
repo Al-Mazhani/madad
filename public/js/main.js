@@ -31,3 +31,4 @@ function deleteBook(id) {
   })
   .catch(error => console.error(error));
 }
+// window.history.replaceState({}, document.title, window.location.pathname);

@@ -6,7 +6,7 @@ class ModelUser extends BaseModel
     protected $database;
     function __construct($database)
     {
-        parent::__construct($database, "users",'user_id');
+        parent::__construct($database, "users", 'user_id');
     }
 
     public function checkLogin($email, $password)
@@ -32,14 +32,14 @@ class ModelUser extends BaseModel
         }
         return $result;
     }
-    function updateToken($newToken,$email)
+    function updateToken($newToken, $email)
     {
         $queryUpdateToken = "UPDATE users SET token = ? WHERE email = ?";
-        
     }
-    function insert($username,$email,$password,$token,$role){
-        $QueryCreateUser = "INSERT INTO users (username,email,password,token,role) VALUES (?,?,?,?,?)";
+    function insert($username, $email, $password, $token)
+    {
+        $QueryCreateUser = "INSERT INTO users (username,email,password,token) VALUES (:username,:email,:password,:token)";
         $stmt = $this->database->prepare($QueryCreateUser);
-        return $stmt->execute([$username,$email,$password,$token,$role]);
+        return $stmt->execute([":username" => $username,":email" => $email, ":password" => $password, ":token" => $token]);
     }
 }

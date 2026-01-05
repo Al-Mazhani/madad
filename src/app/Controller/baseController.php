@@ -30,8 +30,8 @@ class BaseController
         $UUID = "";
         $UUID .= $this->GenerateOneUUID(3) . "-";
         $UUID .= $this->GenerateOneUUID(3) . "-";
-        $UUID .= $this->GenerateOneUUID(3) . "-";
-        $UUID .= $this->GenerateOneUUID(3) ;        
+        $UUID .= $this->GenerateOneUUID(4) . "-";
+        $UUID .= $this->GenerateOneUUID(5) ;        
         return $UUID;
     }
 }

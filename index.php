@@ -28,7 +28,6 @@
 
     $URL = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $parts = explode('/', $URL);
-    $query = $_GET['query'] ?? '';
     enum Route: string
     {
         case home = '/Madad/';
@@ -136,8 +135,8 @@
                 }
                 $OtherBooks = $controllBook->getInfoBookAndAuthor();
                 $infoBook = $controllBook->getInfoBookByID($id);
-                // $id_category = $infoBook['id_category'];
-                $bookByCategory = $controllBook->getBookByCategory(1);
+               $id_category = $infoBook['category_public_id'];
+                $bookByCategory = $controllBook->getBookByCategory($id_category);
                 require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::info_author->value:
@@ -155,7 +154,7 @@
                 }
                 $allCategory = $controllBook->getAllCategory();
                 $category = $controllBook->getBookByCategory($id);
-                require_once('view/' . $route[$URL]);
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::search->value:
                 if (isset($_GET['name'])) {

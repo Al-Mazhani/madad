@@ -75,8 +75,8 @@ class ControllBook extends BaseController
     public function getBookAuthor($id)
     {
 
-        $cleanID = $this->validateID($id);
-        $resultBookWithAuthor = $this->modelBook->loadBookByAuthorID($cleanID);
+        // $cleanID = $this->validateID($id);
+        $resultBookWithAuthor = $this->modelBook->loadBookByAuthorID($id);
         if (empty($resultBookWithAuthor)) {
             $this->NotAllowDisplayPage();
         }
@@ -84,8 +84,8 @@ class ControllBook extends BaseController
     }
     public function findByID($id)
     {
-       $cleanID = $this->validateID($id);
-        $resutlFindByID = $this->modelBook->findOneByid($cleanID);
+    //    $cleanID = $this->validateID($id);
+        $resutlFindByID = $this->modelBook->findOneByid($id);
         if (empty($resutlFindByID)) {
             $this->NotAllowDisplayPage();
         }
@@ -173,14 +173,14 @@ class ControllBook extends BaseController
 
         return $this->modelBook->search($name);
     }
-    function getBookByCategory($id)
+    public function getBookByCategory($id)
     {
-        $this->validateID($id);
+        // $this->validateID($id);
         return $this->modelBook->loadBookByCateogryID($id);
     }
-    function getInfoBookByID($idBook)
+    public function getInfoBookByID($idBook)
     {
-        $this->validateID($idBook);
+        // $this->validateID($idBook);
 
         $resultInfoBook = $this->modelBook->infoBook($idBook);
         if (empty($resultInfoBook)) {

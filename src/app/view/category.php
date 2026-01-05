@@ -25,11 +25,11 @@
 
             <?php foreach ($category as $book): ?>
                 <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
-                    <a href="book_ditles?bookID=<?= (int)$book['id_book'] ?>" class="link-book">
+                    <a href="book_ditles?bookID=<?= $book['book_public_id'] ?>" class="link-book">
                         <img src="<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
                     </a>
-                    <a href="book_ditles?bookID=<?= (int)$book['id_book'] ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
-                    <a href="info_author?authroID=<?= (int)$book['id_author'] ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
+                    <a href="book_ditles?bookID=<?= $book['book_public_id'] ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
+                    <a href="info_author?authroID=<?= (int)$book['author_public_id'] ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
                 </div>
             <?php endforeach; ?>
         </div>
