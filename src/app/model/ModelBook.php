@@ -90,26 +90,26 @@ class ModelBook   extends BaseModel
   }
 
   // Increment filed Read Book To Get info how much users Read This Book
-  function incrementReadBook($id)
+   public function incrementReadBook($id)
   {
-    $queryIncrementReadBook = "UPDATE books SET readBook = COALESCE(readBook,0) + 1 WHERE id_book  = ?";
+    $queryIncrementReadBook = "UPDATE books SET readBook = COALESCE(readBook,0) + 1 WHERE public_id  = :book_public_id";
     $stmt = $this->database->prepare($queryIncrementReadBook);
-    $stmt->execute([$id]);
+   return  $stmt->execute([":book_public_id" => $id]);
   }
 
   // Increment To Know How Much user Download This Book
   function incrementDonwnload($id)
   {
-    $queryIncrementDonwnload = "UPDATE books SET downloads = COALESCE(downloads,0) + 1 WHERE id_book = ?";
+    $queryIncrementDonwnload = "UPDATE books SET downloads = COALESCE(downloads,0) + 1 WHERE public_id = :book_public_id";
     $stmt = $this->database->prepare($queryIncrementDonwnload);
-    $stmt->execute([$id]);
+    $stmt->execute([ ":book_public_id" => $id]);
   }
   // Load 15 Books To Show in Page Dititles Section Other Books
-  function LoadOtherBooks()
+   public function LoadOtherBooks()
   {
-    $QueryOtherBooks = "SELECT title,id FROM viewBookWithuthor	 limit 15  ";
+    $QueryOtherBooks = "SELECT title,book_public_id FROM base_view_book	 limit 15  ";
     $stmt = $this->database->prepare($QueryOtherBooks);
-    // $stmt->execute();
+    $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
   function updateBook($id, $bookName, $id_author, $year, $id_category, $pages, $description, $pathImage, $file_size, $file_type, $language, $pathBook)

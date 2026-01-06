@@ -4,8 +4,10 @@ class ControllBook extends BaseController
     private $modelBook;
     public function __construct($model)
     {
+    
         $this->modelBook = $model;
     }
+
     private function  validateCreateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
     {
         if (empty($bookName)) {
@@ -47,7 +49,6 @@ class ControllBook extends BaseController
     private function processBookData(&$bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
     {
         $bookName = strtolower(trim($bookName));
-        
     }
     private  function uploadImage($image)
     {
@@ -84,7 +85,7 @@ class ControllBook extends BaseController
     }
     public function findByID($id)
     {
-    //    $cleanID = $this->validateID($id);
+        //    $cleanID = $this->validateID($id);
         $resutlFindByID = $this->modelBook->findOneByid($id);
         if (empty($resutlFindByID)) {
             $this->NotAllowDisplayPage();
@@ -94,7 +95,7 @@ class ControllBook extends BaseController
     public function deleteBook($id)
     {
 
-         $cleanID  = $this->validateID($id);
+        $cleanID  = $this->validateID($id);
         return $this->modelBook->delete($cleanID);
     }
 
@@ -158,7 +159,7 @@ class ControllBook extends BaseController
         $pathBook = $feedBackUploadBook['PathBook'];
         $public_id = $this->Generate4UUID();
         $result = $this->modelBook->insertBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $file_size, $pathImage, $pathBook, $language);
-        
+
         return ($result) ? ['successAddBook' => 'تم إضافة الكتاب بنجاح'] :  ['NotsuccessAddBook' => 'فشل إضافة الكتاب'];
     }
 
@@ -197,7 +198,7 @@ class ControllBook extends BaseController
         $resultDownload = $this->modelBook->incrementDonwnload($id);
         return ($resultDownload) ? "تم تنزيل الكتاب" : "فشل في تنزيل الكتاب";
     }
-    function incrementReadBook($id)
+    public function incrementReadBook($id)
     {
         $this->modelBook->incrementReadBook($id);
     }

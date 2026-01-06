@@ -9,7 +9,6 @@ class ControllerAuthor extends BaseController
   public function findOneByid($id)
   {
 
-    $this->validateID($id);
     $resultGetAuthorByID = $this->model->loadInfoAuthorByID($id);
     if(empty($resultGetAuthorByID)){
       $this->NotAllowDisplayPage();
@@ -25,7 +24,7 @@ class ControllerAuthor extends BaseController
   {
     return $this->model->loadAll();
   }
-  function addAuthor($nameAuthor, $imageURLAuthro, $bio)
+ public function addAuthor($nameAuthor, $imageURLAuthro, $bio)
   {
     if (empty($nameAuthor)) {
       return "يرجاء إدخال الاسم";

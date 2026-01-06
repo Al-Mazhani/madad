@@ -133,7 +133,7 @@
                 if (isset($_POST['idReadBook'])) {
                     $controllBook->incrementReadBook($_POST['idReadBook']);
                 }
-                $OtherBooks = $controllBook->getInfoBookAndAuthor();
+                $OtherBooks = $controllBook->OtherBooks();
                 $infoBook = $controllBook->getInfoBookByID($id);
                $id_category = $infoBook['category_public_id'];
                 $bookByCategory = $controllBook->getBookByCategory($id_category);
@@ -145,7 +145,7 @@
                 }
 
                 $infoAuthor = $controllAuthor->findOneByid($id);
-                // $allBooksAuthor = $controllAuthor->findMoreOne($id);
+                $allBooksAuthor = $controllAuthor->findMoreOne($id);
                 require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::category->value:
