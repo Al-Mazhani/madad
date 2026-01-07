@@ -36,7 +36,7 @@
                         <div class="fisrt-section">
                             <div class="box-form">
                                 <label for="date">سنة النشر</label>
-                                <input type="date" name="publish_year" id="date" placeholder="ادخل سنة النشر" required>
+                                <input type="number" name="publish_year" id="date" placeholder="ادخل سنة النشر" required>
                             </div>
                             <div class="box-form">
                                 <label for="category">النصنيف</label>

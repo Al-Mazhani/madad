@@ -35,7 +35,7 @@
                         <div class="fisrt-section">
                             <div class="box-form">
                                 <label for="date">سنة النشر</label>
-                                <input type="date" name="publish_year" id="date" placeholder="ادخل سنة النشر" required value="<?= date( strtotime($updateBook['publish_year'])) ?>">
+                                <input type="number" name="publish_year" id="date" placeholder="ادخل سنة النشر" required  value="<?= $updateBook['year'] ?>">
                             </div>
                             <div class="box-form">
                                 <label for="category">النصنيف</label>

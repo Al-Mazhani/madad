@@ -28,13 +28,13 @@ class BaseController
         return bin2hex(random_bytes($sizeUUID));
     }
     // Make 
-    private function Generate4UUID()
+    protected function Generate4UUID()
     {
         $UUID = "";
         $UUID .= $this->GenerateOneUUID(3) . "-";
         $UUID .= $this->GenerateOneUUID(3) . "-";
-        $UUID .= $this->GenerateOneUUID(4) . "-";
-        $UUID .= $this->GenerateOneUUID(5);
+        $UUID .= $this->GenerateOneUUID(3) . "-";
+        $UUID .= $this->GenerateOneUUID(3);
         return $UUID;
     }
     protected function validateSearch($search)

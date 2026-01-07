@@ -39,7 +39,7 @@
                 <tbody>
                     <?php foreach ($allBooks as $books): ?>
                         <tr>
-                            <td><?php echo $books['id_book'] ?></td>
+                            <td><?php echo $books['book_public_id'] ?></td>
                             <td><?php echo $books['title'] ?></td>
                             <td><?php echo $books['name'] ?></td>
                             <td><?php echo $books['title_category'] ?></td>
@@ -51,8 +51,8 @@
                             <td><?php echo $books['language'] ?></td>
                             <td><?php echo $books['year'] ?></td>
                             <td class="action-btn">
-                                <button class="btn update" onclick="deleteBook(<?= $books['id_book'] ?>)"><i class="fa-solid fa-trash"></i></button>
-                                <a href="update?ID=<?= $books['id_book'] ?>"><i class="fa-solid fa-pen"></i></a>
+                                <button class="btn update" onclick="deleteBook(<?= $books['book_public_id'] ?>)"><i class="fa-solid fa-trash"></i></button>
+                                <a href="update?ID=<?= $books['book_public_id'] ?>"><i class="fa-solid fa-pen"></i></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

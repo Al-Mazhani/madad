@@ -8,18 +8,21 @@ class ModelBook   extends BaseModel
   }
 
   //  Insert New Book
-  function insertBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $file_size, $imgPathDB, $filePathDB, $language)
+  public function insertBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $file_size, $imgPathDB, $filePathDB, $language, $public_id)
   {
-    $QeruyinsertBook = "INSERT INTO books (title,pages,file_type,file_size,image,year,description,author_id,id_category,language,book_url)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?)
-    ";
+    $QeruyinsertBook = "INSERT INTO books (title,pages,file_type,file_size,image,year,description,author_id,id_category,language,book_url,public_id)
+    VALUES (:name,:pages,:file_type,:file_size,:pathImage,:year,:description,:id_author,:id_category,:language,:pathBook,:public_id)";
     $stmt = $this->database->prepare($QeruyinsertBook);
-    return $stmt->execute([$bookName, $pages, $file_type, $file_size, $imgPathDB, $year, $description, $id_author, $id_category, $language, $filePathDB]);
+    $result = $stmt->execute([ ":name" => $bookName, ":pages" => $pages, ":file_type" => $file_type, ":file_size" => $file_size, ":pathImage" => $imgPathDB, 
+    ":year" => $year, ":description" => $description,
+    ":id_author" => $id_author, ":id_category" => $id_category, ":language" => $language, ":pathBook" => $filePathDB, ":public_id" => $public_id
+    ]);
+    return ($result) ? true : false;
   }
   // Load All Books
-  function loadAllBooks()
+  public function loadAllBooks()
   {
-    $QueryLoadAllBooks = "SELECT * FROM view_book order by id_book desc	";
+    $QueryLoadAllBooks = "SELECT * FROM book_info_view 	";
     $stmt = $this->database->prepare($QueryLoadAllBooks);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -27,7 +30,7 @@ class ModelBook   extends BaseModel
 
 
   // Load All Category
-  function  loadCategory()
+  public function  loadCategory()
   {
     $query = "SELECT * FROM category";
     $stmt = $this->database->prepare($query);
@@ -43,7 +46,7 @@ class ModelBook   extends BaseModel
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
-  function loadBookByAuthorID($id)
+  public function loadBookByAuthorID($id)
   {
     $query = "SELECT * FROM base_view_book where author_public_id = :id";
     $stmt = $this->database->prepare($query);
@@ -90,11 +93,11 @@ class ModelBook   extends BaseModel
   }
 
   // Increment filed Read Book To Get info how much users Read This Book
-   public function incrementReadBook($id)
+  public function incrementReadBook($id)
   {
     $queryIncrementReadBook = "UPDATE books SET readBook = COALESCE(readBook,0) + 1 WHERE public_id  = :book_public_id";
     $stmt = $this->database->prepare($queryIncrementReadBook);
-   return  $stmt->execute([":book_public_id" => $id]);
+    return  $stmt->execute([":book_public_id" => $id]);
   }
 
   // Increment To Know How Much user Download This Book
@@ -102,23 +105,23 @@ class ModelBook   extends BaseModel
   {
     $queryIncrementDonwnload = "UPDATE books SET downloads = COALESCE(downloads,0) + 1 WHERE public_id = :book_public_id";
     $stmt = $this->database->prepare($queryIncrementDonwnload);
-    $stmt->execute([ ":book_public_id" => $id]);
+    $stmt->execute([":book_public_id" => $id]);
   }
   // Load 15 Books To Show in Page Dititles Section Other Books
-   public function LoadOtherBooks()
+  public function LoadOtherBooks()
   {
     $QueryOtherBooks = "SELECT title,book_public_id FROM base_view_book	 limit 15  ";
     $stmt = $this->database->prepare($QueryOtherBooks);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
-  function updateBook($id, $bookName, $id_author, $year, $id_category, $pages, $description, $pathImage, $file_size, $file_type, $language, $pathBook)
+  public function update($id, $bookName, $id_author, $year, $id_category, $pages, $description, $pathImage, $file_size, $file_type, $language, $pathBook)
   {
-    $QueryUpdateBook = "UPDATE books SET title = ? , author_id = ?, year = ? , id_category = ? ,
-     pages = ? ,description = ? , image = ? ,file_size = ? , language = ? ,book_url = ? , file_type = ?
-     WHERE id_book = ?;
-     ";
-    $stmt = $this->database->prepare($QueryUpdateBook);
-    return $stmt->execute([$bookName, $id_author, $year, $id_category, $pages, $description, $pathImage, $file_size, $language, $pathBook, $file_type, $id]);
+    $sql = "UPDATE books SET title = :title, author_id = :author_id, year = :year, id_category = :id_category, pages = :pages, description = :description, image = :image, file_size = :file_size, language = :language, book_url = :book_url, file_type = :file_type WHERE public_id = :public";
+
+    $stmt = $this->database->prepare($sql);
+
+    return $stmt->execute([ ':title' => $bookName, ':author_id' => $id_author, ':year' => $year, ':id_category' => $id_category, ':pages' => $pages, ':description' => $description, ':image' => $pathImage, ':file_size' => $file_size, ':language' => $language, ':book_url' => $pathBook, ':file_type' => $file_type, ':public_id' => $id
+    ]);
   }
 }
