@@ -40,4 +40,9 @@ class ControllerAuthor extends BaseController
     $result = $this->model->insert($nameAuthor, $pathImage, $bio);
     return ($result) ? "تم إضافة المؤلف بنجاح" : "فشل إضافة المؤلف";
   }
+    public function search($search){
+      $this->validateSearch($search);
+      $resultSearch = $this->model->search($search);
+      return $resultSearch;
+    }
 }

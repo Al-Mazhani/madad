@@ -56,7 +56,7 @@ class ControllBook extends BaseController
         }
         return null;
     }
-    private function  validateCreateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
+    private function  validateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
     {
         if ($errorText = $this->validateTextInputs($bookName, $description, $language, $file_type)) {
             return $errorText;
@@ -70,20 +70,7 @@ class ControllBook extends BaseController
         }
         return ['noInputEmpty' => true];
     }
-    private function  validateUpdateeBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
-    {
-        if ($errorText = $this->validateTextInputs($bookName, $description, $language, $file_type)) {
-            return $errorText;
-        }
 
-        if ($errorFiles = $this->validateFileInputs($image, $book)) {
-            return $errorFiles;
-        }
-        if ($errorNumeric = $this->ValidateNumberInputs($id_author, $year, $id_category, $pages)) {
-            return $errorNumeric;
-        }
-        return ['noInputEmpty' => true];
-    }
     private function processBookData(&$bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
     {
         $bookName = strtolower(trim($bookName));
@@ -160,8 +147,8 @@ class ControllBook extends BaseController
     //  Check If Come From Server And  No Error
     public function updateBook($id, $bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language, $oldFileSize, $oldBook, $oldImage)
     {
-        $hasError =  $this->validateUpdateeBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language);
-        if (empty($hasError)) {
+        $hasError =  $this->validateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language);
+        if ($hasError != true) {
             return $hasError;
         }
 
@@ -170,7 +157,7 @@ class ControllBook extends BaseController
         if (isset($feedBackUploadImage['hasInputEmpty'])) {
             return $feedBackUploadImage;
         }
-        $pathImage = $feedBackUploadImage;
+        $pathImage = $feedBackUploadImage['pathImage'];
 
         $feedBackUploadBook = $this->checkExitFileBook($book, $oldBook);
         if (isset($feedBackUploadBook['hasInputEmpty'])) {
@@ -186,8 +173,8 @@ class ControllBook extends BaseController
 
     public function addBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
     {
-        $hasError = $this->validateCreateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language);
-        if (empty($hasError)) {
+        $hasError = $this->validateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language);
+        if ($hasError != true) {
             return $hasError;
         }
 
@@ -226,20 +213,21 @@ class ControllBook extends BaseController
     }
     public function getBookByCategory($id)
     {
-        // $this->validateID($id);
+        $this->validateID($id);
         return $this->modelBook->loadBookByCateogryID($id);
     }
     public function getInfoBookByID($idBook)
     {
-        // $this->validateID($idBook);
-
+        $this->validateID($idBook);
         $resultInfoBook = $this->modelBook->infoBook($idBook);
         if (empty($resultInfoBook)) {
             $this->NotAllowDisplayPage();
         }
         return $resultInfoBook;
     }
-    public  function like($lik) {}
+    public  function like($IDUser,$IDBook) {
+        $this->modelBook->like($IDUser,$IDBook);
+    }
     public function incrementDonwnload($id)
     {
         if (empty($id)) {

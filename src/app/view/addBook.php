@@ -29,7 +29,6 @@
                                             <?php echo $author['name'] ?>
                                         </option>
                                         <?php endforeach; ?>
-                                        <option value="1">1</option>
                                     </select>
                             </div>
                         </div>
@@ -46,7 +45,6 @@
                                             <?php echo $category['title_category'] ?>
                                         </option>
                                         <?php endforeach; ?>
-                                        <option value="1">2</option>
                                 </select>
                             </div>
                         </div>

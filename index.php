@@ -13,10 +13,10 @@
     require_once  'config/database.php';
     include 'validated/Request.php';
     include 'src/app/helpers/handlingFiles.php';
-    
-    
+
+
     $database  = databaseConnection();
-    
+
     $ModelUser = new ModelUser($database);
     $controllUser = new ControllUser($ModelUser);
     $ModelAdmin = new ModelAdmin($database);
@@ -97,6 +97,9 @@
                 break;
             case Route::authors->value:
                 $allAuthor = $controllAuthor->getAll();
+                if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['name'])) {
+                    $SearchAuthor = $controllAuthor->search($_GET['name']);
+                }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::register->value:
@@ -135,7 +138,7 @@
                 }
                 $OtherBooks = $controllBook->OtherBooks();
                 $infoBook = $controllBook->getInfoBookByID($id);
-               $id_category = $infoBook['category_public_id'];
+                $id_category = $infoBook['category_public_id'];
                 $bookByCategory = $controllBook->getBookByCategory($id_category);
                 require_once('src/app/view/' . $route[$URL]);
                 break;
@@ -227,7 +230,7 @@
                 $authors  = $controllAuthor->getAll();
                 $allCategory = $controllBook->getAllCategory();
                 if (isset($_GET['ID'])) {
-                    $id = (int)$_GET['ID'];
+                    $id = $_GET['ID'];
                     $updateBook = $controllBook->findByID($id);
                 }
                 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateBook'])) {

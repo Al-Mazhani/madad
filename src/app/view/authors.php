@@ -13,8 +13,8 @@ include(__DIR__ . '/../includes/header.php'); ?>
         <h2>ابحث عن مؤلف</h2>
         <div class="search-authors">
             <form action="">
-                <input type="text" name="search-for" id="search-for" placeholder="ابحث عن مؤلف" required>
-                <input type="submit" value="بحث" name="submit" class="submit-search">
+                <input type="text" name="name" id="search-for" placeholder="ابحث عن مؤلف" required>
+                <input type="submit" value="بحث"  class="submit-search">
             </form>
         </div>
     </section>

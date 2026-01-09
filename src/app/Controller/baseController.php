@@ -9,18 +9,13 @@ class BaseController
         exit();
     }
     // Check IF ID has error
-    protected function validateID($id)
+    protected function validateID($id) : void
     {
-        if (!filter_var($id, FILTER_VALIDATE_INT)) {
+        $lenghtID = strlen($id);
+        if ($lenghtID !== 27 ) {
             $this->NotAllowDisplayPage();
         }
 
-        $cleanID = filter_var($id, FILTER_SANITIZE_NUMBER_INT);
-        if ($cleanID < 0) {
-            $this->NotAllowDisplayPage();
-        }
-
-        return $cleanID;
     }
     // Generate One UUID 3 bit
     private function GenerateOneUUID($sizeUUID)

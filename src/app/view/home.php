@@ -68,6 +68,7 @@
                 </div>
             <?php endforeach; ?>
         </div>
+        <button class="loadMore">تحميل المزيد...</button>
     </section>
 </main>
 <?php include(__DIR__ . '/../includes/footer.php'); ?>

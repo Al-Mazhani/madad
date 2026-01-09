@@ -22,7 +22,7 @@ class ModelBook   extends BaseModel
   // Load All Books
   public function loadAllBooks()
   {
-    $QueryLoadAllBooks = "SELECT * FROM book_info_view 	";
+    $QueryLoadAllBooks = "SELECT * FROM book_info_view limit 8 	";
     $stmt = $this->database->prepare($QueryLoadAllBooks);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,7 +32,7 @@ class ModelBook   extends BaseModel
   // Load All Category
   public function  loadCategory()
   {
-    $query = "SELECT * FROM category";
+    $query = "SELECT * FROM category limit 8";
     $stmt = $this->database->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -41,7 +41,7 @@ class ModelBook   extends BaseModel
   // Load This Data To Show In Page Books With Author
   public function join_books_authors()
   {
-    $query = "SELECT * FROM base_view_book";
+    $query = "SELECT * FROM base_view_book limit 8";
     $stmt = $this->database->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -65,11 +65,11 @@ class ModelBook   extends BaseModel
 
 
   //just Table  Like Book
-  public function like($idUser, $idBook)
+  public function like($IDUser,$IDBook)
   {
-    $queryLike = "INSERT INTO likes_book (id_user,id_book,likes) VALUES (???)";
+    $queryLike = "INSERT INTO likes_book (id_user,id_book,likes) VALUES (?,?,?)";
     $stmt = $this->database->prepare($queryLike);
-    $stmt->execute([$idUser, $idBook, 1]);
+    $stmt->execute([$IDUser, $IDBook, 1]);
   }
   // Load Info Book  By ID Book To Show  in Page Dititles book
   function infoBook($idBook)
@@ -117,7 +117,7 @@ class ModelBook   extends BaseModel
   }
   public function update($id, $bookName, $id_author, $year, $id_category, $pages, $description, $pathImage, $file_size, $file_type, $language, $pathBook)
   {
-    $sql = "UPDATE books SET title = :title, author_id = :author_id, year = :year, id_category = :id_category, pages = :pages, description = :description, image = :image, file_size = :file_size, language = :language, book_url = :book_url, file_type = :file_type WHERE public_id = :public";
+    $sql = "UPDATE books SET title = :title, author_id = :author_id, year = :year, id_category = :id_category, pages = :pages, description = :description, image = :image, file_size = :file_size, language = :language, book_url = :book_url, file_type = :file_type WHERE public_id = :public_id";
 
     $stmt = $this->database->prepare($sql);
 
