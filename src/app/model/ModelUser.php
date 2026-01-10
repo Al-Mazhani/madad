@@ -32,14 +32,14 @@ class ModelUser extends BaseModel
         }
         return $result;
     }
-    function updateToken($newToken, $email)
+   public function updateToken($newToken, $email)
     {
         $queryUpdateToken = "UPDATE users SET token = ? WHERE email = ?";
     }
-    function insert($username, $email, $password, $token)
+   public function insert($username, $email, $password, $token,$role)
     {
-        $QueryCreateUser = "INSERT INTO users (username,email,password,token) VALUES (:username,:email,:password,:token)";
+        $QueryCreateUser = "INSERT INTO users (username,email,password,token,role) VALUES (:username,:email,:password,:token,:role)";
         $stmt = $this->database->prepare($QueryCreateUser);
-        return $stmt->execute([":username" => $username,":email" => $email, ":password" => $password, ":token" => $token]);
+        return $stmt->execute([":username" => $username,":email" => $email, ":password" => $password, ":token" => $token,":role" => $role]);
     }
 }

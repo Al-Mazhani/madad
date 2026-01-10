@@ -10,11 +10,11 @@ class ModelAuthor extends BaseModel
 
 
   //  Add Author
-  public function insert($nameAuthor, $pathImage, $bio)
+  public function insert($cleanData)
   {
-    $queryAddAuthor  = "INSERT INTO 	authors (name,image,bio) VALUES (?,?,?)";
+    $queryAddAuthor  = "INSERT INTO 	authors (name,image,bio,public_id) VALUES (:name,:image,:bio,:public_id)";
     $stmt = $this->database->prepare($queryAddAuthor);
-    return $stmt->execute([$nameAuthor, $pathImage, $bio]);
+    return $stmt->execute([':name' => $cleanData['name'], ':image' => $cleanData['pathImage'], ':bio' => $cleanData['bio'], ':public_id' => $cleanData['public_id']]);
   }
 
   public function loadInfoAuthorByID($id)
@@ -31,9 +31,10 @@ class ModelAuthor extends BaseModel
   }
   public function search($search)
   {
-    $QuerySearchAuthor = "SELECT public_id ,name FROM authors WHERE name = :nameAuthor";
+    $QuerySearchAuthor = "SELECT public_id ,name FROM authors WHERE name like :nameAuthor";
     $stmt = $this->database->prepare($QuerySearchAuthor);
-    return $stmt->execute([":nameAuthor" => $search]);
+    $stmt->execute([":nameAuthor" => "%$search%"]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
   }
   public function update($cleanData)
   {

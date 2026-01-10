@@ -1,4 +1,6 @@
 <?php require(__DIR__ . '/../includes/headerAdmin.php'); ?>
+<?php require(__DIR__ . '/../includes/session.php'); ?>
+
 <main>
     <section>
         <div class="container">

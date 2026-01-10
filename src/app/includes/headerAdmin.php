@@ -32,7 +32,9 @@
                 </ul>
             </nav>
         <div class="profileAdmin">
-            <p>hussein Ahmed</p>
+            <?php if(isset($_SESSION['adminName'])):?>
+            <p> <?php echo $_SESSION['adminName']; ?></p>
+            <p> <?php endif; ?></p>
         </div>
         </div>
 

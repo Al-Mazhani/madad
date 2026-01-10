@@ -1,10 +1,11 @@
 <?php
-class  ModelAdmin 
+class  ModelAdmin extends ModelUser
 {
-    private $database;
+
     public function __construct($database)
     {
         $this->database = $database;
+        parent::__construct($database);
     
     }
     
@@ -21,12 +22,6 @@ class  ModelAdmin
        return false;
      }
 
-       public function insert($name, $email, $password)
-    {
-        $query = "INSERT INTO admins (name, email, password) VALUES (?, ?, ?)";
-        $stmt = $this->database->prepare($query);
-
-        return $stmt->execute([$name, $email, $password]);
-    }
+ 
 }
 ?>

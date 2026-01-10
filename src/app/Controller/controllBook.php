@@ -30,7 +30,12 @@ class ControllBook extends BaseController
         if (!isset($image) || $image['size'] == 0) {
             return ['hasFileEmpty' => 'يرجاء إدخال الصورة'];
         }
-
+        $imgName = $image['name'];
+        $imgExt  = strtolower(pathinfo($imgName, PATHINFO_EXTENSION));
+        $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+        if (!in_array($imgExt, $allowed)) {
+            return  ['hasFileEmpty' =>"خطأ في تحميل  امتداد الصورة"];
+        }
         if (!isset($book) || $book['size'] == 0) {
             return ['hasFileEmpty' => 'يرجاء إدخال الكتاب'];
         }
@@ -122,8 +127,8 @@ class ControllBook extends BaseController
     public function deleteBook($id)
     {
 
-        $cleanID  = $this->validateID($id);
-        return $this->modelBook->delete($cleanID);
+        $this->validateID($id);
+        return $this->modelBook->delete($id);
     }
     private function checkExitImage($image, $oldImage)
     {
@@ -186,7 +191,7 @@ class ControllBook extends BaseController
         $pathBook = $feedBackUploadBook;
         $file_size = filesize($feedBackUploadBook);
         $public_id = $this->Generate4UUID();
-        $result = $this->modelBook->insertBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $file_size, $pathImage, $pathBook, $language,$public_id);
+        $result = $this->modelBook->insertBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $file_size, $pathImage, $pathBook, $language, $public_id);
 
         return ($result) ? ['successAddBook' => 'تم إضافة الكتاب بنجاح'] :  ['NotsuccessAddBook' => 'فشل إضافة الكتاب'];
     }
@@ -216,8 +221,9 @@ class ControllBook extends BaseController
         }
         return $resultInfoBook;
     }
-    public  function like($IDUser,$IDBook) {
-        $this->modelBook->like($IDUser,$IDBook);
+    public  function like($IDUser, $IDBook)
+    {
+        $this->modelBook->like($IDUser, $IDBook);
     }
     public function incrementDonwnload($id)
     {

@@ -20,10 +20,10 @@ class controllAdmin extends ControllUser
         if ($lenghtPassword   < 10 || $lenghtPassword  > 15) {
             return ['lenghtPass' => 'يرجاء املا كلمة المرور  بين 10 و 15 حرف'];
         }
-        $hashPassword = Encryption($password);
 
-        if ($this->Model->checkLogin($email, $hashPassword)) {
-            header("location:admin/home");
+        if ($this->Model->checkLogin($email, $password)) {
+            $_SESSION['adminName'] = 'role';
+            header("location:/Madad/homeAdmin");
             exit();
         } else {
             return ['filedLogin' => 'انت لست مشرف الموقع'];

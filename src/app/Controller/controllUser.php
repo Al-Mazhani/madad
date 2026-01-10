@@ -68,14 +68,14 @@
             header("Location:/Madad/");
             exit();
         }
-        public function create($username, $email, $password)
+        public function create($username, $email, $password,$role)
         {
             $validateRegisterUser = $this->validateRegister($username, $email, $password);
             if ($validateRegisterUser) {
                 return $validateRegisterUser;
             }
             $this->ProcceDataUser($username, $email, $password,$token);
-            $resultRegister =  $this->Model->insert($username, $email, $password, $token, 'user');
+            $resultRegister =  $this->Model->insert($username, $email, $password, $token,$role);
 
             if ($resultRegister) {
                 $this->SetCookieAndSessionToUser($token,$username);

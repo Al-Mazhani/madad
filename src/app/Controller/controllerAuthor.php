@@ -22,17 +22,22 @@ class ControllerAuthor extends BaseController
     if ($image['size'] == 0) {
       return "يرجاء ادخال الصورة";
     }
+    $imgName = $image['name'];
+    $imgExt  = strtolower(pathinfo($imgName, PATHINFO_EXTENSION));
+    $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+    if (!in_array($imgExt, $allowed)) {
+      return  "خطأ في تحميل  امتداد الصورة";
+    }
     return null;
   }
-  private function validateAuthor($public_id, $name, $bio, $image)
+  private function validateAuthor($name, $bio, $image)
   {
     if ($error = $this->validateInputText($name, $bio)) {
       return ['hasInputEmpty' => $error];
     }
     if ($error = $this->validateInputImage($image)) {
-      return ['hasInputEmpty' => $error];
+      return ['hasFileEmpty' => $error];
     }
-    $this->validateID($public_id);
     return null;
   }
   private function uploadImage($image)
@@ -40,11 +45,19 @@ class ControllerAuthor extends BaseController
     $feedBackUploadImage = HandlingFiles::uploadImage($image, __DIR__ . '/../../../uploads/Author_profile/', 'uploads/Author_profile/');
     return $feedBackUploadImage;
   }
-  private function ProcessInputsAuhtor($public_id, $name, $image, $bio)
+  private function ProcessInputsAuhtor($name, $image, $bio, $public_id = null, $oldImage = null)
   {
     $cleanName = trim($name);
-    $pathImage = $this->uploadImage($image);
     $cleanBio = trim($bio);
+    if (empty($public_id)) {
+      $public_id = $this->Generate4UUID();
+    }
+    if ($image['size'] == 0) {
+      $pathImage = $oldImage;
+    } else {
+
+      $pathImage = $this->uploadImage($image);
+    }
     return [
       'public_id' => $public_id,
       'name' => $cleanName,
@@ -54,7 +67,7 @@ class ControllerAuthor extends BaseController
   }
   public function findByID($id)
   {
-
+    $this->validateID($id);
     $resultGetAuthorByID = $this->model->loadInfoAuthorByID($id);
     if (empty($resultGetAuthorByID)) {
       $this->NotAllowDisplayPage();
@@ -73,18 +86,12 @@ class ControllerAuthor extends BaseController
 
   public function addAuthor($nameAuthor, $imageURLAuthro, $bio)
   {
-    if (empty($nameAuthor)) {
-      return "يرجاء إدخال الاسم";
+    if ($error = $this->validateAuthor($nameAuthor, $bio, $imageURLAuthro)) {
+      return $error['hasInputEmpty'];
     }
-    if (empty($bio)) {
-      return "يرجاء إدخال وصف المؤلف";
-    }
-    $feedbeekUploadImage = HandlingFiles::uploadImage($imageURLAuthro, __DIR__ . '/../../../uploads/Author_profile/', 'uploads/Author_profile/');
-    if (isset($feedbeekUploadImage['hasInputEmpty'])) {
-      return   $feedbeekUploadImage;
-    }
-    $pathImage =  $feedbeekUploadImage['pathImage'];
-    $result = $this->model->insert($nameAuthor, $pathImage, $bio);
+    $public_id = "";
+    $data = $this->ProcessInputsAuhtor($nameAuthor, $imageURLAuthro, $bio, $public_id);
+    $result = $this->model->insert($data);
     return ($result) ? "تم إضافة المؤلف بنجاح" : "فشل إضافة المؤلف";
   }
   public function search($search)
@@ -93,12 +100,14 @@ class ControllerAuthor extends BaseController
     $resultSearch = $this->model->search($search);
     return $resultSearch;
   }
-  public function update($public_id, $name, $image, $bio)
+  public function update($public_id, $name, $image, $oldImage, $bio)
   {
-    if ($error = $this->validateAuthor($public_id, $name, $bio, $image)) {
+    $error = $this->validateAuthor($name, $bio, $image); 
+    if(!empty($error) && isset($error['hasInputEmpty'])){
       return $error['hasInputEmpty'];
     }
-    $cleanData = $this->ProcessInputsAuhtor($public_id, $name, $image, $bio);
+    
+    $cleanData = $this->ProcessInputsAuhtor($name, $image, $bio, $public_id, $oldImage);
     $ResultUpdateAuthor = $this->model->update($cleanData);
     return ($ResultUpdateAuthor) ? ['successUpdate' => 'تم تعديل بيانات المؤلف'] : ['failedUpdate' => 'فشل تعديل بيانات الكتاب'];
   }

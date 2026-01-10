@@ -1,5 +1,5 @@
 <?php require(__DIR__ . '/../includes/headerAdmin.php');
-
+require(__DIR__ . '/../includes/session.php');
 $success = isset($_GET['success']) ? $_GET['success'] : "";
 $notSuccess = isset($_GET['notSuccess']) ? $_GET['notSuccess'] : "";
 ?>
@@ -14,7 +14,7 @@ $notSuccess = isset($_GET['notSuccess']) ? $_GET['notSuccess'] : "";
                     <p class="notSuccess"> <?php echo $notSuccess ?></p>
                 <?php endif; ?>
 
-                <form action="/Madad/admin/addAdmin" method="POST" >
+                <form action="" method="POST" >
                     <div class="adminForm">
 
                         <label for="book_name">اسم المشرف</label>
@@ -25,7 +25,10 @@ $notSuccess = isset($_GET['notSuccess']) ? $_GET['notSuccess'] : "";
                         
                         <label for="category">كلمة المرور</label>
                         <input type="password" name="adminPassword" id="password" placeholder="ادخل كلمة المرور" required>
-                        
+                        <label for="role">س</label>
+                        <select name="role" id="role">
+                            <option value="admin">admin</option>
+                        </select>
                         <button type="submit" id="btnAddNewAdmin" name="btnAddNewAdmin"> إضافة</button>
                     </div>
                 </form>

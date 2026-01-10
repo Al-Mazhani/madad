@@ -57,7 +57,7 @@ class ModelBook   extends BaseModel
   // Load This Category By ID In Page Categroy
   public function loadBookByCateogryID($id)
   {
-    $query = "SELECT * FROM base_view_book where category_public_id =:id";
+    $query = "SELECT * FROM base_view_book where category_public_id =:id limit 8";
     $stmt = $this->database->prepare($query);
     $stmt->execute([':id' => $id]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
