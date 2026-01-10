@@ -2,11 +2,12 @@
 class HandlingFiles
 {
 
+
+    private function checkExtImage($image){
+
+    }
     public static function uploadImage($image, $foderPath, $pathDB)
     {
-        if (!$image || empty($image['name'])) {
-            return ['hasInputEmpty' => "لم يتم  رفع الصورة"];
-        }
         $imgName = $image['name'] ?? null;
         $imgTmp  = $image['tmp_name'] ?? null;
         $imgExt  = strtolower(pathinfo($imgName, PATHINFO_EXTENSION));
@@ -23,15 +24,12 @@ class HandlingFiles
     }
     public static function uploadBook($bookURL, $foderPath, $pathDB)
     {
-        if (empty($bookURL)) {
-            return ['hasInputEmpty' => 'يرجاء إدخال الملف'];
-        }
         $fileName = $bookURL['name'];
         $fileTmp  = $bookURL['tmp_name'];
         $fileExt  = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         $newFile = uniqid() . "." . $fileExt;
         $filePathDB = $pathDB . $newFile;
         move_uploaded_file($fileTmp, $foderPath . $newFile);
-        return ['PathBook' => $filePathDB];
+        return  $filePathDB;
     }
 }

@@ -35,13 +35,7 @@
             $allUser = $this->Model->loadAll();
             return $allUser;
         }
-        public function findByID($id)
-        {
-            $cleanID = $this->validateID($id);
-
-            $detailsUser = $this->Model->findByID($cleanID);
-            return $detailsUser;
-        }
+  
         public function update($username, $email)
         {
             return $this->Model->update($username, $email);

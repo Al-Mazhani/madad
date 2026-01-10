@@ -35,4 +35,10 @@ class ModelAuthor extends BaseModel
     $stmt = $this->database->prepare($QuerySearchAuthor);
     return $stmt->execute([":nameAuthor" => $search]);
   }
+  public function update($cleanData)
+  {
+    $QueryUpdateAuhtor = "UPDATE authors set name = :name ,image = :image,bio = :bio WHERE public_id = :public_id";
+    $stmt = $this->database->prepare($QueryUpdateAuhtor);
+    return $stmt->execute([':name' => $cleanData['name'], ':image' => $cleanData['pathImage'], ':bio' => $cleanData['bio'], ':public_id' => $cleanData['public_id']]);
+  }
 }

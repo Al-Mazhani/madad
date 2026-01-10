@@ -24,7 +24,7 @@ class BaseModel
         $stmt = $this->database->prepare($QueryDelete);
         return $stmt->execute([$id]);
     }
-    function findOneByid($id){
+    function findByID($id){
       $QueryFind = "SELECT * FROM $this->table  WHERE $this->primaryKey = ?";
       $stmt = $this->database->prepare($QueryFind);  
       $stmt->execute([$id]);

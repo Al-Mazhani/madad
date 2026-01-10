@@ -4,7 +4,7 @@ class ModelBook   extends BaseModel
 {
   public function __construct($database,)
   {
-    parent::__construct($database, 'books', 'id_book');
+    parent::__construct($database, 'books', 'public_id');
   }
 
   //  Insert New Book
@@ -117,11 +117,13 @@ class ModelBook   extends BaseModel
   }
   public function update($id, $bookName, $id_author, $year, $id_category, $pages, $description, $pathImage, $file_size, $file_type, $language, $pathBook)
   {
-    $sql = "UPDATE books SET title = :title, author_id = :author_id, year = :year, id_category = :id_category, pages = :pages, description = :description, image = :image, file_size = :file_size, language = :language, book_url = :book_url, file_type = :file_type WHERE public_id = :public_id";
+    $sql = "UPDATE books SET title = :title, author_id = :author_id, year = :year, id_category = :id_category, pages = :pages,
+     description = :description, image = :image, file_size = :file_size, language = :language, book_url = :book_url, file_type = :file_type WHERE public_id = :public_id";
 
     $stmt = $this->database->prepare($sql);
 
-    return $stmt->execute([ ':title' => $bookName, ':author_id' => $id_author, ':year' => $year, ':id_category' => $id_category, ':pages' => $pages, ':description' => $description, ':image' => $pathImage, ':file_size' => $file_size, ':language' => $language, ':book_url' => $pathBook, ':file_type' => $file_type, ':public_id' => $id
+    return $stmt->execute([ ':title' => $bookName, ':author_id' => $id_author, ':year' => $year, ':id_category' => $id_category, 
+    ':pages' => $pages, ':description' => $description, ':image' => $pathImage, ':file_size' => $file_size, ':language' => $language, ':book_url' => $pathBook, ':file_type' => $file_type, ':public_id' => $id
     ]);
   }
 }

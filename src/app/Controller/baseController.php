@@ -1,6 +1,12 @@
 <?php
 class BaseController
 {
+
+
+    public $model;
+    public function __construct($model) {
+        $this->model =$model;
+    }
     // function To Include File Error URL 
 
     protected function NotAllowDisplayPage(): void
@@ -9,13 +15,12 @@ class BaseController
         exit();
     }
     // Check IF ID has error
-    protected function validateID($id) : void
+    protected function validateID($id): void
     {
         $lenghtID = strlen($id);
-        if ($lenghtID !== 27 ) {
+        if ($lenghtID !== 27) {
             $this->NotAllowDisplayPage();
         }
-
     }
     // Generate One UUID 3 bit
     private function GenerateOneUUID($sizeUUID)
@@ -46,5 +51,15 @@ class BaseController
     {
         $cleanSearch =  htmlspecialchars($search);
         return $cleanSearch;
+    }
+    public function findByID($id)
+    {
+         $this->validateID($id);
+
+        $detailsUser = $this->model->findByID($id);
+        if(empty($detailsUser)){
+            $this->NotAllowDisplayPage();
+        }
+        return $detailsUser;
     }
 }

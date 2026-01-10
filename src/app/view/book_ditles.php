@@ -1,5 +1,5 @@
 <?php
-$pageTitle = $infoBook['title'] . ' | مِداد';
+$pageTitle =   ' تحميل كتاب  ' . $infoBook['title'];
 
 include(__DIR__ . '/../includes/header.php'); ?>
 <main>

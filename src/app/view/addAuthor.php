@@ -20,12 +20,14 @@ $Message;
                                  if (isset($updateAuthor)) {
                                        echo $updateAuthor['name'];
                                   }
+
                                ?>">
                         </div>
 
                         <div class="box-form">
                             <label for="fileInput" class="upload-btn fileinputImageAuthor"> إضافة صورة</label>
-                            <input type="file" id="fileInput" name="imageURLAuthro" accept="image/*" value="
+                            <input type="file" id="fileInput" name="imageURLAuthro" accept="image/*">
+                            <input type="hidden" name="oldImage"  value="
                             <?php
                             if (isset($updateAuthor['image'])) {
                             }
@@ -51,3 +53,4 @@ $Message;
         </div>
     </section>
 </main>
+<script src="public/js/mainAdmin.js"></script>

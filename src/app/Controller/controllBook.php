@@ -113,7 +113,7 @@ class ControllBook extends BaseController
     public function findByID($id)
     {
         $cleanID = $this->validateID($id);
-        $resutlFindByID = $this->modelBook->findOneByid($id);
+        $resutlFindByID = $this->modelBook->findByID($id);
         if (empty($resutlFindByID)) {
             $this->NotAllowDisplayPage();
         }
@@ -157,7 +157,7 @@ class ControllBook extends BaseController
         if (isset($feedBackUploadImage['hasInputEmpty'])) {
             return $feedBackUploadImage;
         }
-        $pathImage = $feedBackUploadImage['pathImage'];
+        $pathImage = $feedBackUploadImage;
 
         $feedBackUploadBook = $this->checkExitFileBook($book, $oldBook);
         if (isset($feedBackUploadBook['hasInputEmpty'])) {
@@ -182,18 +182,9 @@ class ControllBook extends BaseController
         $feedBackUploadImage = $this->uploadImage($image);
         // Upload Book
         $feedBackUploadBook = $this->uploadBook($book);
-        if (isset($feedBackUploadBook['hasInputEmpty'])) {
-            return  $feedBackUploadBook;
-        }
-
         $pathImage = $feedBackUploadImage['pathImage'];
-
-        if (isset($feedBackUploadImage['hasInputEmpty'])) {
-            return $feedBackUploadImage;
-        }
-
-        $file_size = $feedBackUploadBook['file_size'];
-        $pathBook = $feedBackUploadBook['PathBook'];
+        $pathBook = $feedBackUploadBook;
+        $file_size = filesize($feedBackUploadBook);
         $public_id = $this->Generate4UUID();
         $result = $this->modelBook->insertBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $file_size, $pathImage, $pathBook, $language,$public_id);
 

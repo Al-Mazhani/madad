@@ -147,7 +147,7 @@
                     $id = $_GET['authroID'];
                 }
 
-                $infoAuthor = $controllAuthor->findOneByid($id);
+                $infoAuthor = $controllAuthor->findByID($id);
                 $allBooksAuthor = $controllAuthor->findMoreOne($id);
                 require_once('src/app/view/' . $route[$URL]);
                 break;
@@ -223,6 +223,9 @@
                     $imageURLAuthro = $_FILES['imageURLAuthro'];
                     $bioAuthro = $_POST['bio'];
                     $Message = $controllAuthor->addAuthor($nameAuthor, $imageURLAuthro, $bioAuthro);
+                }
+                if(isset($_GET['updateAuthor'])){
+                    $updateAuthor =$controllAuthor->findByID($_GET['updateAuthor']);
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
