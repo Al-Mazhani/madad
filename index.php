@@ -74,7 +74,8 @@
     if (array_key_exists($URL, $route)) {
         switch ($URL) {
             case Route::home->value:
-                $allBooks = $controllBook->getInfoBookAndAuthor();
+                $allBooks = []; 
+                 $controllBook->getInfoBookAndAuthor($allBooks);
                 if (isset($_COOKIE['remember_token'])) {
                     $getToken  = $controllUser->checkToken($_COOKIE['remember_token']);
                     $_SESSION['user_id'] = $getToken['user_id'];
@@ -87,7 +88,8 @@
                 require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::books->value:
-                $allBooks = $controllBook->getInfoBookAndAuthor();
+                $allBooks = [];
+                $controllBook->getInfoBookAndAuthor($allBooks);
                 $allCategory = $controllBook->getAllCategory();
                 if (isset($_GET['id_category'])) {
                     $id = $_GET['id_category'];

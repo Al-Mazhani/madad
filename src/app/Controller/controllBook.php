@@ -97,18 +97,21 @@ class ControllBook extends BaseController
         $allBooks = $this->modelBook->loadAllBooks();
         return $allBooks;
     }
-    public function  getInfoBookAndAuthor()
+    public function  getInfoBookAndAuthor(&$allBooks)
     {
-        return $this->modelBook->join_books_authors();
+     $this->modelBook->join_books_authors($allBooks);
     }
     public function getAllCategory()
     {
         return $this->modelBook->loadCategory();
     }
+    function loadMoreBooks(){
+
+    }
     public function getBookAuthor($id)
     {
 
-        // $cleanID = $this->validateID($id);
+         $this->validateID($id);
         $resultBookWithAuthor = $this->modelBook->loadBookByAuthorID($id);
         if (empty($resultBookWithAuthor)) {
             $this->NotAllowDisplayPage();

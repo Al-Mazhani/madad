@@ -2,10 +2,10 @@
     function NotAllowDisplayPage(): void
 {
     if (!isset($_SESSION['role'])) {
-        header("location:/Madad/login");
+        header("location:/Madad/");
         exit();
     }
 }
 NotAllowDisplayPage();
 
-?>
+?> 

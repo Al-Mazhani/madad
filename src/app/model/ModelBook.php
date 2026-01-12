@@ -13,9 +13,19 @@ class ModelBook   extends BaseModel
     $QeruyinsertBook = "INSERT INTO books (title,pages,file_type,file_size,image,year,description,author_id,id_category,language,book_url,public_id)
     VALUES (:name,:pages,:file_type,:file_size,:pathImage,:year,:description,:id_author,:id_category,:language,:pathBook,:public_id)";
     $stmt = $this->database->prepare($QeruyinsertBook);
-    $result = $stmt->execute([ ":name" => $bookName, ":pages" => $pages, ":file_type" => $file_type, ":file_size" => $file_size, ":pathImage" => $imgPathDB, 
-    ":year" => $year, ":description" => $description,
-    ":id_author" => $id_author, ":id_category" => $id_category, ":language" => $language, ":pathBook" => $filePathDB, ":public_id" => $public_id
+    $result = $stmt->execute([
+      ":name" => $bookName,
+      ":pages" => $pages,
+      ":file_type" => $file_type,
+      ":file_size" => $file_size,
+      ":pathImage" => $imgPathDB,
+      ":year" => $year,
+      ":description" => $description,
+      ":id_author" => $id_author,
+      ":id_category" => $id_category,
+      ":language" => $language,
+      ":pathBook" => $filePathDB,
+      ":public_id" => $public_id
     ]);
     return ($result) ? true : false;
   }
@@ -39,12 +49,12 @@ class ModelBook   extends BaseModel
   }
 
   // Load This Data To Show In Page Books With Author
-  public function join_books_authors()
+  public function join_books_authors(&$allBooks)
   {
-    $query = "SELECT * FROM base_view_book limit 8";
+    $query = "SELECT * FROM base_view_book limit 8  OFFSET 0 ";
     $stmt = $this->database->prepare($query);
     $stmt->execute();
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $allBooks = $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
   public function loadBookByAuthorID($id)
   {
@@ -65,7 +75,7 @@ class ModelBook   extends BaseModel
 
 
   //just Table  Like Book
-  public function like($IDUser,$IDBook)
+  public function like($IDUser, $IDBook)
   {
     $queryLike = "INSERT INTO likes_book (id_user,id_book,likes) VALUES (?,?,?)";
     $stmt = $this->database->prepare($queryLike);
@@ -122,8 +132,19 @@ class ModelBook   extends BaseModel
 
     $stmt = $this->database->prepare($sql);
 
-    return $stmt->execute([ ':title' => $bookName, ':author_id' => $id_author, ':year' => $year, ':id_category' => $id_category, 
-    ':pages' => $pages, ':description' => $description, ':image' => $pathImage, ':file_size' => $file_size, ':language' => $language, ':book_url' => $pathBook, ':file_type' => $file_type, ':public_id' => $id
+    return $stmt->execute([
+      ':title' => $bookName,
+      ':author_id' => $id_author,
+      ':year' => $year,
+      ':id_category' => $id_category,
+      ':pages' => $pages,
+      ':description' => $description,
+      ':image' => $pathImage,
+      ':file_size' => $file_size,
+      ':language' => $language,
+      ':book_url' => $pathBook,
+      ':file_type' => $file_type,
+      ':public_id' => $id
     ]);
   }
 }

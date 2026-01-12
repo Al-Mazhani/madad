@@ -22,7 +22,7 @@
     <section class="container">
         <div class="books_madad">
             <?php if ($search): ?>
-                <?php foreach ($search as $book): ?>
+                <?php foreach ($search as &$book): ?>
                     <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
                         <a href="book_ditles?bookID=<?= $book['book_public_id'] ?>" class="link-book">
                             <img src="<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">

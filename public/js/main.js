@@ -31,4 +31,8 @@ function deleteBook(id) {
   })
   .catch(error => console.error(error));
 }
+ function LoadloadMoreBooks(){
+  let OFFSET = 0;
+  let LIMIT = 8;
+ }
 // window.history.replaceState({}, document.title, window.location.pathname);

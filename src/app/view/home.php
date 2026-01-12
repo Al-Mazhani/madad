@@ -58,15 +58,19 @@
     </section>
     <section class="container">
         <div class="books_madad">
-            <?php foreach ($allBooks as $book): ?>
-                <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
-                    <a href="book_ditles?bookID=<?= $book['book_public_id'] ?>" class="link-book">
-                        <img src="<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
-                    </a>
-                    <a href="book_ditles?bookID=<?= $book['book_public_id'] ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
-                    <a href="info_author?authroID=<?= $book['author_public_id'] ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
-                </div>
-            <?php endforeach; ?>
+            <?php if (!empty($allBooks)): ?>
+                <?php foreach ($allBooks as &$book): ?>
+                    <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
+                        <a href="book_ditles?bookID=<?= htmlspecialchars($book['book_public_id']) ?>" class="link-book">
+                            <img src="<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
+                        </a>
+                        <a href="book_ditles?bookID=<?= htmlspecialchars($book['book_public_id']) ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
+                        <a href="info_author?authroID=<?= htmlspecialchars($book['author_public_id']) ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>لا يوجد كتب </p>
+            <?php endif; ?>
         </div>
         <button class="loadMore">تحميل المزيد...</button>
     </section>
