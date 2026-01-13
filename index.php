@@ -74,8 +74,8 @@
     if (array_key_exists($URL, $route)) {
         switch ($URL) {
             case Route::home->value:
-                $allBooks = []; 
-                 $controllBook->getInfoBookAndAuthor($allBooks);
+                $allBooks = [];
+                $controllBook->getInfoBookAndAuthor($allBooks);
                 if (isset($_COOKIE['remember_token'])) {
                     $getToken  = $controllUser->checkToken($_COOKIE['remember_token']);
                     $_SESSION['user_id'] = $getToken['user_id'];
@@ -83,8 +83,8 @@
                     $_SESSION['email'] = $getToken['email'];
                     if (isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['email'])) {
                     }
-                }
 
+                }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::books->value:
@@ -106,7 +106,7 @@
                 break;
             case Route::register->value:
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_register'])) {
-                    $error = $controllUser->create($_POST['username'], $_POST['email'], $_POST['password'],'user');
+                    $error = $controllUser->create($_POST['username'], $_POST['email'], $_POST['password'], 'user');
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
@@ -207,7 +207,7 @@
             case Route::pageAdminAddAdmin->value:
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (isset($_POST['btnAddNewAdmin'])) {
-                        $controllAdmin->create($_POST['adminName'], $_POST['adminEmail'], $_POST['adminPassword'],$_POST['role']);
+                        $controllAdmin->create($_POST['adminName'], $_POST['adminEmail'], $_POST['adminPassword'], $_POST['role']);
                     }
                 }
                 require_once('src/app/view/' . $route[$URL]);
@@ -223,11 +223,11 @@
                     $bioAuthro = $_POST['bio'];
                     $Message = $controllAuthor->addAuthor($nameAuthor, $imageURLAuthro, $bioAuthro);
                 }
-                if(isset($_GET['updateAuthor'])){
+                if (isset($_GET['updateAuthor'])) {
                     $updateAuthor = $controllAuthor->findByID($_GET['updateAuthor']);
                 }
-                if(isset($_POST['update'])){
-                    $resultUpdateAuhtor = $controllAuthor->update($_POST['id'],$_POST['authorName'],$_FILES['imageURLAuthro'],$_POST['oldImage'],$_POST['bio']);
+                if (isset($_POST['update'])) {
+                    $resultUpdateAuhtor = $controllAuthor->update($_POST['id'], $_POST['authorName'], $_FILES['imageURLAuthro'], $_POST['oldImage'], $_POST['bio']);
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
@@ -285,3 +285,4 @@
     } else {
         require_once('src/app/view/errorURL.php');
     }
+    

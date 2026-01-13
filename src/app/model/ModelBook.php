@@ -47,8 +47,13 @@ class ModelBook   extends BaseModel
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
-
-  // Load This Data To Show In Page Books With Author
+  public function CheckTitleBookExit($title){
+  $QueryExitTitleBook = "SELECT COUNT(*) FROM books WHERE title = :title ";
+  $stmt = $this->database->prepare($QueryExitTitleBook);
+  $stmt->execute([':title' => $title]);
+  return $stmt->fetchColumn() > 0;
+  }
+    // Load This Data To Show In Page Books With Author
   public function join_books_authors(&$allBooks)
   {
     $query = "SELECT * FROM base_view_book limit 8  OFFSET 0 ";

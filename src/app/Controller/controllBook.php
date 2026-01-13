@@ -13,6 +13,9 @@ class ControllBook extends BaseController
         if (empty($bookName)) {
             return ['hasInputEmpty' => 'يرجاء كتابة اسم الكتاب'];
         }
+        if ($this->modelBook->CheckTitleBookExit($bookName)) {
+            return ['hasInputEmpty' => 'الكتاب موجود من قبل'];
+        }
         if (empty($description)) {
             return ['hasInputEmpty' => 'يرجاءإدخال وصف الكتاب'];
         }
@@ -23,6 +26,7 @@ class ControllBook extends BaseController
         if (empty($file_type)) {
             return ['hasInputEmpty' => 'يرجاء تحدد نوع الملف'];
         }
+
         return null;
     }
     private function validateFileInputs($image, $book)
@@ -34,7 +38,7 @@ class ControllBook extends BaseController
         $imgExt  = strtolower(pathinfo($imgName, PATHINFO_EXTENSION));
         $allowed = ['jpg', 'jpeg', 'png', 'webp'];
         if (!in_array($imgExt, $allowed)) {
-            return  ['hasFileEmpty' =>"خطأ في تحميل  امتداد الصورة"];
+            return  ['hasFileEmpty' => "خطأ في تحميل  امتداد الصورة"];
         }
         if (!isset($book) || $book['size'] == 0) {
             return ['hasFileEmpty' => 'يرجاء إدخال الكتاب'];
@@ -99,19 +103,17 @@ class ControllBook extends BaseController
     }
     public function  getInfoBookAndAuthor(&$allBooks)
     {
-     $this->modelBook->join_books_authors($allBooks);
+        $this->modelBook->join_books_authors($allBooks);
     }
     public function getAllCategory()
     {
         return $this->modelBook->loadCategory();
     }
-    function loadMoreBooks(){
-
-    }
+    function loadMoreBooks() {}
     public function getBookAuthor($id)
     {
 
-         $this->validateID($id);
+        $this->validateID($id);
         $resultBookWithAuthor = $this->modelBook->loadBookByAuthorID($id);
         if (empty($resultBookWithAuthor)) {
             $this->NotAllowDisplayPage();
@@ -182,15 +184,16 @@ class ControllBook extends BaseController
     public function addBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
     {
         $hasError = $this->validateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language);
-        if ($hasError != true) {
+        if (isset($hasError['hasInputEmpty']) || isset($hasError['hasFileEmpty'])) {
             return $hasError;
         }
+
 
         // Upload Image
         $feedBackUploadImage = $this->uploadImage($image);
         // Upload Book
         $feedBackUploadBook = $this->uploadBook($book);
-        $pathImage = $feedBackUploadImage['pathImage'];
+        $pathImage = $feedBackUploadImage;
         $pathBook = $feedBackUploadBook;
         $file_size = filesize($feedBackUploadBook);
         $public_id = $this->Generate4UUID();

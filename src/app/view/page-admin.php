@@ -23,7 +23,6 @@
             <table>
                 <thead>
                     <tr>
-                        <th>رقم الكتاب </th>
                         <th> اسم الكتاب </th>
                         <th> اسم المؤلف </th>
                         <th> التصنيف </th>
@@ -40,7 +39,6 @@
                 <tbody>
                     <?php foreach ($allBooks as $books): ?>
                         <tr>
-                            <td><?php echo $books['book_public_id'] ?></td>
                             <td><?php echo $books['title'] ?></td>
                             <td><?php echo $books['name'] ?></td>
                             <td><?php echo $books['title_category'] ?></td>

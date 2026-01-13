@@ -35,7 +35,7 @@
                 <p>لا يوجد كتب </p>
             <?php endif; ?>
         </div>
-        <button class="loadMore" onclick="loadMoreBooks()">تحميل المزيد...</button>
+        <button class="loadMore" onclick="LoadloadMoreBooks()">تحميل المزيد...</button>
 
     </section>
 </main>

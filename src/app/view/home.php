@@ -72,7 +72,7 @@
                 <p>لا يوجد كتب </p>
             <?php endif; ?>
         </div>
-        <button class="loadMore">تحميل المزيد...</button>
+        <button class="loadMore" onclick="LoadloadMoreBooks()">تحميل المزيد...</button>
     </section>
 </main>
 <?php include(__DIR__ . '/../includes/footer.php'); ?>
