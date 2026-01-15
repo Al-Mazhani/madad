@@ -4,8 +4,9 @@ class BaseController
 
 
     public $model;
-    public function __construct($model) {
-        $this->model =$model;
+    public function __construct($model)
+    {
+        $this->model = $model;
     }
     // function To Include File Error URL 
 
@@ -26,6 +27,15 @@ class BaseController
     private function GenerateOneUUID($sizeUUID)
     {
         return bin2hex(random_bytes($sizeUUID));
+    }
+    public function findByID($id)
+    {
+        $cleanID = $this->validateID($id);
+        $resutlFindByID = $this->model->findByID($id);
+        if (empty($resutlFindByID)) {
+            $this->NotAllowDisplayPage();
+        }
+        return $resutlFindByID;
     }
     // Make 
     protected function Generate4UUID()
@@ -52,14 +62,14 @@ class BaseController
         $cleanSearch =  htmlspecialchars($search);
         return $cleanSearch;
     }
-    public function findByID($id)
+    public function getAll()
     {
-         $this->validateID($id);
+        return $this->model->loadAll();
+    }
+    public function delete($id)
+    {
 
-        $detailsUser = $this->model->findByID($id);
-        if(empty($detailsUser)){
-            $this->NotAllowDisplayPage();
-        }
-        return $detailsUser;
+        $this->validateID($id);
+        return $this->model->delete($id);
     }
 }

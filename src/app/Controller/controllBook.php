@@ -6,6 +6,7 @@ class ControllBook extends BaseController
     {
 
         $this->modelBook = $model;
+        parent::__construct($model);
     }
 
     private function validateTextInputs($bookName, $description, $language, $file_type)
@@ -96,11 +97,7 @@ class ControllBook extends BaseController
         $feedBackUploadBook = HandlingFiles::uploadBook($book, __DIR__ . '/../../../uploads/book_url/', 'uploads/book_url/');
         return $feedBackUploadBook;
     }
-    public function getAll()
-    {
-        $allBooks = $this->modelBook->loadAllBooks();
-        return $allBooks;
-    }
+
     public function  getInfoBookAndAuthor(&$allBooks)
     {
         $this->modelBook->join_books_authors($allBooks);
@@ -120,21 +117,8 @@ class ControllBook extends BaseController
         }
         return $resultBookWithAuthor;
     }
-    public function findByID($id)
-    {
-        $cleanID = $this->validateID($id);
-        $resutlFindByID = $this->modelBook->findByID($id);
-        if (empty($resutlFindByID)) {
-            $this->NotAllowDisplayPage();
-        }
-        return $resutlFindByID;
-    }
-    public function deleteBook($id)
-    {
 
-        $this->validateID($id);
-        return $this->modelBook->delete($id);
-    }
+
     private function checkExitImage($image, $oldImage)
     {
         // Use  Data Book After Prossing

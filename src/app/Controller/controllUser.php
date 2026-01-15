@@ -6,6 +6,7 @@
         public function __construct($Model)
         {
             $this->Model = $Model;
+            parent::__construct($Model);
         }
         private function validateRegister($username, $email, $password)
         {
@@ -41,13 +42,7 @@
             return $this->Model->update($username, $email);
         }
 
-        public function delete($id)
-        {
-            $CleanID = $this->validateID($id);
-
-            return $this->Model->delete($id);
-        }
-
+ 
         public function search($username)
         {
             $resultSearch = $this->Model->search($username);

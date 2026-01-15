@@ -2,6 +2,10 @@
 include_once 'ControllUser.php';
 class controllAdmin extends ControllUser
 {
+    public function __construct($Model)
+    {
+         parent::__construct($Model);
+    }
 
     public function isLoggedIn($email, $password)
     {

@@ -177,7 +177,7 @@
                 $allBooks = $controllBook->getAll();
                 if (isset($_POST['idDeleletBook'])) {
                     $id = $_POST['idDeleletBook'];
-                    $controllBook->deleteBook($id);
+                    $controllBook->delete($id);
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;

@@ -24,8 +24,6 @@
                 <thead>
                     <tr>
                         <th> اسم الكتاب </th>
-                        <th> اسم المؤلف </th>
-                        <th> التصنيف </th>
                         <th> الصفحات </th>
                         <th> حجم الملف </th>
                         <th>نوع الملف </th>
@@ -40,8 +38,6 @@
                     <?php foreach ($allBooks as $books): ?>
                         <tr>
                             <td><?php echo $books['title'] ?></td>
-                            <td><?php echo $books['name'] ?></td>
-                            <td><?php echo $books['title_category'] ?></td>
                             <td><?php echo $books['pages'] ?></td>
                             <td><?php echo $books['file_size'] ?></td>
                             <td><?php echo $books['file_type'] ?></td>
@@ -50,8 +46,8 @@
                             <td><?php echo $books['language'] ?></td>
                             <td><?php echo $books['year'] ?></td>
                             <td class="action-btn">
-                                <button class="btn update" onclick="deleteBook(<?= $books['book_public_id'] ?>)"><i class="fa-solid fa-trash"></i></button>
-                                <a href="update?ID=<?= $books['book_public_id'] ?>"><i class="fa-solid fa-pen"></i></a>
+                                <button class="btn update" onclick="deleteBook(<?= $books['public_id'] ?>)"><i class="fa-solid fa-trash"></i></button>
+                                <a href="update?ID=<?= $books['public_id'] ?>"><i class="fa-solid fa-pen"></i></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

@@ -32,7 +32,7 @@ class ModelBook   extends BaseModel
   // Load All Books
   public function loadAllBooks()
   {
-    $QueryLoadAllBooks = "SELECT * FROM book_info_view limit 8 	";
+    $QueryLoadAllBooks = "SELECT * FROM book_info_view limit 4 	";
     $stmt = $this->database->prepare($QueryLoadAllBooks);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);

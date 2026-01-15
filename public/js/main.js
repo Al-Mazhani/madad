@@ -45,7 +45,7 @@ function LoadloadMoreBooks() {
   })
     .then(response => response.json())
     .then(data => {
-      console.log(data); // هنا سترى البيانات القادمة من السيرفر
+      console.log(data); 
     })
     .catch(error => console.error(error));
 }

@@ -65,24 +65,17 @@ class ControllerAuthor extends BaseController
       'bio' => $cleanBio
     ];
   }
-  public function findByID($id)
-  {
-    $this->validateID($id);
-    $resultGetAuthorByID = $this->model->loadInfoAuthorByID($id);
-    if (empty($resultGetAuthorByID)) {
-      $this->NotAllowDisplayPage();
-    }
-    return $resultGetAuthorByID;
-  }
+
   public function findMoreOne($id)
   {
 
     return $this->model->loadAllAuthorBook($id);
   }
-  public function getAll()
+  public function findByID($id)
   {
-    return $this->model->loadAll();
+    return $this->model->loadInfoAuthorByID($id);
   }
+
 
   public function addAuthor($nameAuthor, $imageURLAuthro, $bio)
   {
