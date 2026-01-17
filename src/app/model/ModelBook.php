@@ -97,9 +97,9 @@ class ModelBook   extends BaseModel
   }
 
   // search For Book
-  function search($search)
+  public function search($search)
   {
-    $querSearchForBook = "SELECT * FROM viewBookWithuthor WHERE title LIKE :name";
+    $querSearchForBook = "SELECT * FROM base_view_book WHERE title LIKE :name";
     $searchName = "%$search%";
     $stmt = $this->database->prepare($querSearchForBook);
     $stmt->bindParam(":name", $searchName, PDO::PARAM_STR);

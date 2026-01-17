@@ -72,4 +72,14 @@ class BaseController
         $this->validateID($id);
         return $this->model->delete($id);
     }
+    public   function search(string $name)
+    {
+
+        $validatedSearch  = request::validateSearch($name);
+        if ($validatedSearch  === false) {
+            return ['hasErrorInSearch' => 'البحث غير صالح'];
+        }
+
+        return $this->model->search($name);
+    }
 }

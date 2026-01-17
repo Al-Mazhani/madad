@@ -688,12 +688,12 @@ ul li a:hover {
 .container .profile-box {
    position: relative;
    top: 150px;
-   right: 360px;
-   width: 40%;
+   width: 100%;
    height: 30vh;
    background-color: var(--background-header);
    padding: 1rem;
    border-radius: var(--Radius);
+   margin-bottom: 13.5rem;
 }
 
 .container .profile-box .update-profile {

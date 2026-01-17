@@ -14,7 +14,7 @@
                 <div class="search-book">
                     <form action="">
                         <input type="text" name="search-for" id="search-for" placeholder="ابحث عن مؤلف" required>
-                        <button type="submit" name="submit" class="submit-search"> بحث </button>
+                        <button type="submit"  class="submit-search"> بحث </button>
                     </form>
                 </div>
             </div>
@@ -31,6 +31,19 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php if(isset($resultSearchAuthor) && !empty($resultSearchAuthor)): ?>
+                    <?php foreach ($resultSearchAuthor as $author): ?>
+                        <tr class="row">
+                            <td><?php echo $author['public_id'] ?></td>
+                            <td><?php echo $author['name'] ?></td>
+                            <td class="action-btn">
+                                <button class="btn update" onclick="window.location='updateBook.php?updateID=5'">  <i class="fa-solid fa-trash"></i></button>
+                                <button class="btn delete" onclick="window.location='addAuthor?updateAuthor=<?php echo $author['public_id']?>'"><i class="fa-solid fa-pen"></i></button>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                    
                     <?php foreach ($allAuthors as $author): ?>
                         <tr class="row">
                             <td><?php echo $author['public_id'] ?></td>

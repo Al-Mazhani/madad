@@ -4,7 +4,7 @@ class BaseModel
     protected $database;
     protected $table;
     protected $primaryKey;
-    function  __construct($database, $table ,$primaryKey)
+    function  __construct($database, $table, $primaryKey)
     {
         $this->database = $database;
         $this->table = $table;
@@ -12,7 +12,7 @@ class BaseModel
     }
     public function loadAll()
     {
-        $query = "SELECT * FROM $this->table order by $this->primaryKey ";
+        $query = "SELECT * FROM $this->table order by $this->primaryKey limit 20";
         $stmt = $this->database->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -24,12 +24,11 @@ class BaseModel
         $stmt = $this->database->prepare($QueryDelete);
         return $stmt->execute([$id]);
     }
-    function findByID($id){
-      $QueryFind = "SELECT * FROM $this->table  WHERE $this->primaryKey = ?";
-      $stmt = $this->database->prepare($QueryFind);  
-      $stmt->execute([$id]);
-      return $stmt->fetch(PDO::FETCH_ASSOC);
+    public  function findByID($id)
+    {
+        $QueryFind = "SELECT * FROM $this->table  WHERE $this->primaryKey = ?";
+        $stmt = $this->database->prepare($QueryFind);
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
-
 }

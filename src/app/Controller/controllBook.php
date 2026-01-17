@@ -32,6 +32,7 @@ class ControllBook extends BaseController
     }
     private function validateFileInputs($image, $book)
     {
+        // Start Part check Image
         if (!isset($image) || $image['size'] == 0) {
             return ['hasFileEmpty' => 'يرجاء إدخال الصورة'];
         }
@@ -41,9 +42,21 @@ class ControllBook extends BaseController
         if (!in_array($imgExt, $allowed)) {
             return  ['hasFileEmpty' => "خطأ في تحميل  امتداد الصورة"];
         }
+
+        //End Part check Image
+
+        //Start Part check Book
         if (!isset($book) || $book['size'] == 0) {
             return ['hasFileEmpty' => 'يرجاء إدخال الكتاب'];
         }
+        $bookName = $book['name'];
+        $bookExt = strtolower(pathinfo($bookName, PATHINFO_EXTENSION));
+        $allowedExtBook = ["pdf", "zip"];
+        if (!in_array($bookExt, $allowedExtBook)) {
+
+            return  ['hasFileEmpty' => "خطأ في تحميل  امتداد الصورة"];
+        }
+        //End Part check Book
         return null;
     }
     private function ValidateNumberInputs($id_author, $year, $id_category, $pages)
@@ -187,21 +200,13 @@ class ControllBook extends BaseController
     }
 
 
-    public   function search(string $name)
-    {
-
-        $validatedSearch  = request::validateSearch($name);
-        if ($validatedSearch  === false) {
-            return ['hasErrorInSearch' => 'البحث غير صالح'];
-        }
-
-        return $this->modelBook->search($name);
-    }
+    // Get Book By Category To Display in Page Categorys
     public function getBookByCategory($id)
     {
         $this->validateID($id);
         return $this->modelBook->loadBookByCateogryID($id);
     }
+    // Get Info Book By ID To Show In Dititles
     public function getInfoBookByID($idBook)
     {
         $this->validateID($idBook);

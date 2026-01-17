@@ -12,7 +12,7 @@
                 <div class="search-book">
                     <form action="">
                         <input type="text" name="search-for" id="search-for" placeholder="ابحث عن كتاب" required>
-                        <button type="submit" name="submit" class="submit-search"> بحث </button>
+                        <button type="submit"  class="submit-search"> بحث </button>
                     </form>
                 </div>
             </div>
@@ -35,6 +35,24 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php if(isset($resultSearchBook)):?>
+                        <?php foreach ($resultSearchBook as $books): ?>
+                            <tr>
+                            <td><?php echo $books['title'] ?></td>
+                            <td><?php echo $books['pages'] ?></td>
+                            <td><?php echo $books['file_size'] ?></td>
+                            <td><?php echo $books['file_type'] ?></td>
+                            <td><?php echo $books['downloads'] ?></td>
+                            <td><?php echo $books['readBook'] ?></td>
+                            <td><?php echo $books['language'] ?></td>
+                            <td><?php echo $books['year'] ?></td>
+                            <td class="action-btn">
+                                <button class="btn update" onclick="deleteBook(<?= $books['public_id'] ?>)"><i class="fa-solid fa-trash"></i></button>
+                                <a href="update?ID=<?= $books['public_id'] ?>"><i class="fa-solid fa-pen"></i></a>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                        <?php endif;?>
                     <?php foreach ($allBooks as $books): ?>
                         <tr>
                             <td><?php echo $books['title'] ?></td>

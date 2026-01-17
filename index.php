@@ -83,7 +83,6 @@
                     $_SESSION['email'] = $getToken['email'];
                     if (isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['email'])) {
                     }
-
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
@@ -171,6 +170,11 @@
                 break;
             case Route::profile->value:
                 require_once('src/app/view/' . $route[$URL]);
+                if($_SERVER['REQUEST_METHOD'] ==  'POST'){
+                    if(isset($_POST['username'])){
+                    echo $_POST['username'];
+                    }
+                }
                 break;
             // Admin
             case Route::homePageAdmin->value:
@@ -178,6 +182,9 @@
                 if (isset($_POST['idDeleletBook'])) {
                     $id = $_POST['idDeleletBook'];
                     $controllBook->delete($id);
+                }
+                if(isset($_GET['search-for'])){
+                $resultSearchBook = $controllBook->search($_GET['search-for']);
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
@@ -214,6 +221,9 @@
                 break;
             case Route::managemtAuthor->value:
                 $allAuthors = $controllAuthor->getAll();
+                if(isset($_GET['search-for'])){
+                 $resultSearchAuthor = $controllAuthor->search($_GET['search-for']);
+                }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::addAuthor->value:
@@ -285,4 +295,3 @@
     } else {
         require_once('src/app/view/errorURL.php');
     }
-    

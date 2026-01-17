@@ -45,8 +45,21 @@ function LoadloadMoreBooks() {
   })
     .then(response => response.json())
     .then(data => {
-      console.log(data); 
+      console.log(data);
     })
     .catch(error => console.error(error));
 }
 // window.history.replaceState({}, document.title, window.location.pathname);
+function updateProfile() {
+  let username = document.getElementById("username");
+  let button = document.getElementsByClassName("update-profile")[0];
+
+  if (button.textContent === "تعديل") {
+    username.removeAttribute("readonly");
+    username.focus();
+    username.style.border = "1px solid";
+    button.textContent = "حفظ";
+  } else {
+    document.querySelector("form").submit();
+  }
+}
