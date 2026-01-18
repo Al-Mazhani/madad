@@ -34,7 +34,9 @@ class ModelUser extends BaseModel
     }
    public function updateToken($newToken, $email)
     {
-        $queryUpdateToken = "UPDATE users SET token = ? WHERE email = ?";
+        $queryUpdateToken = "UPDATE users SET token = :newToken WHERE email = :email";
+        $stmt = $this->database->prepare($queryUpdateToken);
+        return $stmt->execute([':newToken' => $newToken,':email' => $email]);
     }
    public function insert($username, $email, $password, $token,$role)
     {

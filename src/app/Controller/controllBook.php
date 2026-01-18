@@ -36,10 +36,15 @@ class ControllBook extends BaseController
         if (!isset($image) || $image['size'] == 0) {
             return ['hasFileEmpty' => 'يرجاء إدخال الصورة'];
         }
+
         $imgName = $image['name'];
+
         $imgExt  = strtolower(pathinfo($imgName, PATHINFO_EXTENSION));
+
         $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+
         if (!in_array($imgExt, $allowed)) {
+
             return  ['hasFileEmpty' => "خطأ في تحميل  امتداد الصورة"];
         }
 
@@ -47,14 +52,20 @@ class ControllBook extends BaseController
 
         //Start Part check Book
         if (!isset($book) || $book['size'] == 0) {
+
             return ['hasFileEmpty' => 'يرجاء إدخال الكتاب'];
         }
+
         $bookName = $book['name'];
+
         $bookExt = strtolower(pathinfo($bookName, PATHINFO_EXTENSION));
+
         $allowedExtBook = ["pdf", "zip"];
+
         if (!in_array($bookExt, $allowedExtBook)) {
 
             return  ['hasFileEmpty' => "خطأ في تحميل  امتداد الصورة"];
+
         }
         //End Part check Book
         return null;
@@ -99,13 +110,13 @@ class ControllBook extends BaseController
         $bookName = strtolower(trim($bookName));
     }
     // Upload Image
-    private  function uploadImage($image)
+    private  function uploadImage(&$image)
     {
         $feedBackUploadImage = HandlingFiles::uploadImage($image, __DIR__ . '/../../../uploads/image_book/', 'uploads/image_book/');
         return $feedBackUploadImage;
     }
     // Upload Book
-    private  function uploadBook($book)
+    private  function uploadBook(&$book)
     {
         $feedBackUploadBook = HandlingFiles::uploadBook($book, __DIR__ . '/../../../uploads/book_url/', 'uploads/book_url/');
         return $feedBackUploadBook;
@@ -198,8 +209,8 @@ class ControllBook extends BaseController
 
         return ($result) ? ['successAddBook' => 'تم إضافة الكتاب بنجاح'] :  ['NotsuccessAddBook' => 'فشل إضافة الكتاب'];
     }
-
-
+    
+    
     // Get Book By Category To Display in Page Categorys
     public function getBookByCategory($id)
     {
@@ -219,6 +230,7 @@ class ControllBook extends BaseController
     public  function like($IDUser, $IDBook)
     {
         $this->modelBook->like($IDUser, $IDBook);
+        
     }
     public function incrementDonwnload($id)
     {

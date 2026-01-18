@@ -40,6 +40,7 @@
         case book_ditles = '/Madad/book_ditles';
         case info_author = '/Madad/info_author';
         case profile = '/Madad/profile';
+        case sign_out = '/Madad/sign_out';
         case homePageAdmin = '/Madad/homeAdmin';
         case managemtAuthor = '/Madad/magagement-atuhor';
         case ManagementUsers = '/Madad/ManagementUsers';
@@ -62,6 +63,7 @@
         Route::book_ditles->value => 'book_ditles.php',
         Route::info_author->value => 'info_author.php',
         Route::profile->value => 'profile.php',
+        Route::sign_out->value => 'sign_out.php',
         Route::homePageAdmin->value => 'page-admin.php',
         Route::addAuthor->value => 'addAuthor.php',
         Route::managemtAuthor->value => 'manageAuthor.php',
@@ -78,11 +80,6 @@
                 $controllBook->getInfoBookAndAuthor($allBooks);
                 if (isset($_COOKIE['remember_token'])) {
                     $getToken  = $controllUser->checkToken($_COOKIE['remember_token']);
-                    $_SESSION['user_id'] = $getToken['user_id'];
-                    $_SESSION['username'] = $getToken['username'];
-                    $_SESSION['email'] = $getToken['email'];
-                    if (isset($_SESSION['user_id']) && isset($_SESSION['username']) && isset($_SESSION['email'])) {
-                    }
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
@@ -170,11 +167,18 @@
                 break;
             case Route::profile->value:
                 require_once('src/app/view/' . $route[$URL]);
-                if($_SERVER['REQUEST_METHOD'] ==  'POST'){
-                    if(isset($_POST['username'])){
-                    echo $_POST['username'];
+                if ($_SERVER['REQUEST_METHOD'] ==  'POST') {
+
+                    if (isset($_POST['username'])) {
+
+                        echo $_POST['username'];
                     }
                 }
+
+                break;
+            case Route::sign_out->value:
+                $controllUser->LogOut();
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             // Admin
             case Route::homePageAdmin->value:
@@ -183,8 +187,8 @@
                     $id = $_POST['idDeleletBook'];
                     $controllBook->delete($id);
                 }
-                if(isset($_GET['search-for'])){
-                $resultSearchBook = $controllBook->search($_GET['search-for']);
+                if (isset($_GET['search-for'])) {
+                    $resultSearchBook = $controllBook->search($_GET['search-for']);
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
@@ -221,8 +225,8 @@
                 break;
             case Route::managemtAuthor->value:
                 $allAuthors = $controllAuthor->getAll();
-                if(isset($_GET['search-for'])){
-                 $resultSearchAuthor = $controllAuthor->search($_GET['search-for']);
+                if (isset($_GET['search-for'])) {
+                    $resultSearchAuthor = $controllAuthor->search($_GET['search-for']);
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
