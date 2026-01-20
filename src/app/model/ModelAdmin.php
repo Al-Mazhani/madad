@@ -6,22 +6,21 @@ class  ModelAdmin extends ModelUser
     {
         $this->database = $database;
         parent::__construct($database);
-    
     }
-    
+
     public function loadAll()
     {
         $query = "SELECT * FROM admins";
         $stmt = $this->database->prepare($query);
         // $stmt->execute();
-         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-         return $data;
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
     }
-     function checkLogin($email,$password){
-     
-       return false;
-     }
-
- 
+    public function checkLogin($email)
+    {
+        $queryLogin = "SELECT * FROM users WHERE email = :email AND role = :role limit 1 ";
+        $stmt = $this->database->prepare($queryLogin);
+        $stmt->execute(["email" => $email,"role" => "admin"]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
-?>

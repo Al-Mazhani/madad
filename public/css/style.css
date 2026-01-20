@@ -568,15 +568,27 @@ ul li a:hover {
    box-shadow: var(--box-shadow);
    transition: var(--transition);
 }
+.sharing {
+   color: var(--color-text-secondary);
+   background-color: var(--background-header);
+   border: none;
+}
 
-.container .book-main .book_info .action_book .btn-like-book {
+ .btn-like-book {
    border: none;
    font-size: 1.8rem;
    position: relative;
    width: fit-content;
    right: 11rem;
+   background-color: var(--background-header);
+   cursor: pointer;
 }
-
+.btn-like-book i {
+   color: var(--color-text-secondary);
+}
+.sharing i {
+   font-size:  1.2rem;
+} 
 .container .book-main .book_info .action_book .btn-like-book:hover {
    background-color: var(--background-header);
    color: var(--color-text-secondary);

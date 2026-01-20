@@ -4,16 +4,16 @@ include_once('BaseModel.php');
 class ModelUser extends BaseModel
 {
     protected $database;
-    function __construct($database)
+    public function __construct($database)
     {
         parent::__construct($database, "users", 'user_id');
     }
 
-    public function checkLogin($email, $password)
+    public function checkLogin($email)
     {
-        $queryLogin = "SELECT * FROM users WHERE email = ?";
+        $queryLogin = "SELECT * FROM users WHERE email = :email AND role = :User LIMIT 1";
         $stmt = $this->database->prepare($queryLogin);
-        $stmt->execute([$email]);
+        $stmt->execute([":email" => $email, ":User" => 'user']);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         if (empty($result)) {
             return false;
@@ -21,7 +21,7 @@ class ModelUser extends BaseModel
         return $result;
     }
     public function update($username, $email) {}
-    function checkToken($token)
+    public function checkToken($token)
     {
         $queryToken = "SELECT * FROM users WHERE token = ?";
         $stmt = $this->database->prepare($queryToken);

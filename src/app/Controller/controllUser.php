@@ -37,7 +37,6 @@ class ControllUser  extends BaseController
          return ['lenghtPassword' => 'يرجاء املا كلمة المرور  بين 10 و 15 حرف'];
      }
  }
- private function validateRegister($username, $email, $password) {}
  public function show()
  {
      $allUser = $this->Model->loadAll();
@@ -45,8 +44,14 @@ class ControllUser  extends BaseController
  }
  public function update($username, $email)
  {
-     $this->ValidateInputUsername($username);
-     $this->validateEmail($email);
+     if($errorUsername = $this->ValidateInputUsername($username)){
+        return $errorUsername;
+     }
+
+     if($errorEmail = $this->validateEmail($email)){
+        return $errorEmail;
+     }
+     
      return $this->Model->update($username, $email);
  }
  public function search($username)
@@ -78,6 +83,7 @@ class ControllUser  extends BaseController
      if($error = $this->validatePassword($password)){
          return $error;
      }
+
      $this->ProcceDataUser($username, $email, $password, $token);
 
      $resultRegister =  $this->Model->insert($username, $email, $password, $token, $role);
@@ -108,9 +114,12 @@ class ControllUser  extends BaseController
          return $error;
      }
 
-     $hashPassword = password_hash(trim($password), PASSWORD_BCRYPT);
-    
-     if ($this->Model->checkLogin($email, $hashPassword)) {
+     $userLogggedIn = $this->Model->checkLogin($email);
+    if(!$userLogggedIn){
+
+         return ['filedLogin' => 'يرجاء انشاء حساب اولاً'];
+    }
+    if(password_verify($password,$userLogggedIn['password'])){ 
 
         $token = $this->Generate4UUID();
 
@@ -119,6 +128,7 @@ class ControllUser  extends BaseController
             $this->SetCookieToUser($token);
 
         }
+        
      } else {
         
          return ['filedLogin' => 'يرجاء انشاء حساب اولاً'];

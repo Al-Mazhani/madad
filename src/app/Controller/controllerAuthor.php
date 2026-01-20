@@ -73,7 +73,17 @@ class ControllerAuthor extends BaseController
   }
   public function findByID($id)
   {
-    return $this->model->loadInfoAuthorByID($id);
+    $this->validateID($id);
+    
+    $resultInofAuhtor = $this->model->loadInfoAuthorByID($id);
+
+    if (empty($resultInofAuhtor)){
+
+      $this->NotAllowDisplayPage();
+
+    }
+    
+    return $resultInofAuhtor;
   }
 
 

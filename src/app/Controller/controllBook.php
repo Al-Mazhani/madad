@@ -104,6 +104,17 @@ class ControllBook extends BaseController
         }
         return ['noInputEmpty' => true];
     }
+    private function validateUpdateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type,  $language){
+
+        if ($errorText = $this->validateTextInputs($bookName,$description,$language,$file_type)) {
+            return $errorText;
+        }
+        if ($errorNumeric = $this->ValidateNumberInputs($id_author,$year,$id_category,$pages)) {
+            return $errorNumeric;
+        }
+        
+        return ['noInputEmpty' => true];
+    }
 
     private function processBookData(&$bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
     {
@@ -130,7 +141,7 @@ class ControllBook extends BaseController
     {
         return $this->modelBook->loadCategory();
     }
-    function loadMoreBooks() {}
+    public function loadMoreBooks() {}
     public function getBookAuthor($id)
     {
 
@@ -165,7 +176,7 @@ class ControllBook extends BaseController
     //  Check If Come From Server And  No Error
     public function updateBook($id, $bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language, $oldFileSize, $oldBook, $oldImage)
     {
-        $hasError =  $this->validateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language);
+        $hasError =  $this->validateUpdateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $language);
         if ($hasError != true) {
             return $hasError;
         }
@@ -182,7 +193,7 @@ class ControllBook extends BaseController
             return  $feedBackUploadBook;
         }
         $pathBook = $feedBackUploadBook;
-        $file_size = filesize($pathBook);
+        $file_size = filesize($pathBook) / 1024;
 
         $resultUpdate =  $this->modelBook->update($id, $bookName, $id_author, $year, $id_category, $pages, $description, $pathImage, $file_size, $file_type, $language, $pathBook);
         return ($resultUpdate) ? ['successUpdate' => 'تم تعديل الكتاب'] : ['failedUpdate' => 'فشل تعديل الكتاب'];

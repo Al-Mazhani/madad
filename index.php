@@ -110,13 +110,11 @@
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (isset($_POST['login'])) {
                         if ($_POST['login-as'] == 'user') {
-                            $email = $_POST['email'];
-                            $password = $_POST['password'];
-                            $errorLogin = $controllUser->isLoggedIn($email, $password);
+
+                            $errorLogin = $controllUser->isLoggedIn($_POST['email'], $_POST['password']);
+
                         } else {
-                            $email = $_POST['email'];
-                            $password = $_POST['password'];
-                            $errorLogin = $controllAdmin->isLoggedIn($email, $password);
+                            $errorLogin = $controllAdmin->isLoggedIn($_POST['email'],$_POST['password']);
                         }
                     }
                 }

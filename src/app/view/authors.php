@@ -35,6 +35,7 @@ include(__DIR__ . '/../includes/header.php'); ?>
     </section>
     <?php endif; ?>
     <section class="container">
+        <?php if (isset($allAuthor)): ?>
         <div class="all_authors">
             <table>
                 <caption>جميع المؤلفين</caption>
@@ -45,6 +46,7 @@ include(__DIR__ . '/../includes/header.php'); ?>
                     </tr>
                 </table>
             </div>
+            <?php endif; ?>
         </section>
 </main>
 <?php include(__DIR__ . '/../includes/footer.php'); ?>
