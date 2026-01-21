@@ -10,9 +10,9 @@ class  ModelAdmin extends ModelUser
 
     public function loadAll()
     {
-        $query = "SELECT * FROM admins";
+        $query = "SELECT * FROM users WHERE role = 'admin'";
         $stmt = $this->database->prepare($query);
-        // $stmt->execute();
+        $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }

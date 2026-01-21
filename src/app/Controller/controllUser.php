@@ -11,30 +11,30 @@ class ControllUser  extends BaseController
  {
      $lenghtUserName =  strlen($username);
      if (empty($username)) {
-         return ['emptyName' => "يرجاء املاء حقل الاسم"];
+         return ['hasErrorInput' => "يرجاء املاء حقل الاسم"];
      }
      if ($lenghtUserName < 3 || $lenghtUserName >= 30) {
-         return ['lenghtUsername' => 'يرجاء ان يكون الاسم بين 3 و 30 حرف'];
+         return ['hasErrorInput' => 'يرجاء ان يكون الاسم بين 3 و 30 حرف'];
      }
 
      }
      public function validateEmail($email){
          
          if (empty($email)) {
-             return ['emptyEmail' => 'يرجاءاملاء حقل البريد الالكتروني'];
+             return ['hasErrorInput' => 'يرجاءاملاء حقل البريد الالكتروني'];
          }
          if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-             return ['invalidEmail' => 'يرجاء املاء حقل البريد'];
+             return ['hasErrorInput' => 'يرجاء املاء حقل البريد'];
          }
  }
  public function validatePassword($password)
  {
      $lenghtPassword =  strlen($password);
      if (empty($password)) {
-         return ['emptyPassword' => 'يرجاء إملاء حقل كلمة المرور'];
+         return ['hasErrorInput' => 'يرجاء إملاء حقل كلمة المرور'];
      }
-     if ($lenghtPassword   < 10  || $lenghtPassword >= 15) {
-         return ['lenghtPassword' => 'يرجاء املا كلمة المرور  بين 10 و 15 حرف'];
+     if ($lenghtPassword   < 10  || $lenghtPassword > 15) {
+         return ['hasErrorInput' => 'يرجاء املا كلمة المرور  بين 10 و 15 حرف'];
      }
  }
  public function show()
@@ -42,7 +42,7 @@ class ControllUser  extends BaseController
      $allUser = $this->Model->loadAll();
      return $allUser;
  }
- public function update($username, $email)
+ public function updateProfile($username, $email)
  {
      if($errorUsername = $this->ValidateInputUsername($username)){
         return $errorUsername;
@@ -51,8 +51,10 @@ class ControllUser  extends BaseController
      if($errorEmail = $this->validateEmail($email)){
         return $errorEmail;
      }
-     
-     return $this->Model->update($username, $email);
+    if(!$this->Model->update($username, $email)){
+     return ['updatedProfileFields' => "فشل في تعديل اسمك" ];
+     }
+     return ['updateProfileSuccess' => "تم تحديث اسمك" ]; 
  }
  public function search($username)
  {

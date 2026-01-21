@@ -112,9 +112,8 @@
                         if ($_POST['login-as'] == 'user') {
 
                             $errorLogin = $controllUser->isLoggedIn($_POST['email'], $_POST['password']);
-
                         } else {
-                            $errorLogin = $controllAdmin->isLoggedIn($_POST['email'],$_POST['password']);
+                            $errorLogin = $controllAdmin->isLoggedIn($_POST['email'], $_POST['password']);
                         }
                     }
                 }
@@ -164,15 +163,15 @@
                 require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::profile->value:
-                require_once('src/app/view/' . $route[$URL]);
                 if ($_SERVER['REQUEST_METHOD'] ==  'POST') {
 
-                    if (isset($_POST['username'])) {
+                    if (isset($_POST['updateProfile'])) {
 
-                        echo $_POST['username'];
+                        $resultUpdateProfile = $controllUser->updateProfile($_POST['username'], $_POST['email']);
                     }
                 }
 
+                require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::sign_out->value:
                 $controllUser->LogOut();

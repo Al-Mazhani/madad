@@ -32,8 +32,8 @@
                 <tbody>
                     <?php foreach($allAdmins as $Admin):?>
                     <tr>
-                        <td><?php echo $Admin['admin_id'] ?></td>
-                        <td><?php echo $Admin['name'] ?></td>
+                        <td><?php echo $Admin['user_id'] ?></td>
+                        <td><?php echo $Admin['username'] ?></td>
                         <td><?php echo $Admin['email'] ?></td>
                         <td class="action-btn">
                             <button class="btn delete" onclick="window.location='page2.php?id=5'"><i class="fa-solid fa-trash"></i></button>

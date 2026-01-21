@@ -20,7 +20,12 @@ class ModelUser extends BaseModel
         }
         return $result;
     }
-    public function update($username, $email) {}
+    public function update($username, $email) {
+        $QueryUpdateProfile = "UPDATE users SET username = :updateName WHERE email = :email";
+        $stmt = $this->database->prepare($QueryUpdateProfile);
+        $stmt->execute(["updateName" => $username, "email" => $email]);
+       return ($stmt->rowCount()) ? true : false;
+    }
     public function checkToken($token)
     {
         $queryToken = "SELECT * FROM users WHERE token = ?";
