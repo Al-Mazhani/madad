@@ -17,6 +17,9 @@ class controllAdmin extends ControllUser
             return $error;
         }
         $resultLogIn = $this->Model->checkLogin($email);
+        if(!$resultLogIn){
+         return ['filedLogin' => 'يرجاء انشاء حساب اولاً'];
+        }
         if (!password_verify($password, $resultLogIn['password'])) {
             return ['filedLogin' => 'انت لست مشرف الموقع'];
         }

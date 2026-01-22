@@ -13,7 +13,7 @@
     require_once  'config/database.php';
     include 'validated/Request.php';
     include 'src/app/helpers/handlingFiles.php';
-
+    $IP_address_user = $_SERVER['REMOTE_ADDR'];
 
     $database  = databaseConnection();
 
@@ -77,6 +77,7 @@
         switch ($URL) {
             case Route::home->value:
                 $allBooks = [];
+
                 $controllBook->getInfoBookAndAuthor($allBooks);
                 if (isset($_COOKIE['remember_token'])) {
                     $getToken  = $controllUser->checkToken($_COOKIE['remember_token']);

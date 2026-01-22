@@ -17,7 +17,7 @@
     <header>
         <div class="container">
             <div class="logo-image">
-                <a href="/public/index.php">
+                <a href="/Madad/">
                     <h1>مِداد</h1>
 
                 </a>

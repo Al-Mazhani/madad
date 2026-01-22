@@ -30,7 +30,7 @@
                         <th> اسم المستخدم</th>
                         <th> البريد الالكتروني</th>
                         <th> الدور</th>
-                        <th> تاريخ انشاء الحساب</th>
+                        <th> حالة الحساب</th>
                         <th> الحدث</th>
                     </tr>
                 </thead>
@@ -41,7 +41,7 @@
                             <td><?php echo $users['username'] ?></td>
                             <td><?php echo $users['email'] ?></td>
                             <td><?php echo $users['role'] ?></td>
-                            <td><?php echo $users['created_at'] ?></td>
+                            <td><?php echo ($users['active_user']) ? "نشط" : "غير نشط"; ?></td>
                             <td class="action-btn">
                                 <button class="btn delete" onclick="window.location='?id=<?= $users['user_id'] ?>'"><i class="fa-solid fa-trash"></i></button>
                                 <button class="btn update" onclick="window.location='update?='"><i class="fa-solid fa-pen"></i></button>

@@ -21,6 +21,7 @@ class  ModelAdmin extends ModelUser
         $queryLogin = "SELECT * FROM users WHERE email = :email AND role = :role limit 1 ";
         $stmt = $this->database->prepare($queryLogin);
         $stmt->execute(["email" => $email,"role" => "admin"]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return ($stmt->rowCount()) ? $stmt->fetch() : [];
     }
 }
