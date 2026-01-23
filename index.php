@@ -14,7 +14,6 @@
     include 'validated/Request.php';
     include 'src/app/helpers/handlingFiles.php';
     $IP_address_user = $_SERVER['REMOTE_ADDR'];
-
     $database  = databaseConnection();
 
     $ModelUser = new ModelUser($database);
@@ -76,17 +75,14 @@
     if (array_key_exists($URL, $route)) {
         switch ($URL) {
             case Route::home->value:
-                $allBooks = [];
-
-                $controllBook->getInfoBookAndAuthor($allBooks);
+                $allBooks = $controllBook->getInfoBookAndAuthor();
                 if (isset($_COOKIE['remember_token'])) {
                     $getToken  = $controllUser->checkToken($_COOKIE['remember_token']);
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::books->value:
-                $allBooks = [];
-                $controllBook->getInfoBookAndAuthor($allBooks);
+                $allBooks = $controllBook->getInfoBookAndAuthor();
                 $allCategory = $controllBook->getAllCategory();
                 if (isset($_GET['id_category'])) {
                     $id = $_GET['id_category'];

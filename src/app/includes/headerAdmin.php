@@ -15,7 +15,7 @@
 
 <body dir="rtl">
     <header>
-        <div class="container">
+        <div class="container container-header">
             <div class="logo-image">
                 <a href="../view/index.php">
                     <h1>مِداد</h1>

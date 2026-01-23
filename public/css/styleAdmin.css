@@ -42,22 +42,24 @@ body {
    background-color: var(--color-secondary);
    color: var(--color-text-secondary);
    font-size: 16px;
+   display: flex;
 }
 
 main {
-   width: 100%;
+   width: 90%;
+
 }
 
 header {
    background-color: var(--background-header);
    z-index: 3847594385;
-   width: 100%;
-   height: 6rem;
+   width: 20%;
+   height: 100vh;
    border-radius: var(--Radius);
 }
 
 .container {
-   width: 80%;
+   width: 10%;
    margin: 0px auto;
 
 
@@ -72,28 +74,24 @@ header {
   font-size: 1.2rem;
 }
 
-header .container {
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
+header .container-header {
+   width: 100%;
+   text-align: center;
 }
 
 header .container .logo-image a h1 {
    color: var(--btn);
 }
 
-ul {
-   display: flex;
-   width: 70%;
-   justify-content: space-between;
+.container nav ul {
+   width: 100%;
 }
 
 ul li {
-   width: 50%;
+   width: 80%;
    list-style: none;
-   display: flex;
    color: var(--btn);
-   margin: 0px 1rem;
+   margin: 0px auto;
 }
 
 ul li a {
@@ -102,7 +100,6 @@ ul li a {
    display: flex;
    justify-content: space-between;
    align-items: center;
-   margin: 0.3rem 0rem;
    transition: var(--transition);
    transition: var(--transition);
 }
@@ -123,25 +120,18 @@ ul li :hover {
    display: flex;
    justify-content: space-between;
    position: relative;
+   right: 20rem;
    padding-top: 3rem;
 
 }
 
-.container .header {
-   width: 100%;
-   background-color: black;
-   height: 5vh;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   padding: 1rem;
-}
+
 
 .container .main-content .add-new-book {
    position: absolute;
    top: 3rem;
    left: -80px;
-   width: 25%;
+   width: 150%;
    height: 30%;
    border: none;
    background-color: var(--btn);
@@ -173,6 +163,8 @@ ul li :hover {
 .container .search-book {
    width: 500px;
    height: 50px;
+   position: absolute;
+   left: 30rem;
    background-color: var(--color-bg);
    background-color: var(--background-header);
    border-radius: 30px;
@@ -220,10 +212,10 @@ ul li :hover {
 }
 
 .container .table-books {
-   width: 90vw;
+   width: 79vw;
    position: relative;
-   left: 3rem;
-   height: 60vh;
+   left: 34rem;
+   height: 70vh;
    border-radius: var(--Radius);
    overflow-y: scroll;
 }
@@ -279,9 +271,12 @@ ul li :hover {
 
 /* start page add book */
 .container .box-add-book {
-   width: 100%;
+   width: 70vw;
    margin: 0 auto;
    height: fit-content;
+   position: relative;
+   left: 32rem;
+   top: 3rem;
    margin-top: 2rem;
    padding: 1.5rem;
    border-radius: var(--Radius);

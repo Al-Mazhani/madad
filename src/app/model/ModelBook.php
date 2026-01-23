@@ -54,12 +54,12 @@ class ModelBook   extends BaseModel
   return $stmt->fetchColumn() > 0;
   }
     // Load This Data To Show In Page Books With Author
-  public function join_books_authors(&$allBooks)
+  public function join_books_authors()
   {
     $query = "SELECT * FROM base_view_book limit 8  OFFSET 0 ";
     $stmt = $this->database->prepare($query);
     $stmt->execute();
-    $allBooks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return ($stmt->rowCount() > 0 )  ? $stmt->fetchAll() : [];
   }
   public function loadBookByAuthorID($id)
   {
@@ -102,8 +102,7 @@ class ModelBook   extends BaseModel
     $querSearchForBook = "SELECT * FROM base_view_book WHERE title LIKE :name";
     $searchName = "%$search%";
     $stmt = $this->database->prepare($querSearchForBook);
-    $stmt->bindParam(":name", $searchName, PDO::PARAM_STR);
-    $stmt->execute();
+    $stmt->execute([":name" => $searchName]);
     return ($stmt->rowCount() > 0) ? $stmt->fetchAll() : [] ;
   }
 

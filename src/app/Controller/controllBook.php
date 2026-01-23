@@ -133,9 +133,19 @@ class ControllBook extends BaseController
         return $feedBackUploadBook;
     }
 
-    public function  getInfoBookAndAuthor(&$allBooks)
+    public function  getInfoBookAndAuthor()
     {
-        $this->modelBook->join_books_authors($allBooks);
+        $FolderCacheName = __DIR__ . '/../cache/';
+        $FileCacheName = "baseBook.json";
+        if($this->CheckFileCacheExists($FolderCacheName,$FileCacheName)){
+            return $this->GetDataFromFileCahce($FolderCacheName,$FileCacheName);
+        }
+        else{
+            $dataBaseBook = $this->modelBook->join_books_authors();
+            $this->MakeFileCache($FolderCacheName,$FileCacheName,$dataBaseBook);
+            return $dataBaseBook;
+        }
+        
     }
     public function getAllCategory()
     {

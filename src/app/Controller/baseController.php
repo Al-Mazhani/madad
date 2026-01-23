@@ -24,7 +24,7 @@ class BaseController
         }
     }
     // Generate One UUID 3 bit
-    private function GenerateOneUUID($sizeUUID)
+    protected function GenerateOneUUID($sizeUUID)
     {
         return bin2hex(random_bytes($sizeUUID));
     }
@@ -75,11 +75,28 @@ class BaseController
     public   function search(string $name)
     {
 
-        $validatedSearch  = request::validateSearch($name);
-        if ($validatedSearch  === false) {
+
+        if (!$this->validateSearch($name)) {
             return ['hasErrorInSearch' => 'البحث غير صالح'];
         }
 
         return $this->model->search($name);
+    }
+    protected function CheckFileCacheExists($FolderCacheName, $FileCacheName)
+    {
+
+        return (file_exists($FolderCacheName . $FileCacheName)) ? true : false;
+    }
+    protected function MakeFileCache($FolderCacheName, $FileCacheName, $data)
+    {
+        file_put_contents($FolderCacheName . $FileCacheName,json_encode($data));
+    }
+    protected function GetDataFromFileCahce($FolderCacheName, $FileCacheName)
+    {
+        return json_decode(file_get_contents($FolderCacheName . $FileCacheName),true);   
+    }
+    protected function DeleteFileCache($FolderCacheName, $FileCacheName)
+    {
+        return unlink($FolderCacheName . $FileCacheName);   
     }
 }

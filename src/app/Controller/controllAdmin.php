@@ -18,13 +18,14 @@ class controllAdmin extends ControllUser
         }
         $resultLogIn = $this->Model->checkLogin($email);
         if(!$resultLogIn){
-         return ['filedLogin' => 'يرجاء انشاء حساب اولاً'];
+         return ['filedLogin' => 'الحساب غير موجود   '];
         }
         if (!password_verify($password, $resultLogIn['password'])) {
             return ['filedLogin' => 'انت لست مشرف الموقع'];
         }
         
-        $_SESSION['adminName'] = 'role';
+        $_SESSION['adminName'] = $resultLogIn['username'];
+        $_SESSION['role'] = "admin";
         header("location:/Madad/homeAdmin");
         exit();
     }
