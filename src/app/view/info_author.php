@@ -30,11 +30,11 @@ include(__DIR__ . '/../includes/header.php'); ?>
                     </li>
 
                     <li>
-                        <span>اجمالي التحميل</span>
+                        <span> التحميل</span>
                         <span>(<?php echo $infoAuthor['downloads'] ?>)</span>
                     </li>
                     <li>
-                        <span>اجمالي التحميل</span>
+                        <span>القراءة </span>
                         <span>(<?php echo $infoAuthor['readers'] ?>)</span>
                     </li>
                 </ul>

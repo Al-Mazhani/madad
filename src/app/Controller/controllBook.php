@@ -9,35 +9,33 @@ class ControllBook extends BaseController
         parent::__construct($model);
     }
 
-    private function validateTextInputs($bookName, $description, $language, $file_type)
+    private function validateTextInputs($dataAddBook)
     {
-        if (empty($bookName)) {
+        if (empty($dataAddBook['nameBook'])) {
             return ['hasInputEmpty' => 'يرجاء كتابة اسم الكتاب'];
         }
-        if ($this->modelBook->CheckTitleBookExit($bookName)) {
-            return ['hasInputEmpty' => 'الكتاب موجود من قبل'];
-        }
-        if (empty($description)) {
+
+        if (empty($dataAddBook['description'])) {
             return ['hasInputEmpty' => 'يرجاءإدخال وصف الكتاب'];
         }
 
-        if (empty($language)) {
+        if (empty($dataAddBook['language'])) {
             return ['hasInputEmpty' => 'يرجاء تحدد اللغة'];
         }
-        if (empty($file_type)) {
+        if (empty($dataAddBook['file_type'])) {
             return ['hasInputEmpty' => 'يرجاء تحدد نوع الملف'];
         }
 
         return null;
     }
-    private function validateFileInputs($image, $book)
+    private function validateFileInputs($dataAddBook)
     {
         // Start Part check Image
-        if (!isset($image) || $image['size'] == 0) {
+        if (!isset($dataAddBook['image']) || $dataAddBook['image']['size'] == 0) {
             return ['hasFileEmpty' => 'يرجاء إدخال الصورة'];
         }
 
-        $imgName = $image['name'];
+        $imgName = $dataAddBook['image']['name'];
 
         $imgExt  = strtolower(pathinfo($imgName, PATHINFO_EXTENSION));
 
@@ -51,12 +49,12 @@ class ControllBook extends BaseController
         //End Part check Image
 
         //Start Part check Book
-        if (!isset($book) || $book['size'] == 0) {
+        if (!isset($dataAddBook['book']) || $dataAddBook['book']['size'] == 0) {
 
             return ['hasFileEmpty' => 'يرجاء إدخال الكتاب'];
         }
 
-        $bookName = $book['name'];
+        $bookName = $dataAddBook['book']['name'];
 
         $bookExt = strtolower(pathinfo($bookName, PATHINFO_EXTENSION));
 
@@ -65,60 +63,75 @@ class ControllBook extends BaseController
         if (!in_array($bookExt, $allowedExtBook)) {
 
             return  ['hasFileEmpty' => "خطأ في تحميل  امتداد الصورة"];
-
         }
         //End Part check Book
         return null;
     }
-    private function ValidateNumberInputs($id_author, $year, $id_category, $pages)
+    private function ValidateNumberInputs($dataAddBook)
     {
 
-        if (empty($id_author)) {
+        if (empty($dataAddBook['id_author']) || !filter_var($dataAddBook['id_author'], FILTER_VALIDATE_INT)) {
             return ['hasInputEmpty' => 'يرجاء تحدد المؤلف'];
         }
-        if (empty($year)) {
+        if (empty($dataAddBook['publish_year'])) {
             return ['hasInputEmpty' => 'يرجاء تحديد السنة'];
         }
-        if (!filter_var($id_category, FILTER_VALIDATE_INT)) {
+        if (!filter_var($dataAddBook['id_category'], FILTER_VALIDATE_INT) || empty($dataAddBook['id_category'])) {
             return ['hasInputEmpty' => 'يرجاء تحديد الفئة'];
         }
-        if (empty($pages)) {
+        if (empty($dataAddBook['pages']) || !filter_var($dataAddBook['pages'], FILTER_VALIDATE_INT)) {
             return ['hasInputEmpty' => 'يرجاءإدخال عدد الصفحات'];
         }
-        if ($pages  <= 20) {
+        if ($dataAddBook['pages']  <= 20) {
             return ['hasInputEmpty' => 'ادخل عدد اكبر من 20'];
         }
         return null;
     }
-    private function  validateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
+    private function  validateBook(&$dataAddBook)
     {
-        if ($errorText = $this->validateTextInputs($bookName, $description, $language, $file_type)) {
+        if ($errorText = $this->validateTextInputs($dataAddBook)) {
             return $errorText;
         }
+        if ($this->modelBook->CheckTitleBookExit($dataAddBook['nameBook'])) {
+            return ['hasInputEmpty' => 'الكتاب موجود من قبل'];
+        }
 
-        if ($errorFiles = $this->validateFileInputs($image, $book)) {
+        if ($errorFiles = $this->validateFileInputs($dataAddBook)) {
             return $errorFiles;
         }
-        if ($errorNumeric = $this->ValidateNumberInputs($id_author, $year, $id_category, $pages)) {
+        if ($errorNumeric = $this->ValidateNumberInputs($dataAddBook)) {
             return $errorNumeric;
         }
         return ['noInputEmpty' => true];
     }
-    private function validateUpdateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type,  $language){
+    private function validateUpdateBook($dataUpdateBook)
+    {
 
-        if ($errorText = $this->validateTextInputs($bookName,$description,$language,$file_type)) {
+        if ($errorText = $this->validateTextInputs($dataUpdateBook)) {
             return $errorText;
         }
-        if ($errorNumeric = $this->ValidateNumberInputs($id_author,$year,$id_category,$pages)) {
+        if ($errorNumeric = $this->ValidateNumberInputs($dataUpdateBook)) {
             return $errorNumeric;
         }
-        
+
         return ['noInputEmpty' => true];
     }
 
-    private function processBookData(&$bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
+    private function processBookData(&$dataAddBook)
     {
-        $bookName = strtolower(trim($bookName));
+        $dataAddBook['public_id'] = $this->Generate4UUID();
+
+        $dataAddBook['nameBook'] = strtolower(trim($dataAddBook['nameBook']));
+        $dataAddBook['description'] = strtolower(trim($dataAddBook['description']));
+        $dataAddBook['language'] = strtolower(trim($dataAddBook['language']));
+
+        $dataAddBook['id_author'] = filter_var(strtolower(trim($dataAddBook['id_author'])), FILTER_SANITIZE_NUMBER_INT);
+        $dataAddBook['id_category'] = filter_var(strtolower(trim($dataAddBook['id_category'])), FILTER_SANITIZE_NUMBER_INT);
+        $dataAddBook['pages'] = filter_var(strtolower(trim($dataAddBook['pages'])), FILTER_SANITIZE_NUMBER_INT);
+
+        $dataAddBook['image'] = $this->uploadImage($dataAddBook['image']);
+        $dataAddBook['book'] = $this->uploadBook($dataAddBook['book']);
+        $dataAddBook['file_size'] = filesize($dataAddBook['book']) / 1024;
     }
     // Upload Image
     private  function uploadImage(&$image)
@@ -135,17 +148,14 @@ class ControllBook extends BaseController
 
     public function  getInfoBookAndAuthor()
     {
-        $FolderCacheName = __DIR__ . '/../cache/';
-        $FileCacheName = "baseBook.json";
-        if($this->CheckFileCacheExists($FolderCacheName,$FileCacheName)){
-            return $this->GetDataFromFileCahce($FolderCacheName,$FileCacheName);
-        }
-        else{
+        $FileCacheName =  __DIR__ . '/../cache/' . "baseBook.json";
+        if ($this->CheckFileCacheExists($FileCacheName)) {
+            return $this->GetDataFromFileCahce($FileCacheName);
+        } else {
             $dataBaseBook = $this->modelBook->join_books_authors();
-            $this->MakeFileCache($FolderCacheName,$FileCacheName,$dataBaseBook);
+            $this->MakeFileCache($FileCacheName, $dataBaseBook);
             return $dataBaseBook;
         }
-        
     }
     public function getAllCategory()
     {
@@ -164,79 +174,81 @@ class ControllBook extends BaseController
     }
 
 
-    private function checkExitImage($image, $oldImage)
+    private function checkExitImage(&$dataUpdateBook)
     {
         // Use  Data Book After Prossing
-        if ($image['size'] == 0) {
-            return $pathImage = $oldImage;
+        if ($dataUpdateBook['image']['size'] == 0) {
+            $dataUpdateBook['image'] = $dataUpdateBook['oldPathImage'];
+            $dataUpdateBook['file_size'] = $dataUpdateBook['oldFileSize'];
+        } else {
+            $dataUpdateBook['image'] = $this->uploadImage($dataUpdateBook['image']);
         }
-        $feedBackUploadImage = $this->uploadImage($image);
-        return $feedBackUploadImage;
     }
-    private function checkExitFileBook($book, $oldBook)
+    private function checkExitFileBook(&$dataUpdateBook)
     {
         // Use  Data Book After Prossing
-        if ($book['size'] == 0) {
-            return  $pathBook = $oldBook;
+        if ($dataUpdateBook['book']['size'] == 0) {
+            $dataUpdateBook['book'] = $dataUpdateBook['oldFileBook'];
+            $dataUpdateBook['file_size'] = $dataUpdateBook['oldFileSize'];
         }
-        $feedBackUploadBook = $this->uploadBook($book);
-        return  $feedBackUploadBook;
+        else{
+
+            $book = $dataUpdateBook['book'];
+            $dataUpdateBook['file_size'] = filesize($book) / 1024;
+            $dataUpdateBook['book'] = $this->uploadBook($dataUpdateBook['book'] );
+            }
     }
 
     //  Check If Come From Server And  No Error
-    public function updateBook($id, $bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language, $oldFileSize, $oldBook, $oldImage)
+    public function updateBook($id, $dataUpdateBook)
     {
-        $hasError =  $this->validateUpdateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $language);
+        $hasError =  $this->validateUpdateBook($dataUpdateBook);
         if ($hasError != true) {
             return $hasError;
         }
 
         // Use  Data Book After Prossing
-        $feedBackUploadImage = $this->checkExitImage($image, $oldImage);
-        if (isset($feedBackUploadImage['hasInputEmpty'])) {
-            return $feedBackUploadImage;
-        }
-        $pathImage = $feedBackUploadImage;
+        $this->checkExitImage($dataUpdateBook);
 
-        $feedBackUploadBook = $this->checkExitFileBook($book, $oldBook);
-        if (isset($feedBackUploadBook['hasInputEmpty'])) {
-            return  $feedBackUploadBook;
-        }
-        $pathBook = $feedBackUploadBook;
-        $file_size = filesize($pathBook) / 1024;
 
-        $resultUpdate =  $this->modelBook->update($id, $bookName, $id_author, $year, $id_category, $pages, $description, $pathImage, $file_size, $file_type, $language, $pathBook);
+
+        $this->checkExitFileBook($dataUpdateBook);
+
+
+        $resultUpdate =  $this->modelBook->update($id, $dataUpdateBook);
+        $FileCacheName = __DIR__ . '/../cache/' . "baseBook.json";
+        $this->DeleteFileCache($FileCacheName);
         return ($resultUpdate) ? ['successUpdate' => 'تم تعديل الكتاب'] : ['failedUpdate' => 'فشل تعديل الكتاب'];
     }
 
 
-    public function addBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language)
+    public function addBook($dataAddBook)
     {
-        $hasError = $this->validateBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language);
+        $hasError = $this->validateBook($dataAddBook);
         if (isset($hasError['hasInputEmpty']) || isset($hasError['hasFileEmpty'])) {
             return $hasError;
         }
 
+        $this->processBookData($dataAddBook);
 
-        // Upload Image
-        $feedBackUploadImage = $this->uploadImage($image);
-        // Upload Book
-        $feedBackUploadBook = $this->uploadBook($book);
-        $pathImage = $feedBackUploadImage;
-        $pathBook = $feedBackUploadBook;
-        $file_size = filesize($feedBackUploadBook);
-        $public_id = $this->Generate4UUID();
-        $result = $this->modelBook->insertBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $file_size, $pathImage, $pathBook, $language, $public_id);
+        $result = $this->modelBook->insertBook($dataAddBook);
+
+        $FileCacheName = __DIR__ . '/../cache/' . "baseBook.json";
+        $this->DeleteFileCache($FileCacheName);
 
         return ($result) ? ['successAddBook' => 'تم إضافة الكتاب بنجاح'] :  ['NotsuccessAddBook' => 'فشل إضافة الكتاب'];
     }
-    
-    
+
+
     // Get Book By Category To Display in Page Categorys
     public function getBookByCategory($id)
     {
         $this->validateID($id);
-        return $this->modelBook->loadBookByCateogryID($id);
+        $resultGetBookByCategory = $this->modelBook->loadBookByCateogryID($id);
+        if (empty($resultGetBookByCategory)) {
+            $this->NotAllowDisplayPage();
+        }
+        return $resultGetBookByCategory;
     }
     // Get Info Book By ID To Show In Dititles
     public function getInfoBookByID($idBook)
@@ -251,7 +263,6 @@ class ControllBook extends BaseController
     public  function like($IDUser, $IDBook)
     {
         $this->modelBook->like($IDUser, $IDBook);
-        
     }
     public function incrementDonwnload($id)
     {

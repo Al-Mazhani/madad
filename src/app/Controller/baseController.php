@@ -82,21 +82,23 @@ class BaseController
 
         return $this->model->search($name);
     }
-    protected function CheckFileCacheExists($FolderCacheName, $FileCacheName)
+    protected function CheckFileCacheExists($FileCacheName)
     {
 
-        return (file_exists($FolderCacheName . $FileCacheName)) ? true : false;
+        return (file_exists($FileCacheName)) ? true : false;
     }
-    protected function MakeFileCache($FolderCacheName, $FileCacheName, $data)
+    protected function MakeFileCache( $FileCacheName, $data)
     {
-        file_put_contents($FolderCacheName . $FileCacheName,json_encode($data));
+        file_put_contents($FileCacheName,json_encode($data));
     }
-    protected function GetDataFromFileCahce($FolderCacheName, $FileCacheName)
+    protected function GetDataFromFileCahce( $FileCacheName)
     {
-        return json_decode(file_get_contents($FolderCacheName . $FileCacheName),true);   
+        return json_decode(file_get_contents($FileCacheName),true);   
     }
-    protected function DeleteFileCache($FolderCacheName, $FileCacheName)
+    protected function DeleteFileCache($FileCacheName)
     {
-        return unlink($FolderCacheName . $FileCacheName);   
+        if($this->CheckFileCacheExists($FileCacheName)){
+            unlink($FileCacheName);   
+        }
     }
 }

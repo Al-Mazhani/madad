@@ -20,9 +20,9 @@ class BaseModel
 
     public function delete($id)
     {
-        $QueryDelete = "DELETE FROM $this->table WHERE $this->primaryKey = ?";
+        $QueryDelete = "DELETE FROM $this->table WHERE $this->primaryKey = :ID";
         $stmt = $this->database->prepare($QueryDelete);
-        return $stmt->execute([$id]);
+        return $stmt->execute(["ID" => $id]);
     }
     public  function findByID($id)
     {

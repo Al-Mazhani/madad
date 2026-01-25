@@ -17,12 +17,12 @@ function incrementReadBook(readBook) {
   })
 }
 function deleteBook(id) {
-  fetch('/Madad/homeAdimn', {
+  fetch('/Madad/homeAdmin', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: 'idDeleletBook=' + encodeURIComponent(id)
+    body: 'idDeleteBook=' + encodeURIComponent(id)
   })
     .then(response => response.text())
     .then(data => {

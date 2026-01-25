@@ -8,24 +8,24 @@ class ModelBook   extends BaseModel
   }
 
   //  Insert New Book
-  public function insertBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $file_size, $imgPathDB, $filePathDB, $language, $public_id)
+  public function insertBook($dataAddBook)
   {
     $QeruyinsertBook = "INSERT INTO books (title,pages,file_type,file_size,image,year,description,author_id,id_category,language,book_url,public_id)
     VALUES (:name,:pages,:file_type,:file_size,:pathImage,:year,:description,:id_author,:id_category,:language,:pathBook,:public_id)";
     $stmt = $this->database->prepare($QeruyinsertBook);
     $stmt->execute([
-      ":name" => $bookName,
-      ":pages" => $pages,
-      ":file_type" => $file_type,
-      ":file_size" => $file_size,
-      ":pathImage" => $imgPathDB,
-      ":year" => $year,
-      ":description" => $description,
-      ":id_author" => $id_author,
-      ":id_category" => $id_category,
-      ":language" => $language,
-      ":pathBook" => $filePathDB,
-      ":public_id" => $public_id
+ ":name" => $dataAddBook['nameBook'],
+ ":pages" => $dataAddBook['pages'],
+ ":file_type" => $dataAddBook['file_type'],
+ ":file_size" => $dataAddBook['file_size'],
+ ":pathImage" => $dataAddBook['image'],
+ ":year" => $dataAddBook['publish_year'],
+ ":description" => $dataAddBook['description'],
+ ":id_author" => $dataAddBook['id_author'],
+ ":id_category" => $dataAddBook['id_category'],
+ ":language" => $dataAddBook['language'],
+ ":pathBook" => $dataAddBook['book'],
+ ":public_id" => $dataAddBook['public_id']
     ]);
     return ($stmt->rowCount()) ? true : false;
   }
@@ -129,7 +129,7 @@ class ModelBook   extends BaseModel
     $stmt->execute();
     return ($stmt->rowCount() > 0) ? $stmt->fetchAll() : [] ;
   }
-  public function update($id, $bookName, $id_author, $year, $id_category, $pages, $description, $pathImage, $file_size, $file_type, $language, $pathBook)
+  public function update($id,$dataUpdateBook)
   {
     $sql = "UPDATE books SET title = :title, author_id = :author_id, year = :year, id_category = :id_category, pages = :pages,
      description = :description, image = :image, file_size = :file_size, language = :language, book_url = :book_url, file_type = :file_type WHERE public_id = :public_id";
@@ -137,17 +137,17 @@ class ModelBook   extends BaseModel
     $stmt = $this->database->prepare($sql);
 
     $stmt->execute([
-      ':title' => $bookName,
-      ':author_id' => $id_author,
-      ':year' => $year,
-      ':id_category' => $id_category,
-      ':pages' => $pages,
-      ':description' => $description,
-      ':image' => $pathImage,
-      ':file_size' => $file_size,
-      ':language' => $language,
-      ':book_url' => $pathBook,
-      ':file_type' => $file_type,
+      ':title' => $dataUpdateBook['nameBook'],
+      ':author_id' => $dataUpdateBook['id_author'],
+      ':year' => $dataUpdateBook['publish_year'],
+      ':id_category' => $dataUpdateBook['id_category'],
+      ':pages' => $dataUpdateBook['pages'],
+      ':description' => $dataUpdateBook['description'],
+      ':image' => $dataUpdateBook['image'],
+      ':file_size' => $dataUpdateBook['file_size'],
+      ':language' => $dataUpdateBook['language'],
+      ':book_url' => $dataUpdateBook['book'],
+      ':file_type' => $dataUpdateBook['file_type'],
       ':public_id' => $id
     ]);
     return ($stmt->rowCount()) ? true : false;

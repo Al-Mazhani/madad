@@ -177,9 +177,8 @@
             // Admin
             case Route::homePageAdmin->value:
                 $allBooks = $controllBook->getAll();
-                if (isset($_POST['idDeleletBook'])) {
-                    $id = $_POST['idDeleletBook'];
-                    $controllBook->delete($id);
+                if (isset($_POST['idDeleteBook'])) {
+                    $controllBook->delete($_POST['idDeleteBook']);
                 }
                 if (isset($_GET['search-for'])) {
                     $resultSearchBook = $controllBook->search($_GET['search-for']);
@@ -193,17 +192,20 @@
             case Route::pageAdminAddBook->value:
 
                 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addBook'])) {
-                    $bookName = $_POST['bookName'];
-                    $year = $_POST['publish_year'];
-                    $id_category = $_POST['id_category'];
-                    $id_author = $_POST['id_author'];
-                    $pages = $_POST['pages'];
-                    $description = $_POST['description'];
-                    $file_type = $_POST['file_type'];
-                    $image = $_FILES['image_url'];
-                    $book = $_FILES['book_url'];
-                    $language = $_POST['language'];
-                    $Message  = $controllBook->addBook($bookName, $id_author, $year, $id_category, $pages, $description, $file_type, $image, $book, $language);
+                    $dataAddBook  = [
+                        "nameBook" => $_POST['bookName'],
+                        "publish_year" => $_POST['publish_year'],
+                        "id_category" => $_POST['id_category'],
+                        "id_author" => $_POST['id_author'],
+                        "pages" => $_POST['pages'],
+                        "description" => $_POST['description'],
+                        "file_type" => $_POST['file_type'],
+                        "image" => $_FILES['image_url'],
+                        "book" => $_FILES['book_url'],
+                        "language" => $_POST['language']
+                    ];
+         
+                    $Message  = $controllBook->addBook($dataAddBook);
                 }
                 $allCategory = $controllBook->getAllCategory();
                 $authors = $controllAuthor->getAll();
@@ -248,35 +250,23 @@
                 }
                 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateBook'])) {
                     $id = $_GET['ID'] ?? 0;
-                    $bookName = $_POST['bookName'];
-                    $year = $_POST['publish_year'];
-                    $id_category = $_POST['id_category'];
-                    $id_author = $_POST['id_author'];
-                    $pages = $_POST['pages'];
-                    $description = $_POST['description'];
-                    $file_type = $_POST['file_type'];
-                    $language = $_POST['language'];
-                    $oldFileSize = $_POST['oldFileSize'];
-                    $oldBook = $_POST['oldFileBook'];
-                    $oldImage =  $_POST['oldPathImage'];
-                    $image = $_FILES['image_url'];
-                    $book = $_FILES['book_url'];
-                    $Message = $controllBook->updateBook(
-                        $id,
-                        $bookName,
-                        $id_author,
-                        $year,
-                        $id_category,
-                        $pages,
-                        $description,
-                        $file_type,
-                        $image,
-                        $book,
-                        $language,
-                        $oldFileSize,
-                        $oldBook,
-                        $oldImage
-                    );
+                
+                        $dataUpdateBook  = [
+                        "nameBook" => $_POST['bookName'],
+                        "publish_year" => $_POST['publish_year'],
+                        "id_category" => $_POST['id_category'],
+                        "id_author" => $_POST['id_author'],
+                        "pages" => $_POST['pages'],
+                        "description" => $_POST['description'],
+                        "file_type" => $_POST['file_type'],
+                        "oldFileBook" => $_POST['oldFileBook'],
+                        "oldFileSize" => $_POST['oldFileSize'],
+                        "oldPathImage" => $_POST['oldPathImage'],
+                        "language" => $_POST['language'],
+                        "image" => $_FILES['image_url'],
+                        "book" => $_FILES['book_url']
+                    ];
+                    $Message = $controllBook->updateBook($id,$dataUpdateBook);
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
