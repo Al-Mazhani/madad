@@ -49,8 +49,8 @@
                             <td><?php echo $author['public_id'] ?></td>
                             <td><?php echo $author['name'] ?></td>
                             <td class="action-btn">
-                                <button class="btn update" onclick="window.location='updateBook.php?updateID=5'">  <i class="fa-solid fa-trash"></i></button>
-                                <button class="btn delete" onclick="window.location='addAuthor?updateAuthor=<?php echo $author['public_id']?>'"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn update" onclick="window.location='?deleteAuht=<?php echo $author['public_id']?>'">  <i class="fa-solid fa-trash"></i></button>
+                                <button class="btn delete" onclick="window.location='addAuthor?updateAuthor= <?php echo $author['public_id']?>'"><i class="fa-solid fa-pen"></i></button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -62,3 +62,4 @@
 </body>
 
 </html>
+<?php include(__DIR__ . '/../includes/footerAdmin.php');?>

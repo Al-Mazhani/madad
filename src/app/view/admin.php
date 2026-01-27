@@ -49,3 +49,4 @@
 </body>
 
 </html>
+<?php include(__DIR__ . '/../includes/footerAdmin.php');?>

@@ -1,17 +1,16 @@
 <?php require(__DIR__ . '/../includes/headerAdmin.php');
 require(__DIR__ . '/../includes/session.php');
-$success = isset($_GET['success']) ? $_GET['success'] : "";
-$notSuccess = isset($_GET['notSuccess']) ? $_GET['notSuccess'] : "";
+
 ?>
 <main>
     <section>
         <div class="container">
 
             <div class="box-add-book">
-                <?php if (!empty($success)): ?>
-                    <p class="success"> <?php echo $success ?></p>
-                <?php elseif (!empty($notSuccess)): ?>
-                    <p class="notSuccess"> <?php echo $notSuccess ?></p>
+                <?php if (isset($message['invalidRegister']) ): ?>
+                    <p class="notSuccess"> <?php echo $success ?></p>
+                <?php if (empty($message['invalidRegister']) ) ?>
+                    <p class="success"> تم إضافة مشرف جديد</p>
                 <?php endif; ?>
 
                 <form action="" method="POST" >

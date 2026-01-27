@@ -89,10 +89,9 @@ class ModelBook   extends BaseModel
   // Load Info Book  By ID Book To Show  in Page Dititles book
   function infoBook($idBook)
   {
-    $queryInfoBook = "SELECT * FROM book_info_view where book_public_id  =  :id";
+    $queryInfoBook = "SELECT * FROM book_info_view where book_public_id  =  :id limit 1";
     $stmt = $this->database->prepare($queryInfoBook);
-    $stmt->bindParam(':id', $idBook, PDO::PARAM_INT);
-    $stmt->execute();
+    $stmt->execute(['id' => $idBook]);
     return ($stmt->rowCount() > 0 ) ? $stmt->fetch() : [];
   }
 
@@ -152,4 +151,5 @@ class ModelBook   extends BaseModel
     ]);
     return ($stmt->rowCount()) ? true : false;
   }
+
 }

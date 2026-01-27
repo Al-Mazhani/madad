@@ -74,7 +74,8 @@
         </div>
     </div>
 </main>
-<script src="public/js/main.js"></script>
+<?php include(__DIR__ . '/../includes/footerAdmin.php');?>
+
 </body>
 
 </html>

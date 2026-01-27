@@ -92,9 +92,11 @@ class ControllUser  extends BaseController
 
      if ($resultRegister) {
 
-        $_SESSION['username'] = $username;
-
-         $this->SetCookieToUser($token);
+         if($role != "admin"){
+             $_SESSION['username'] = $username;
+             
+            $this->SetCookieToUser($token);
+        }
 
      } else {
          return ['invalidRegister' => 'فشل انشاء حساب'];

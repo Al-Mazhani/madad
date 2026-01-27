@@ -18,8 +18,7 @@ class BaseController
     // Check IF ID has error
     protected function validateID($id): void
     {
-        $lenghtID = strlen($id);
-        if ($lenghtID !== 27) {
+        if (strlen($id) !== 27) {
             $this->NotAllowDisplayPage();
         }
     }
@@ -30,10 +29,14 @@ class BaseController
     }
     public function findByID($id)
     {
-        $cleanID = $this->validateID($id);
+        $this->validateID($id);
+
         $resutlFindByID = $this->model->findByID($id);
+
         if (empty($resutlFindByID)) {
+
             $this->NotAllowDisplayPage();
+
         }
         return $resutlFindByID;
     }
@@ -80,7 +83,7 @@ class BaseController
             return ['hasErrorInSearch' => 'البحث غير صالح'];
         }
 
-        return $this->model->search($name);
+        return $this->model->search($this->processSearch($name));
     }
     protected function CheckFileCacheExists($FileCacheName)
     {

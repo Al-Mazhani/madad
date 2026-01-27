@@ -72,4 +72,4 @@ $Message;
         </div>
     </section>
 </main>
-<!-- <script src="public/js/mainAdmin.js"></script> -->
+<?php include(__DIR__ . '/../includes/footerAdmin.php');?>

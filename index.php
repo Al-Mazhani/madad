@@ -9,7 +9,6 @@
     include_once  'src/app/Controller/controllerAuthor.php';
     include_once  'src/app/Controller/controllAdmin.php';
     include_once  'src/app/Controller/ControllUser.php';
-    include_once  'functions/functions.php';
     require_once  'config/database.php';
     include 'validated/Request.php';
     include 'src/app/helpers/handlingFiles.php';
@@ -21,8 +20,8 @@
     $ModelAdmin = new ModelAdmin($database);
     $controllAdmin = new controllAdmin($ModelAdmin);
     $ModelBook = new ModelBook($database);
-    $controllBook = new ControllBook($ModelBook);
     $ModelAuthor = new ModelAuthor($database);
+    $controllBook = new ControllBook($ModelBook);
     $controllAuthor = new ControllerAuthor($ModelAuthor);
 
     $URL = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -119,8 +118,9 @@
 
             case Route::book_ditles->value:
 
-                if ($_GET['bookID']) {
+                if (isset($_GET['bookID'])) {
                     $id = $_GET['bookID'];
+                    $infoBook = $controllBook->getInfoBookByID($id);
                 }
                 if (isset($_POST['idDownloadBook'])) {
                     $controllBook->incrementDonwnload($_POST['idDownloadBook']);
@@ -129,7 +129,6 @@
                     $controllBook->incrementReadBook($_POST['idReadBook']);
                 }
                 $OtherBooks = $controllBook->OtherBooks();
-                $infoBook = $controllBook->getInfoBookByID($id);
                 $id_category = $infoBook['category_public_id'];
                 $bookByCategory = $controllBook->getBookByCategory($id_category);
                 require_once('src/app/view/' . $route[$URL]);
@@ -214,7 +213,7 @@
             case Route::pageAdminAddAdmin->value:
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (isset($_POST['btnAddNewAdmin'])) {
-                        $controllAdmin->create($_POST['adminName'], $_POST['adminEmail'], $_POST['adminPassword'], $_POST['role']);
+                      $message = $controllAdmin->create($_POST['adminName'], $_POST['adminEmail'], $_POST['adminPassword'], $_POST['role']);
                     }
                 }
                 require_once('src/app/view/' . $route[$URL]);
@@ -223,6 +222,9 @@
                 $allAuthors = $controllAuthor->getAll();
                 if (isset($_GET['search-for'])) {
                     $resultSearchAuthor = $controllAuthor->search($_GET['search-for']);
+                }
+                if(isset($_GET['deleteAuht'])){
+                    $controllAuthor->delete($_GET['deleteAuht']);
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;

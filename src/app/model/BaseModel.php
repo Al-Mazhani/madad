@@ -31,4 +31,12 @@ class BaseModel
         $stmt->execute([$id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function checkIDExit($IDExit) {
+        $QueryCheckIDExit = "SELECT * FROM $this->table  WHERE $this->primaryKey = :Public_id";
+        $stmt = $this->database->prepare($QueryCheckIDExit);
+        $stmt->execute([':Public_id' => $IDExit]);
+        $stmt->fetch();
+        $ExitID = $stmt->rowCount();
+        return ($ExitID) ? true : false;
+    }
 }

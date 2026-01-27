@@ -93,3 +93,4 @@
         </div>
     </section>
 </main>
+<?php include(__DIR__ . '/../includes/footerAdmin.php');?>

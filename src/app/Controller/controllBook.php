@@ -28,8 +28,32 @@ class ControllBook extends BaseController
 
         return null;
     }
-    private function validateFileInputs($dataAddBook)
+    private function validateFileInputBook($dataAddBook)
     {
+
+        //End Part check Image
+        //Start Part check Book
+        if (!isset($dataAddBook['book']) || $dataAddBook['book']['size'] == 0) {
+
+            return ['hasFileEmpty' => 'يرجاء إدخال الكتاب'];
+        }
+
+        $bookName = $dataAddBook['book']['name'];
+
+        $bookExt = strtolower(pathinfo($bookName, PATHINFO_EXTENSION));
+
+        $allowedExtBook = ["pdf", "zip"];
+
+        if (!in_array($bookExt, $allowedExtBook)) {
+
+            return  ['hasFileEmpty' => "خطأ في   امتداد الكتاب "];
+        }
+        //End Part check Book
+        return null;
+    }
+    private function validateFileInputImage($dataAddBook)
+    {
+
         // Start Part check Image
         if (!isset($dataAddBook['image']) || $dataAddBook['image']['size'] == 0) {
             return ['hasFileEmpty' => 'يرجاء إدخال الصورة'];
@@ -45,27 +69,6 @@ class ControllBook extends BaseController
 
             return  ['hasFileEmpty' => "خطأ في تحميل  امتداد الصورة"];
         }
-
-        //End Part check Image
-
-        //Start Part check Book
-        if (!isset($dataAddBook['book']) || $dataAddBook['book']['size'] == 0) {
-
-            return ['hasFileEmpty' => 'يرجاء إدخال الكتاب'];
-        }
-
-        $bookName = $dataAddBook['book']['name'];
-
-        $bookExt = strtolower(pathinfo($bookName, PATHINFO_EXTENSION));
-
-        $allowedExtBook = ["pdf", "zip"];
-
-        if (!in_array($bookExt, $allowedExtBook)) {
-
-            return  ['hasFileEmpty' => "خطأ في تحميل  امتداد الصورة"];
-        }
-        //End Part check Book
-        return null;
     }
     private function ValidateNumberInputs($dataAddBook)
     {
@@ -87,6 +90,13 @@ class ControllBook extends BaseController
         }
         return null;
     }
+    // private function CheckExitIDAuthorAndCategory($IDs)
+    // {
+    //     if (!$this->AuthorMolde->checkIDExit($IDs['id_author'])) {
+    //         return ['hasInputEmpty' => 'المؤلف ليس موجود'];
+    //     }
+    //     return null;
+    // }
     private function  validateBook(&$dataAddBook)
     {
         if ($errorText = $this->validateTextInputs($dataAddBook)) {
@@ -96,12 +106,18 @@ class ControllBook extends BaseController
             return ['hasInputEmpty' => 'الكتاب موجود من قبل'];
         }
 
-        if ($errorFiles = $this->validateFileInputs($dataAddBook)) {
+        if ($errorFiles = $this->validateFileInputBook($dataAddBook)) {
+            return $errorFiles;
+        }
+        if ($errorFiles = $this->validateFileInputImage($dataAddBook)) {
             return $errorFiles;
         }
         if ($errorNumeric = $this->ValidateNumberInputs($dataAddBook)) {
             return $errorNumeric;
         }
+        // if ($errorNumeric = $this->CheckExitIDAuthorAndCategory($dataAddBook)) {
+        //     return $errorNumeric;
+        // }
         return ['noInputEmpty' => true];
     }
     private function validateUpdateBook($dataUpdateBook)
@@ -113,7 +129,9 @@ class ControllBook extends BaseController
         if ($errorNumeric = $this->ValidateNumberInputs($dataUpdateBook)) {
             return $errorNumeric;
         }
-
+        // if ($errorNumeric = $this->CheckExitIDAuthorAndCategory($dataUpdateBook)) {
+        //     return $errorNumeric;
+        // }
         return ['noInputEmpty' => true];
     }
 
@@ -130,8 +148,8 @@ class ControllBook extends BaseController
         $dataAddBook['pages'] = filter_var(strtolower(trim($dataAddBook['pages'])), FILTER_SANITIZE_NUMBER_INT);
 
         $dataAddBook['image'] = $this->uploadImage($dataAddBook['image']);
+        $dataAddBook['file_size'] = filesize($dataAddBook['book']['tmp_name']) / 1024;
         $dataAddBook['book'] = $this->uploadBook($dataAddBook['book']);
-        $dataAddBook['file_size'] = filesize($dataAddBook['book']) / 1024;
     }
     // Upload Image
     private  function uploadImage(&$image)
@@ -180,6 +198,10 @@ class ControllBook extends BaseController
         if ($dataUpdateBook['image']['size'] == 0) {
             $dataUpdateBook['image'] = $dataUpdateBook['oldPathImage'];
             $dataUpdateBook['file_size'] = $dataUpdateBook['oldFileSize'];
+            return;
+        }
+        if ($error = $this->validateFileInputImage($dataUpdateBook)) {
+            return $error;
         } else {
             $dataUpdateBook['image'] = $this->uploadImage($dataUpdateBook['image']);
         }
@@ -190,29 +212,35 @@ class ControllBook extends BaseController
         if ($dataUpdateBook['book']['size'] == 0) {
             $dataUpdateBook['book'] = $dataUpdateBook['oldFileBook'];
             $dataUpdateBook['file_size'] = $dataUpdateBook['oldFileSize'];
+            return;
         }
-        else{
 
-            $book = $dataUpdateBook['book'];
-            $dataUpdateBook['file_size'] = filesize($book) / 1024;
-            $dataUpdateBook['book'] = $this->uploadBook($dataUpdateBook['book'] );
-            }
+        if ($error = $this->validateFileInputBook($dataUpdateBook)) {
+            return $error;
+        }
+
+        $book = $dataUpdateBook['book'];
+        $dataUpdateBook['file_size'] = filesize($book) / 1024;
+        $dataUpdateBook['book'] = $this->uploadBook($dataUpdateBook['book']);
     }
 
     //  Check If Come From Server And  No Error
     public function updateBook($id, $dataUpdateBook)
     {
         $hasError =  $this->validateUpdateBook($dataUpdateBook);
-        if ($hasError != true) {
+        if (!isset($hasError['hasInputEmpty'])) {
             return $hasError;
         }
 
         // Use  Data Book After Prossing
-        $this->checkExitImage($dataUpdateBook);
+        if ($error = $this->checkExitImage($dataUpdateBook)) {
+            return $error;
+        }
 
 
-
-        $this->checkExitFileBook($dataUpdateBook);
+        if ($error = $this->checkExitFileBook($dataUpdateBook)) {
+            return $error;
+        }
 
 
         $resultUpdate =  $this->modelBook->update($id, $dataUpdateBook);
