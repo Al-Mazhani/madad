@@ -37,6 +37,13 @@ class ModelUser extends BaseModel
         }
         return $result;
     }
+    public function CheckEmailExit($email){
+        $QueryCheckEmailExit = "SELECT email FROM users WHERE email = :email";
+        $stmt = $this->database->prepare($QueryCheckEmailExit);
+        $stmt->execute(['email' => $email]);
+        return ($stmt->rowCount() > 0) ? $stmt->fetch() : [];
+
+    }
    public function updateToken($newToken, $email)
     {
         $queryUpdateToken = "UPDATE users SET token = :newToken WHERE email = :email";

@@ -1,5 +1,6 @@
 <?php
-include_once 'ControllUser.php';
+    include_once 'ControllUser.php';
+
 class controllAdmin extends ControllUser
 {
     public function __construct($Model)
@@ -16,10 +17,13 @@ class controllAdmin extends ControllUser
         if ($error = $this->validatePassword($password)) {
             return $error;
         }
+
         $resultLogIn = $this->Model->checkLogin($email);
+
         if(!$resultLogIn){
          return ['filedLogin' => 'الحساب غير موجود   '];
         }
+
         if (!password_verify($password, $resultLogIn['password'])) {
             return ['filedLogin' => 'انت لست مشرف الموقع'];
         }

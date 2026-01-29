@@ -12,11 +12,16 @@ class ControllUser  extends BaseController
      $lenghtUserName =  strlen($username);
      if (empty($username)) {
          return ['hasErrorInput' => "يرجاء املاء حقل الاسم"];
-     }
-     if ($lenghtUserName < 3 || $lenghtUserName >= 30) {
-         return ['hasErrorInput' => 'يرجاء ان يكون الاسم بين 3 و 30 حرف'];
-     }
+         }
+         if ($lenghtUserName < 3 || $lenghtUserName >= 30) {
+             return ['hasErrorInput' => 'يرجاء ان يكون الاسم بين 3 و 30 حرف'];
+        }
+         if(!preg_match('/^[a-zA-Z0-9_]{3,30}$/', $username)){
 
+         return ['hasErrorInput' => " [ a - z A - Z 0 - 9 _ ] {  3 , 20 } يرجاء املاء حقل الاسم"];
+         }
+
+            return null;
      }
      public function validateEmail($email){
          
@@ -26,6 +31,7 @@ class ControllUser  extends BaseController
          if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
              return ['hasErrorInput' => 'يرجاء املاء حقل البريد'];
          }
+            return null;
  }
  public function validatePassword($password)
  {
@@ -36,11 +42,11 @@ class ControllUser  extends BaseController
      if ($lenghtPassword   < 10  || $lenghtPassword > 15) {
          return ['hasErrorInput' => 'يرجاء املا كلمة المرور  بين 10 و 15 حرف'];
      }
+            return null;
  }
  public function show()
  {
-     $allUser = $this->Model->loadAll();
-     return $allUser;
+     return $this->model->loadAll();
  }
  public function updateProfile($username, $email)
  {
@@ -51,19 +57,15 @@ class ControllUser  extends BaseController
      if($errorEmail = $this->validateEmail($email)){
         return $errorEmail;
      }
-    if(!$this->Model->update($username, $email)){
+    if(!$this->model->update($username, $email)){
      return ['updatedProfileFields' => "فشل في تعديل اسمك" ];
      }
      return ['updateProfileSuccess' => "تم تحديث اسمك" ]; 
  }
- public function search($username)
- {
-     $resultSearch = $this->Model->search($username);
- }
  // Clean Data User
  private function ProcceDataUser(&$username, &$email, &$password, &$token)
  {
-     $username = strtolower(trim($username));
+     $username = strtolower(trim(preg_replace("/[^a-zA-Z0-9_]/",'',$username)));
      $email = strtolower(filter_var($email, FILTER_SANITIZE_EMAIL));
      $password = password_hash(trim($password), PASSWORD_BCRYPT);
      $token = $this->Generate4UUID();
@@ -74,25 +76,38 @@ class ControllUser  extends BaseController
      header("Location:/Madad/");
      exit();
  }
+ private function CheckExitEmail($email){
+
+    $resultExitEmail = $this->model->CheckEmailExit($email);
+    if($resultExitEmail['email'] === $email){
+        return ['hasErrorInput' => 'البريد الالكتروني موجود بالفعل'];
+    }
+    return [];
+
+ }
  public function create($username, $email, $password, $role)
  {
-     if($error = $this->ValidateInputUsername($username)){
-         return $error;
+     if($errorUsername = $this->ValidateInputUsername($username)){
+         return $errorUsername;
      }
-     if($error = $this->validateEmail($email)){
-         return $error;
+     if($errorEmail = $this->validateEmail($email)){
+         return $errorEmail;
      }
-     if($error = $this->validatePassword($password)){
-         return $error;
+     if($errorExitEmail = $this->CheckExitEmail($email)){
+         return $errorExitEmail;
      }
+     if($errorPassword = $this->validatePassword($password)){
+         return $errorPassword;
+     }
+
 
      $this->ProcceDataUser($username, $email, $password, $token);
 
-     $resultRegister =  $this->Model->insert($username, $email, $password, $token, $role);
+     $resultRegister =  $this->model->insert($username, $email, $password, $token, $role);
 
      if ($resultRegister) {
 
-         if($role != "admin"){
+        if($role != "admin"){
              $_SESSION['username'] = $username;
              
             $this->SetCookieToUser($token);
@@ -118,7 +133,7 @@ class ControllUser  extends BaseController
          return $error;
      }
 
-     $userLogggedIn = $this->Model->checkLogin($email);
+     $userLogggedIn = $this->model->checkLogin($email);
     if(!$userLogggedIn){
 
          return ['filedLogin' => 'يرجاء انشاء حساب اولاً'];
@@ -141,9 +156,13 @@ class ControllUser  extends BaseController
 
  public function checkToken($token)
  {
-     $getToken = $this->Model->checkToken($token);
-    $_SESSION['user_id'] = $getToken['user_id'];
-    $_SESSION['username'] = $getToken['username'];
-    $_SESSION['email'] = $getToken['email'];
+     $getToken = $this->model->checkToken($token);
+     if(!empty($getToken)){
+
+        $_SESSION['user_id'] = $getToken['user_id'];
+        $_SESSION['username'] = $getToken['username'];
+        $_SESSION['email'] = $getToken['email'];
+
+      }
  }
 }
