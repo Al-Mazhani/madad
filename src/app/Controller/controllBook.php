@@ -154,14 +154,13 @@ class ControllBook extends BaseController
     // Upload Image
     private  function uploadImage(&$image)
     {
-        $feedBackUploadImage = HandlingFiles::uploadImage($image, __DIR__ . '/../../../uploads/image_book/', 'uploads/image_book/');
+        $feedBackUploadImage = HandlingFiles::UploadFile($image, __DIR__ . '/../../../uploads/image_book/', 'uploads/image_book/');
         return $feedBackUploadImage;
     }
     // Upload Book
     private  function uploadBook(&$book)
     {
-        $feedBackUploadBook = HandlingFiles::uploadBook($book, __DIR__ . '/../../../uploads/book_url/', 'uploads/book_url/');
-        return $feedBackUploadBook;
+        return HandlingFiles::UploadFile($book, __DIR__ . '/../../../uploads/book_url/', 'uploads/book_url/');
     }
 
     public function  getInfoBookAndAuthor()
@@ -200,9 +199,10 @@ class ControllBook extends BaseController
             $dataUpdateBook['file_size'] = $dataUpdateBook['oldFileSize'];
             return;
         }
-        if ($error = $this->validateFileInputImage($dataUpdateBook)) {
-            return $error;
+        if ($errorImage = $this->validateFileInputImage($dataUpdateBook)) {
+            return $errorImage;
         } else {
+
             $dataUpdateBook['image'] = $this->uploadImage($dataUpdateBook['image']);
         }
     }
@@ -219,28 +219,31 @@ class ControllBook extends BaseController
             return $error;
         }
 
-        $book = $dataUpdateBook['book'];
-        $dataUpdateBook['file_size'] = filesize($book) / 1024;
+        $dataUpdateBook['file_size'] = $dataUpdateBook['book']['size'] / 1024;
         $dataUpdateBook['book'] = $this->uploadBook($dataUpdateBook['book']);
     }
 
     //  Check If Come From Server And  No Error
     public function updateBook($id, $dataUpdateBook)
     {
-        $hasError =  $this->validateUpdateBook($dataUpdateBook);
-        if (!isset($hasError['hasInputEmpty'])) {
-            return $hasError;
+
+        $hasError = $this->validateUpdateBook($dataUpdateBook);
+
+        if (!isset($hasError['noInputEmpty'])) {
+            return $hasError; 
         }
+
 
         // Use  Data Book After Prossing
-        if ($error = $this->checkExitImage($dataUpdateBook)) {
-            return $error;
+        if ($errorImage = $this->checkExitImage($dataUpdateBook)) {
+            return $errorImage;
         }
 
 
-        if ($error = $this->checkExitFileBook($dataUpdateBook)) {
-            return $error;
+        if ($errorBook = $this->checkExitFileBook($dataUpdateBook)) {
+            return $errorBook;
         }
+
 
 
         $resultUpdate =  $this->modelBook->update($id, $dataUpdateBook);

@@ -42,8 +42,8 @@ class ControllerAuthor extends BaseController
   }
   private function uploadImage($image)
   {
-    $feedBackUploadImage = HandlingFiles::uploadImage($image, __DIR__ . '/../../../uploads/Author_profile/', 'uploads/Author_profile/');
-    return $feedBackUploadImage;
+    return HandlingFiles::UploadFile($image, __DIR__ . '/../../../uploads/Author_profile/', 'uploads/Author_profile/');
+    
   }
   private function ProcessInputsAuhtor($name, $image, $bio, $public_id = null, $oldImage = null)
   {

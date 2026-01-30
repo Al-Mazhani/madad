@@ -18,7 +18,7 @@ class controllAdmin extends ControllUser
             return $error;
         }
 
-        $resultLogIn = $this->Model->checkLogin($email);
+        $resultLogIn = $this->model->checkLogin($email);
 
         if(!$resultLogIn){
          return ['filedLogin' => 'الحساب غير موجود   '];

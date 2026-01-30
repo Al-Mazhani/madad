@@ -1,12 +1,11 @@
 <?php
 class ControllUser  extends BaseController
 {
- protected $Model;
  public function __construct($Model)
- {
-     $this->Model = $Model;
+  {
      parent::__construct($Model);
- }
+  }
+  
  public  function ValidateInputUsername($username)
  {
      $lenghtUserName =  strlen($username);
@@ -21,7 +20,7 @@ class ControllUser  extends BaseController
          return ['hasErrorInput' => " [ a - z A - Z 0 - 9 _ ] {  3 , 20 } يرجاء املاء حقل الاسم"];
          }
 
-            return null;
+            return [];
      }
      public function validateEmail($email){
          
@@ -31,7 +30,7 @@ class ControllUser  extends BaseController
          if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
              return ['hasErrorInput' => 'يرجاء املاء حقل البريد'];
          }
-            return null;
+            return [];
  }
  public function validatePassword($password)
  {
@@ -42,7 +41,7 @@ class ControllUser  extends BaseController
      if ($lenghtPassword   < 10  || $lenghtPassword > 15) {
          return ['hasErrorInput' => 'يرجاء املا كلمة المرور  بين 10 و 15 حرف'];
      }
-            return null;
+            return [];
  }
  public function show()
  {

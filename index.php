@@ -1,5 +1,6 @@
     <?php
     session_start();
+    
     include_once  'src/app/model/ModelBook.php';
     include_once  'src/app/model/ModelUser.php';
     include_once  'src/app/model/ModelAuthor.php';
@@ -13,14 +14,14 @@
     include 'validated/Request.php';
     include 'src/app/helpers/handlingFiles.php';
     $IP_address_user = $_SERVER['REMOTE_ADDR'];
-    $database  = databaseConnection();
 
-    $ModelUser = new ModelUser($database);
+
+    $ModelUser = new ModelUser();
     $controllUser = new ControllUser($ModelUser);
-    $ModelAdmin = new ModelAdmin($database);
+    $ModelAdmin = new ModelAdmin();
     $controllAdmin = new controllAdmin($ModelAdmin);
-    $ModelBook = new ModelBook($database);
-    $ModelAuthor = new ModelAuthor($database);
+    $ModelBook = new ModelBook();
+    $ModelAuthor = new ModelAuthor();
     $controllBook = new ControllBook($ModelBook);
     $controllAuthor = new ControllerAuthor($ModelAuthor);
 
@@ -249,10 +250,10 @@
                 if (isset($_GET['ID'])) {
                     $id = $_GET['ID'];
                     $updateBook = $controllBook->findByID($id);
-                }
+                
                 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateBook'])) {
                     $id = $_GET['ID'] ?? 0;
-                
+
                         $dataUpdateBook  = [
                         "nameBook" => $_POST['bookName'],
                         "publish_year" => $_POST['publish_year'],
@@ -269,6 +270,7 @@
                         "book" => $_FILES['book_url']
                     ];
                     $Message = $controllBook->updateBook($id,$dataUpdateBook);
+                }
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
