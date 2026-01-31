@@ -4,7 +4,7 @@
         <div class="header-books">
             <ul>
                 <?php foreach ($allCategory as $rang): ?>
-                    <li class="rang-author"><a href="category?id_category=<?= (int)$rang['id_category'] ?>"><?php echo htmlspecialchars($rang['title_category']) ?> </a></li>
+                    <li class="rang-author"><a href="category?id_category=<?= htmlspecialchars($rang['id_category']) ?>"><?php echo htmlspecialchars($rang['title_category']) ?> </a></li>
                 <?php endforeach; ?>
             </ul>
         </div>
@@ -15,7 +15,7 @@
         <div class="search-book">
             <form action="/Madad/search" method="GET">
                 <input type="text" name="name" id="search-for" placeholder="ابحث عن كتاب" required>
-                <button type="submit" name="search" class="submit-search"> بحث</button>
+                <button type="submit"  class="submit-search"> بحث</button>
             </form>
         </div>
     </section>

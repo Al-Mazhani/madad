@@ -1,9 +1,9 @@
 <?php
 class ControllUser  extends BaseController
 {
- public function __construct($Model)
+ public function __construct($model)
   {
-     parent::__construct($Model);
+     parent::__construct($model);
   }
   
  public  function ValidateInputUsername($username)
@@ -12,7 +12,7 @@ class ControllUser  extends BaseController
      if (empty($username)) {
          return ['hasErrorInput' => "يرجاء املاء حقل الاسم"];
          }
-         if ($lenghtUserName < 3 || $lenghtUserName >= 30) {
+         if ($lenghtUserName < 3 || $lenghtUserName > 30) {
              return ['hasErrorInput' => 'يرجاء ان يكون الاسم بين 3 و 30 حرف'];
         }
          if(!preg_match('/^[a-zA-Z0-9_]{3,30}$/', $username)){
@@ -107,7 +107,7 @@ class ControllUser  extends BaseController
      if ($resultRegister) {
 
         if($role != "admin"){
-             $_SESSION['username'] = $username;
+            //  $_SESSION['username'] = $username;
              
             $this->SetCookieToUser($token);
         }
@@ -124,12 +124,12 @@ class ControllUser  extends BaseController
  }
  public function isLoggedIn($email, $password)
  {
-     if($error = $this->validateEmail($email)){
-         return $error;
+     if($errorEmail = $this->validateEmail($email)){
+         return $errorEmail;
      }
 
-     if ($error = $this->validatePassword($password)){
-         return $error;
+     if ($errorPassword = $this->validatePassword($password)){
+         return $errorPassword;
      }
 
      $userLogggedIn = $this->model->checkLogin($email);

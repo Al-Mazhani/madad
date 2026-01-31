@@ -2,7 +2,7 @@
 class ControllerAuthor extends BaseController
 {
   public $model;
-  function __construct($model)
+ public function __construct($model)
   {
     $this->model = $model;
     parent::__construct($model);
@@ -22,10 +22,8 @@ class ControllerAuthor extends BaseController
     if ($image['size'] == 0) {
       return "يرجاء ادخال الصورة";
     }
-    $imgName = $image['name'];
-    $imgExt  = strtolower(pathinfo($imgName, PATHINFO_EXTENSION));
-    $allowed = ['jpg', 'jpeg', 'png', 'webp'];
-    if (!in_array($imgExt, $allowed)) {
+
+    if ($this->CheckAllowedExtensionImage($image)) {
       return  "خطأ في تحميل  امتداد الصورة";
     }
     return null;
@@ -71,11 +69,12 @@ class ControllerAuthor extends BaseController
 
     return $this->model->loadAllAuthorBook($id);
   }
+  // Function To Show Ditels Author
   public function findByID($id)
   {
     $this->validateID($id);
     
-    $resultInofAuhtor = $this->model->loadInfoAuthorByID($id);
+    $resultInofAuhtor = $this->model->loadInfoAuthorByID($this->CleanInputText($id));
 
     if (empty($resultInofAuhtor)){
 

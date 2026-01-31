@@ -22,6 +22,14 @@ class BaseController
             $this->NotAllowDisplayPage();
         }
     }
+    protected function CleanInputText($Text)
+    {
+        return trim(strip_tags($Text));
+    }
+    protected function CleanInputNumber($number)
+    {
+        return preg_replace('/[^0-9 . ]/', '', $number);
+    }
     // Generate One UUID 3 bit
     protected function GenerateOneUUID($sizeUUID)
     {
@@ -36,7 +44,6 @@ class BaseController
         if (empty($resutlFindByID)) {
 
             $this->NotAllowDisplayPage();
-
         }
         return $resutlFindByID;
     }
@@ -60,11 +67,7 @@ class BaseController
         }
         return true;
     }
-    protected function processSearch($search)
-    {
-        $cleanSearch =  htmlspecialchars($search);
-        return $cleanSearch;
-    }
+
     public function getAll()
     {
         return $this->model->loadAll();
@@ -83,25 +86,43 @@ class BaseController
             return ['hasErrorInSearch' => 'البحث غير صالح'];
         }
 
-        return $this->model->search($this->processSearch($name));
+        return $this->model->search($this->CleanInputText($name));
     }
     protected function CheckFileCacheExists($FileCacheName)
     {
 
         return (file_exists($FileCacheName)) ? true : false;
     }
-    protected function MakeFileCache( $FileCacheName, $data)
+    protected function MakeFileCache($FileCacheName, $data)
     {
-        file_put_contents($FileCacheName,json_encode($data));
+        file_put_contents($FileCacheName, json_encode($data));
     }
-    protected function GetDataFromFileCahce( $FileCacheName)
+    protected function GetDataFromFileCahce($FileCacheName)
     {
-        return json_decode(file_get_contents($FileCacheName),true);   
+        return json_decode(file_get_contents($FileCacheName), true);
     }
     protected function DeleteFileCache($FileCacheName)
     {
-        if($this->CheckFileCacheExists($FileCacheName)){
-            unlink($FileCacheName);   
+        if ($this->CheckFileCacheExists($FileCacheName)) {
+            unlink($FileCacheName);
         }
+    }
+    protected function CheckAllowedExtensionImage($image)
+    {
+
+        $imgName = $image['name'];
+        $imgExt  = strtolower(pathinfo($imgName, PATHINFO_EXTENSION));
+        $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+
+        return (in_array($imgExt, $allowed)) ? true : false;
+    }
+    protected function CheckAllowedExtensionBook($book)
+    {
+
+        $bookName = $book['name'];
+        $bookExt = strtolower(pathinfo($bookName, PATHINFO_EXTENSION));
+        $allowedExtBook = ["pdf", "zip"];
+
+        return (in_array($bookExt, $allowedExtBook)) ? true : false;
     }
 }

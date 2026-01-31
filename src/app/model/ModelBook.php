@@ -87,7 +87,7 @@ class ModelBook   extends BaseModel
     $stmt->execute([ "IDUser" => $IDUser, "IDBook" => $IDBook, "incrment" => 1]);
   }
   // Load Info Book  By ID Book To Show  in Page Dititles book
-  function infoBook($idBook)
+  public function infoBook($idBook)
   {
     $queryInfoBook = "SELECT * FROM book_info_view where book_public_id  =  :id limit 1";
     $stmt = database::Connection()->prepare($queryInfoBook);
@@ -114,7 +114,7 @@ class ModelBook   extends BaseModel
   }
 
   // Increment To Know How Much user Download This Book
-  function incrementDonwnload($id)
+  public function incrementDonwnload($id)
   {
     $queryIncrementDonwnload = "UPDATE books SET downloads = COALESCE(downloads,0) + 1 WHERE public_id = :book_public_id";
     $stmt = database::Connection()->prepare($queryIncrementDonwnload);
