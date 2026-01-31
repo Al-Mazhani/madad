@@ -248,8 +248,8 @@
                 $authors  = $controllAuthor->getAll();
                 $allCategory = $controllBook->getAllCategory();
                 if (isset($_GET['ID'])) {
-                    $id = $_GET['ID'];
-                    $updateBook = $controllBook->findByID($id);
+                 
+                    $updateBook = $controllBook->findByID($_GET['ID']);
                 
                 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateBook'])) {
                     $id = $_GET['ID'] ?? 0;

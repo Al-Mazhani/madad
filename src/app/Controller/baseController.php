@@ -110,8 +110,7 @@ class BaseController
     protected function CheckAllowedExtensionImage($image)
     {
 
-        $imgName = $image['name'];
-        $imgExt  = strtolower(pathinfo($imgName, PATHINFO_EXTENSION));
+        $imgExt  = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
         $allowed = ['jpg', 'jpeg', 'png', 'webp'];
 
         return (in_array($imgExt, $allowed)) ? true : false;
@@ -119,8 +118,7 @@ class BaseController
     protected function CheckAllowedExtensionBook($book)
     {
 
-        $bookName = $book['name'];
-        $bookExt = strtolower(pathinfo($bookName, PATHINFO_EXTENSION));
+        $bookExt = strtolower(pathinfo($book['name'], PATHINFO_EXTENSION));
         $allowedExtBook = ["pdf", "zip"];
 
         return (in_array($bookExt, $allowedExtBook)) ? true : false;
