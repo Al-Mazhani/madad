@@ -9,8 +9,11 @@ $Message;
         <div class="container">
 
             <div class="box-add-book">
-                <?php if (!empty($Message)): ?>
-                    <p class="success"> <?php echo $Message ?></p>
+                <?php if (isset($Message['successAdd'])): ?>
+                    <p class="success"> <?php echo $Message['successAdd'] ?></p>
+                <?php endif; ?>
+                <?php if (isset($Message['successFild'])): ?>
+                    <p class="success"> <?php echo $Message['successFild'] ?></p>
                 <?php endif; ?>
                 <?php if (isset($resultUpdateAuhtor['successUpdate'])): ?>
                     <p><?php echo $resultUpdateAuhtor['successUpdate'] ?></p>

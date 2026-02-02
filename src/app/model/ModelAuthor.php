@@ -14,7 +14,8 @@ class ModelAuthor extends BaseModel
   {
     $queryAddAuthor  = "INSERT INTO 	authors (name,image,bio,public_id) VALUES (:name,:image,:bio,:public_id)";
     $stmt = database::Connection()->prepare($queryAddAuthor);
-    return $stmt->execute([':name' => $cleanData['name'], ':image' => $cleanData['pathImage'], ':bio' => $cleanData['bio'], ':public_id' => $cleanData['public_id']]);
+     $stmt->execute([':name' => $cleanData['name'], ':image' => $cleanData['pathImage'], ':bio' => $cleanData['bio'], ':public_id' => $cleanData['public_id']]);
+     return ($stmt->rowCount()) ? true : false;
   }
 
   public function loadInfoAuthorByID($id)

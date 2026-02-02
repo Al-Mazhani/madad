@@ -10,33 +10,33 @@ class ControllerAuthor extends BaseController
   private function validateInputText($name, $bio)
   {
     if (empty($name)) {
-      return "يرجاء إدخال اسم المؤلف";
+      return  ['hasFileEmpty' => "يرجاء إدخال اسم المؤلف"];
     }
     if (empty($bio)) {
-      return "يرجاء ادخال وصف المؤلف";
+      return ['hasFileEmpty' => "يرجاء ادخال وصف المؤلف"];
     }
     return null;
   }
   private function validateInputImage($image)
   {
     if ($image['size'] == 0) {
-      return "يرجاء ادخال الصورة";
+      return  ['hasFileEmpty' => "يرجاء ادخال الصورة"];
     }
 
-    if ($this->CheckAllowedExtensionImage($image)) {
-      return  "خطأ في تحميل  امتداد الصورة";
+    if (!$this->CheckAllowedExtensionImage($image)) {
+      return ['hasFileEmpty' => "خطأ في تحميل  امتداد الصورة"];
     }
     return null;
   }
   private function validateAuthor($name, $bio, $image)
   {
     if ($error = $this->validateInputText($name, $bio)) {
-      return ['hasInputEmpty' => $error];
+      return  $error;
     }
     if ($error = $this->validateInputImage($image)) {
-      return ['hasFileEmpty' => $error];
+      return $error;
     }
-    return null;
+    return [];
   }
   private function uploadImage($image)
   {
@@ -89,12 +89,14 @@ class ControllerAuthor extends BaseController
   public function addAuthor($nameAuthor, $imageURLAuthro, $bio)
   {
     if ($error = $this->validateAuthor($nameAuthor, $bio, $imageURLAuthro)) {
-      return $error['hasInputEmpty'];
+      return $error;
     }
     $public_id = "";
+    
     $data = $this->ProcessInputsAuhtor($nameAuthor, $imageURLAuthro, $bio, $public_id);
+    
     $result = $this->model->insert($data);
-    return ($result) ? "تم إضافة المؤلف بنجاح" : "فشل إضافة المؤلف";
+    return ($result) ? [ 'successAdd' => "تم إضافة المؤلف بنجاح" ] : [ 'successFild' =>  "فشل إضافة المؤلف"];
   }
 
   public function update($public_id, $name, $image, $oldImage, $bio)

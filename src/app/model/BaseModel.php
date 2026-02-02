@@ -4,7 +4,7 @@ class BaseModel
     protected $database;
     protected $table;
     protected $primaryKey;
-    function  __construct( $table, $primaryKey)
+   public function  __construct( $table, $primaryKey)
     {
     
         $this->table = $table;

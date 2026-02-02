@@ -1,6 +1,6 @@
     <?php
     session_start();
-    
+
     include_once  'src/app/model/ModelBook.php';
     include_once  'src/app/model/ModelUser.php';
     include_once  'src/app/model/ModelAuthor.php';
@@ -12,6 +12,8 @@
     include_once  'src/app/Controller/ControllUser.php';
     require_once  'config/database.php';
     include 'validated/Request.php';
+    require  'src/app/verfiy-email/autoload.php';
+
     include 'src/app/helpers/handlingFiles.php';
     $IP_address_user = $_SERVER['REMOTE_ADDR'];
 
@@ -21,8 +23,8 @@
     $ModelAdmin = new ModelAdmin();
     $controllAdmin = new controllAdmin($ModelAdmin);
     $ModelBook = new ModelBook();
-    $ModelAuthor = new ModelAuthor();
     $controllBook = new ControllBook($ModelBook);
+    $ModelAuthor = new ModelAuthor();
     $controllAuthor = new ControllerAuthor($ModelAuthor);
 
     $URL = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -49,6 +51,7 @@
         case pageAdminAddAdmin = '/Madad/addAdmin';
         case errorURL = '/Madad/errorURL';
         case updateBook = '/Madad/update';
+        case verifyEmail = '/Madad/verify-email';
     }
     $route = [
         Route::home->value => 'home.php',
@@ -70,6 +73,7 @@
         Route::pageAdmin->value => 'admin.php',
         Route::pageAdminAddBook->value => 'addBook.php',
         Route::updateBook->value => 'updateBook.php',
+        Route::verifyEmail->value => 'verify-email.php',
         '/Madad/addAdmin' => 'addAdmin.php',
     ];
     if (array_key_exists($URL, $route)) {
@@ -204,7 +208,7 @@
                         "book" => $_FILES['book_url'],
                         "language" => $_POST['language']
                     ];
-         
+
                     $Message  = $controllBook->addBook($dataAddBook);
                 }
                 $allCategory = $controllBook->getAllCategory();
@@ -214,7 +218,7 @@
             case Route::pageAdminAddAdmin->value:
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (isset($_POST['btnAddNewAdmin'])) {
-                      $message = $controllAdmin->create($_POST['adminName'], $_POST['adminEmail'], $_POST['adminPassword'], $_POST['role']);
+                        $message = $controllAdmin->create($_POST['adminName'], $_POST['adminEmail'], $_POST['adminPassword'], $_POST['role']);
                     }
                 }
                 require_once('src/app/view/' . $route[$URL]);
@@ -224,7 +228,7 @@
                 if (isset($_GET['search-for'])) {
                     $resultSearchAuthor = $controllAuthor->search($_GET['search-for']);
                 }
-                if(isset($_GET['deleteAuht'])){
+                if (isset($_GET['deleteAuht'])) {
                     $controllAuthor->delete($_GET['deleteAuht']);
                 }
                 require_once('src/app/view/' . $route[$URL]);
@@ -248,29 +252,29 @@
                 $authors  = $controllAuthor->getAll();
                 $allCategory = $controllBook->getAllCategory();
                 if (isset($_GET['ID'])) {
-                 
+
                     $updateBook = $controllBook->findByID($_GET['ID']);
-                
-                if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateBook'])) {
-                    $id = $_GET['ID'] ?? 0;
+
+                    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateBook'])) {
+                        $id = $_GET['ID'] ?? 0;
 
                         $dataUpdateBook  = [
-                        "nameBook" => $_POST['bookName'],
-                        "publish_year" => $_POST['publish_year'],
-                        "id_category" => $_POST['id_category'],
-                        "id_author" => $_POST['id_author'],
-                        "pages" => $_POST['pages'],
-                        "description" => $_POST['description'],
-                        "file_type" => $_POST['file_type'],
-                        "oldFileBook" => $_POST['oldFileBook'],
-                        "oldFileSize" => $_POST['oldFileSize'],
-                        "oldPathImage" => $_POST['oldPathImage'],
-                        "language" => $_POST['language'],
-                        "image" => $_FILES['image_url'],
-                        "book" => $_FILES['book_url']
-                    ];
-                    $Message = $controllBook->updateBook($id,$dataUpdateBook);
-                }
+                            "nameBook" => $_POST['bookName'],
+                            "publish_year" => $_POST['publish_year'],
+                            "id_category" => $_POST['id_category'],
+                            "id_author" => $_POST['id_author'],
+                            "pages" => $_POST['pages'],
+                            "description" => $_POST['description'],
+                            "file_type" => $_POST['file_type'],
+                            "oldFileBook" => $_POST['oldFileBook'],
+                            "oldFileSize" => $_POST['oldFileSize'],
+                            "oldPathImage" => $_POST['oldPathImage'],
+                            "language" => $_POST['language'],
+                            "image" => $_FILES['image_url'],
+                            "book" => $_FILES['book_url']
+                        ];
+                        $Message = $controllBook->updateBook($id, $dataUpdateBook);
+                    }
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
@@ -279,6 +283,18 @@
                 if (isset($_GET['id'])) {
                     $controllUser->findByID($_GET['id']);
                 }
+                require_once('src/app/view/' . $route[$URL]);
+                break;
+            case Route::verifyEmail->value:
+                    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm-email'])){
+                        $code = "";
+                        $code .= $_POST['code1'];
+                        $code .= $_POST['code2'];
+                        $code .= $_POST['code3'];
+                        $code .= $_POST['code4'];
+                        $code .= $_POST['code5'];
+                        $code .= $_POST['code6'];
+                    }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
             default:

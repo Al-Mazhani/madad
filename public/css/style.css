@@ -816,6 +816,64 @@ ul li a:hover {
 }
 
 /* End Page Register */
+/* Start Page Verify Email */
+.container .verify-email{
+  position: relative;
+  top: 14rem;
+  left: 25vw; 
+  width: 30rem;
+  height: 15rem;
+  border: 1px solid var(--btn);
+  box-shadow: var(--box-shadow);
+  text-align: center;
+}
+.verify-email .box-codes{
+   text-align: center;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   margin-top: 6rem;
+
+}
+.verify-email input{
+   width: 10%;
+   margin: 0px 0.2rem;
+   padding: 0.2rem;
+   border-radius: 5px ;
+   border: 1px solid var(--btn);
+  text-align: center;
+
+}
+.verify-email input:focus{
+   outline: 1px solid var(--btn);
+   border: none;
+}
+.btn-verify-email{
+   width: 90%;
+   padding: 0.5rem 0rem;
+   margin-top: 2rem;
+   background-color: var(--btn);
+   border: none;
+   border-radius:var(--Radius) ;
+   color: var(--color-bg);
+   
+}
+.message-code{
+   width: 30rem;
+   height: 15rem;
+   border-radius: 1px solid var(--btn);
+   border: 1px solid var(--btn);
+   padding: 1rem;
+}
+.message-code img{
+   position: relative;
+   left: 35%;
+   width: 30%;
+   height: 50%;
+   border-radius:1rem ;
+   
+}
+/* End Page Verify Email */
 /*Footer page */
 footer {
    width: 100%;
