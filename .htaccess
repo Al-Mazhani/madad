@@ -3,3 +3,13 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+<IfModule mod_expires.c>
+ ExpiresActive On
+ <FilesMatch "\.css$">
+    ExpiresDefault "access plus 1 year"
+ </FilesMatch>
+ <FilesMatch "\.js$">
+    ExpiresDefault "access plus 1 year"
+ </FilesMatch>
+</IfModule>

@@ -123,7 +123,7 @@ class ControllUser  extends BaseController
             $this->mailer->Host = 'smtp.gmail.com';
             $this->mailer->SMTPAuth = true;
             $this->mailer->Username = $SendEmailFrom;
-            $this->mailer->Password = 'App Password';
+            $this->mailer->Password = 'whshtreawzhshmwy';
             $this->mailer->SMTPSecure = 'tls';
             $this->mailer->Port = 587;
 
@@ -131,7 +131,7 @@ class ControllUser  extends BaseController
             return ['hasInputEmpty' => 'لم يتم إرسال الرمز'];
         }
     }
-    public function infoMessage($SendEmailFrom, $userEmail, $code)
+    public function SendMessageToEmail($SendEmailFrom, $userEmail, $code)
     {
         if($ErrorSendCode = $this->SettingSMTP($SendEmailFrom)){
             return $ErrorSendCode;
@@ -145,6 +145,9 @@ class ControllUser  extends BaseController
         $this->mailer->send();
 
         return [];
+    }
+    protected function CheckVerifyCode(){
+    
     }
     public function create($username, $email, $password, $role)
     {
@@ -161,15 +164,6 @@ class ControllUser  extends BaseController
             return $errorPassword;
         }
         // Send Code To User Email
-        $code = $this->MakeCodeForEmail();
-        $_SESSION['confrim-code'] = $code;
-        if($ErrorSendCode = $this->infoMessage("hussein@gmail.com", $email, $code)){
-            return $ErrorSendCode;
-        }
-
-        if (!$this->GetCodeEmail($code)) {
-            return ['FieldConfirmCode' => 'كود التحقق غير صحيح'];
-        }
 
 
         $this->ProcceDataUser($username, $email, $password, $token);

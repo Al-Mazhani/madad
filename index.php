@@ -294,6 +294,7 @@
                         $code .= $_POST['code4'];
                         $code .= $_POST['code5'];
                         $code .= $_POST['code6'];
+                        $controllUser->GetCodeEmail($code);
                     }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
