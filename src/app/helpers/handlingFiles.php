@@ -38,7 +38,7 @@ class HandlingFiles
     private static function compressionBook($book)
     {
         $outputFile = dirname($book) . DIRECTORY_SEPARATOR . "compressed_" . basename($book);
-        $command = "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$outputFile tputFile\" \"$book\"";
+        $command = "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$outputFile\" \"$book\"";
         shell_exec($command);
         
         if (file_exists($outputFile)) {

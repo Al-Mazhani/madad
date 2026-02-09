@@ -1,6 +1,5 @@
     <?php
     session_start();
-
     include_once  'src/app/model/ModelBook.php';
     include_once  'src/app/model/ModelUser.php';
     include_once  'src/app/model/ModelAuthor.php';
@@ -15,8 +14,6 @@
     require  'src/app/verfiy-email/autoload.php';
 
     include 'src/app/helpers/handlingFiles.php';
-    $IP_address_user = $_SERVER['REMOTE_ADDR'];
-
 
     $ModelUser = new ModelUser();
     $controllUser = new ControllUser($ModelUser);

@@ -1,6 +1,6 @@
 <?php
 define('DBHOST', 'localhost');
-define('DBNAME', 'madad');
+define('DBNAME', 'madadOne');
 define('DBUSER', 'root');
 define('DBPASS', '');
 

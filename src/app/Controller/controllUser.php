@@ -126,14 +126,13 @@ class ControllUser  extends BaseController
             $this->mailer->Password = 'whshtreawzhshmwy';
             $this->mailer->SMTPSecure = 'tls';
             $this->mailer->Port = 587;
-
         } catch (Exception $e) {
             return ['hasInputEmpty' => 'لم يتم إرسال الرمز'];
         }
     }
     public function SendMessageToEmail($SendEmailFrom, $userEmail, $code)
     {
-        if($ErrorSendCode = $this->SettingSMTP($SendEmailFrom)){
+        if ($ErrorSendCode = $this->SettingSMTP($SendEmailFrom)) {
             return $ErrorSendCode;
         }
         $this->mailer->setFrom($SendEmailFrom, 'Madad');
@@ -146,8 +145,32 @@ class ControllUser  extends BaseController
 
         return [];
     }
-    protected function CheckVerifyCode(){
-    
+    protected function CheckVerifyCode() {}
+    private function lockedAccount()
+    {
+        die("account locked try later");
+    }
+    private function CheckIfLogginThen5Times()
+    {
+        $allowedLoggin = 5;
+        if ($_SESSION['CounterLogginUser'] > $allowedLoggin) {
+            $this->lockedAccount();
+        }
+    }
+    protected function CountAllowedLoggin()
+    {
+
+        if (!isset($_SESSION['frist_ip_loggin'])) {
+
+            $_SESSION['frist_ip_loggin'] = $_SERVER['REMOTE_ADDR'];
+            $_SESSION['CounterLogginUser'] = 0;
+        }
+
+        if ($_SESSION['frist_ip_loggin'] == $_SERVER['REMOTE_ADDR'] && isset($_SESSION['CounterLogginUser'])) {
+
+            $_SESSION['CounterLogginUser']++;
+            $this->CheckIfLogginThen5Times();
+        }
     }
     public function create($username, $email, $password, $role)
     {
@@ -173,7 +196,7 @@ class ControllUser  extends BaseController
         if ($resultRegister) {
 
             if ($role != "admin") {
-                //  $_SESSION['username'] = $username;
+                $_SESSION['username'] = $username;
 
                 $this->SetCookieToUser($token);
             }
@@ -201,6 +224,8 @@ class ControllUser  extends BaseController
         $userLogggedIn = $this->model->checkLogin($email);
         if (!$userLogggedIn) {
 
+            $this->CountAllowedLoggin();
+            // unset($_SESSION['CounterLogginUser']);
             return ['filedLogin' => 'يرجاء انشاء حساب اولاً'];
         }
         if (password_verify($password, $userLogggedIn['password'])) {
