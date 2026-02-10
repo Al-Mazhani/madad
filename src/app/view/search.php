@@ -5,7 +5,7 @@
         <div class="header-books">
             <ul>
                 <?php foreach ($allCategory as $rang): ?>
-                    <li class="rang-author"><a href="category?id_category=<?= (int)$rang['id_category'] ?>"><?php echo htmlspecialchars($rang['title_category']) ?> </a></li>
+                    <li class="rang-author"><a href="/Madad/category/<?= htmlspecialchars($rang['category_public_id']) ?>"><?php echo htmlspecialchars($rang['title_category']) ?> </a></li>
                 <?php endforeach; ?>
             </ul>
         </div>
@@ -24,11 +24,11 @@
             <?php if ($search): ?>
                 <?php foreach ($search as &$book): ?>
                     <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
-                        <a href="book_ditles?bookID=<?= $book['book_public_id'] ?>" class="link-book">
-                            <img src="<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
+                        <a href="/Madad/book_ditles/<?= $book['book_public_id'] ?>" class="link-book">
+                            <img src="/Madad/<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
                         </a>
-                        <a href="book_ditles?bookID=<?= $book['book_public_id'] ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
-                        <a href="info_author?authroID=<?= $book['author_public_id'] ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
+                        <a href="/Madad/book_ditles/<?= $book['book_public_id'] ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
+                        <a href="/Madad/info_author/<?= $book['author_public_id'] ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>

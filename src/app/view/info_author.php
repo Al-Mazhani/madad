@@ -7,7 +7,7 @@ include(__DIR__ . '/../includes/header.php'); ?>
         <div class="authro-card">
             <div class="header-authro">
                 <div class="img_author">
-                    <img src="<?php echo $infoAuthor['image'] ?>" alt="" loading="lazy">
+                    <img src="/Madad/<?= $infoAuthor['image'] ?>" alt="" loading="lazy">
                 </div>
                 <div class="authro-name">
                     <h1 title="name"> <?php echo $infoAuthor['name'] ?> </h1>
@@ -48,13 +48,13 @@ include(__DIR__ . '/../includes/header.php'); ?>
                 <!-- Start -->
                 <?php if (is_array($allBooksAuthor)): ?>
                     <?php foreach ($allBooksAuthor as $book): ?>
-             <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
-                    <a href="book_ditles?bookID=<?= $book['book_public_id'] ?>" class="link-book">
-                        <img src="<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
-                    </a>
-                    <a href="book_ditles?bookID=<?= $book['book_public_id'] ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
-                    <a href="info_author?authroID=<?= $book['author_public_id'] ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
-                </div>
+                        <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
+                            <a href="/Madad/book_ditles/<?= $book['book_public_id'] ?>" class="link-book">
+                                <img src="/Madad/<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
+                            </a>
+                            <a href="/Madad/book_ditles/<?= $book['book_public_id'] ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
+                            <a href="/Madad/info_author/<?= $book['author_public_id'] ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
+                        </div>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <p>ليس لديه كتب</p>

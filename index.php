@@ -10,6 +10,7 @@
     include_once  'src/app/Controller/controllAdmin.php';
     include_once  'src/app/Controller/ControllUser.php';
     require_once  'config/database.php';
+    require_once  'public/Authentication/AuthenticationUser.php';
     include 'validated/Request.php';
     require  'src/app/verfiy-email/autoload.php';
 
@@ -23,19 +24,18 @@
     $controllBook = new ControllBook($ModelBook);
     $ModelAuthor = new ModelAuthor();
     $controllAuthor = new ControllerAuthor($ModelAuthor);
+$BASE_URL = '/Madad/';
 
-    $URL = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    $parts = explode('/', $URL);
     enum Route: string
     {
-        case home = '/Madad/';
+        case home = '/Madad';
         case books = '/Madad/books';
         case category = '/Madad/category';
         case search = '/Madad/search';
         case authors = '/Madad/authors';
         case register = '/Madad/register';
         case login = '/Madad/login';
-        case book_ditles = '/Madad/book_ditles';
+        case book_ditles = "/Madad/book_ditles";
         case info_author = '/Madad/info_author';
         case profile = '/Madad/profile';
         case sign_out = '/Madad/sign_out';
@@ -73,6 +73,25 @@
         Route::verifyEmail->value => 'verify-email.php',
         '/Madad/addAdmin' => 'addAdmin.php',
     ];
+
+    $URL = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    $URL = rtrim($URL, '/');
+
+    if (preg_match('#^/Madad/book_ditles/([a-zA-Z0-9\-]+)$#', $URL, $m)) {
+        $_GET['bookID'] = $m[1];
+        $URL = Route::book_ditles->value;
+    }
+
+    if (preg_match('#^/Madad/info_author/([a-zA-Z0-9\-]+)$#', $URL, $m)) {
+        $_GET['authroID'] = $m[1];
+        $URL = Route::info_author->value;
+    }
+
+    if (preg_match('#^/Madad/category/([a-zA-Z0-9\-]+)$#', $URL, $m)) {
+        $_GET['id_category'] = $m[1];
+        $URL = Route::category->value;
+    }
+
     if (array_key_exists($URL, $route)) {
         switch ($URL) {
             case Route::home->value:
@@ -283,16 +302,16 @@
                 require_once('src/app/view/' . $route[$URL]);
                 break;
             case Route::verifyEmail->value:
-                    if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm-email'])){
-                        $code = "";
-                        $code .= $_POST['code1'];
-                        $code .= $_POST['code2'];
-                        $code .= $_POST['code3'];
-                        $code .= $_POST['code4'];
-                        $code .= $_POST['code5'];
-                        $code .= $_POST['code6'];
-                        $controllUser->GetCodeEmail($code);
-                    }
+                if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm-email'])) {
+                    $code = "";
+                    $code .= $_POST['code1'];
+                    $code .= $_POST['code2'];
+                    $code .= $_POST['code3'];
+                    $code .= $_POST['code4'];
+                    $code .= $_POST['code5'];
+                    $code .= $_POST['code6'];
+                    $controllUser->GetCodeEmail($code);
+                }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
             default:

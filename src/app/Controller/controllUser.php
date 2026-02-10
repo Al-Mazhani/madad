@@ -148,8 +148,13 @@ class ControllUser  extends BaseController
     protected function CheckVerifyCode() {}
     private function lockedAccount()
     {
-        die("account locked try later");
+        if (!isset($_SESSION['AccountLocked'])) {
+            $_SESSION['AccountLocked'] = true;
+        }
+
+        die("Account Locked");
     }
+    
     private function CheckIfLogginThen5Times()
     {
         $allowedLoggin = 5;
