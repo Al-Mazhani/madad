@@ -1,30 +1,6 @@
     <?php
-    session_start();
-    include_once  'src/app/model/ModelBook.php';
-    include_once  'src/app/model/ModelUser.php';
-    include_once  'src/app/model/ModelAuthor.php';
-    include_once  'src/app/model/ModelAdmin.php';
-    include_once  'src/app/Controller/BaseController.php';
-    include_once  'src/app/Controller/controllBook.php';
-    include_once  'src/app/Controller/controllerAuthor.php';
-    include_once  'src/app/Controller/controllAdmin.php';
-    include_once  'src/app/Controller/ControllUser.php';
-    require_once  'config/database.php';
-    require_once  'public/Authentication/AuthenticationUser.php';
-    include 'validated/Request.php';
-    require  'src/app/verfiy-email/autoload.php';
-
-    include 'src/app/helpers/handlingFiles.php';
-
-    $ModelUser = new ModelUser();
-    $controllUser = new ControllUser($ModelUser);
-    $ModelAdmin = new ModelAdmin();
-    $controllAdmin = new controllAdmin($ModelAdmin);
-    $ModelBook = new ModelBook();
-    $controllBook = new ControllBook($ModelBook);
-    $ModelAuthor = new ModelAuthor();
-    $controllAuthor = new ControllerAuthor($ModelAuthor);
-$BASE_URL = '/Madad/';
+    require_once 'autoload.php';
+    $BASE_URL = '/Madad/';
 
     enum Route: string
     {
@@ -119,7 +95,7 @@ $BASE_URL = '/Madad/';
                 break;
             case Route::register->value:
                 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_register'])) {
-                    $error = $controllUser->create($_POST['username'], $_POST['email'], $_POST['password'], 'user');
+                    $error = $AuthController->create($_POST['username'], $_POST['email'], $_POST['password'], 'user');
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
@@ -128,7 +104,7 @@ $BASE_URL = '/Madad/';
                     if (isset($_POST['login'])) {
                         if ($_POST['login-as'] == 'user') {
 
-                            $errorLogin = $controllUser->isLoggedIn($_POST['email'], $_POST['password']);
+                            $errorLogin = $AuthController->isLoggedIn($_POST['email'], $_POST['password']);
                         } else {
                             $errorLogin = $controllAdmin->isLoggedIn($_POST['email'], $_POST['password']);
                         }
@@ -140,7 +116,7 @@ $BASE_URL = '/Madad/';
             case Route::book_ditles->value:
 
                 if (isset($_GET['bookID'])) {
-                
+
                     $infoBook = $controllBook->getInfoBookByID($_GET['bookID']);
                 }
                 if (isset($_POST['idDownloadBook'])) {
@@ -234,7 +210,7 @@ $BASE_URL = '/Madad/';
             case Route::pageAdminAddAdmin->value:
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     if (isset($_POST['btnAddNewAdmin'])) {
-                        $message = $controllAdmin->create($_POST['adminName'], $_POST['adminEmail'], $_POST['adminPassword'], $_POST['role']);
+                        $message = $AuthController->create($_POST['adminName'], $_POST['adminEmail'], $_POST['adminPassword'], $_POST['role']);
                     }
                 }
                 require_once('src/app/view/' . $route[$URL]);
@@ -310,7 +286,7 @@ $BASE_URL = '/Madad/';
                     $code .= $_POST['code4'];
                     $code .= $_POST['code5'];
                     $code .= $_POST['code6'];
-                    $controllUser->GetCodeEmail($code);
+                    $MailerController->GetCodeEmail($code);
                 }
                 require_once('src/app/view/' . $route[$URL]);
                 break;
