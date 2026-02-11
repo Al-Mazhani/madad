@@ -128,7 +128,7 @@ class ControllBook extends BaseController
 
     private function processBookData(&$dataAddBook)
     {
-        $dataAddBook['public_id'] = $this->Generate4UUID();
+        $dataAddBook['public_id'] = $this->MakePublicID();
 
         $dataAddBook['nameBook'] = strtolower($this->CleanInputText($dataAddBook['nameBook']));
         $dataAddBook['description'] = strtolower($this->CleanInputText($dataAddBook['description']));
@@ -277,7 +277,7 @@ class ControllBook extends BaseController
     public function getInfoBookByID($idBook)
     {
         $this->validateID($idBook);
-        $resultInfoBook = $this->modelBook->infoBook($this->CleanInputText($idBook));
+        $resultInfoBook = $this->modelBook->infoBook($this->CleanInputNumber($idBook));
         if (empty($resultInfoBook)) {
             $this->NotAllowDisplayPage();
         }

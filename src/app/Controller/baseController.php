@@ -18,7 +18,7 @@ class BaseController
     // Check IF ID has error
     protected function validateID($id): void
     {
-        if (strlen($id) !== 27) {
+        if (strlen($id) != 6 || !filter_var($id,FILTER_VALIDATE_INT)) {
             $this->NotAllowDisplayPage();
         }
     }
@@ -28,7 +28,7 @@ class BaseController
     }
     protected function CleanInputNumber($number)
     {
-        return preg_replace('/[^0-9 . ]/', '', $number);
+        return preg_replace('/[^0-9]/', '', $number);
     }
     // Generate One UUID 3 bit
     protected function GenerateOneUUID($sizeUUID)
@@ -122,5 +122,9 @@ class BaseController
         $allowedExtBook = ["pdf", "zip"];
 
         return (in_array($bookExt, $allowedExtBook)) ? true : false;
+    }
+    protected function MakePublicID()
+    {
+        return random_int(111111, 999999);
     }
 }

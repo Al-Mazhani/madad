@@ -48,7 +48,7 @@ class ControllerAuthor extends BaseController
     $cleanName = trim($name);
     $cleanBio = trim($bio);
     if (empty($public_id)) {
-      $public_id = $this->Generate4UUID();
+      $public_id = $this->MakePublicID();
     }
     if ($image['size'] == 0) {
       $pathImage = $oldImage;

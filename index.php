@@ -35,7 +35,7 @@ $BASE_URL = '/Madad/';
         case authors = '/Madad/authors';
         case register = '/Madad/register';
         case login = '/Madad/login';
-        case book_ditles = "/Madad/book_ditles";
+        case book_ditles = "/Madad/book_ditles/id";
         case info_author = '/Madad/info_author';
         case profile = '/Madad/profile';
         case sign_out = '/Madad/sign_out';
@@ -77,17 +77,17 @@ $BASE_URL = '/Madad/';
     $URL = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $URL = rtrim($URL, '/');
 
-    if (preg_match('#^/Madad/book_ditles/([a-zA-Z0-9\-]+)$#', $URL, $m)) {
+    if (preg_match('#^/Madad/book_ditles/id/(\d+)$#', $URL, $m)) {
         $_GET['bookID'] = $m[1];
         $URL = Route::book_ditles->value;
     }
 
-    if (preg_match('#^/Madad/info_author/([a-zA-Z0-9\-]+)$#', $URL, $m)) {
+    if (preg_match('#^/Madad/info_author/id/(\d+)$#', $URL, $m)) {
         $_GET['authroID'] = $m[1];
         $URL = Route::info_author->value;
     }
 
-    if (preg_match('#^/Madad/category/([a-zA-Z0-9\-]+)$#', $URL, $m)) {
+    if (preg_match('#^/Madad/category/id/(\d+)$#', $URL, $m)) {
         $_GET['id_category'] = $m[1];
         $URL = Route::category->value;
     }
@@ -140,8 +140,8 @@ $BASE_URL = '/Madad/';
             case Route::book_ditles->value:
 
                 if (isset($_GET['bookID'])) {
-                    $id = $_GET['bookID'];
-                    $infoBook = $controllBook->getInfoBookByID($id);
+                
+                    $infoBook = $controllBook->getInfoBookByID($_GET['bookID']);
                 }
                 if (isset($_POST['idDownloadBook'])) {
                     $controllBook->incrementDonwnload($_POST['idDownloadBook']);

@@ -5,7 +5,7 @@ include(__DIR__ . '/../includes/header.php'); ?>
         <div class="header-books">
             <ul>
                 <?php foreach ($allAuthor as $rang): ?>
-                    <li class="rang-author"><a href="/Madad/info_author/<?php echo $rang['public_id'] ?>"><?php echo $rang['name'] ?> </a></li>
+                    <li class="rang-author"><a href="/Madad/info_author/id/<?php echo $rang['public_id'] ?>"><?php echo $rang['name'] ?> </a></li>
                 <?php endforeach; ?>
         </div>
     </section>
@@ -41,7 +41,7 @@ include(__DIR__ . '/../includes/header.php'); ?>
                 <caption>جميع المؤلفين</caption>
                 <tr>
                     <?php foreach ($allAuthor as $authors): ?>
-                        <td> <i class="fas fa-book"></i><a href="info_author/<?php echo $authors['public_id'] ?>"><?php echo $authors['name'] ?> </a></td>
+                        <td> <i class="fas fa-book"></i><a href="info_author/id/<?php echo $authors['public_id'] ?>"><?php echo $authors['name'] ?> </a></td>
                         <?php endforeach; ?>
                     </tr>
                 </table>
