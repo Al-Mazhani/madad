@@ -1,26 +1,30 @@
     <?php
     require_once 'autoload.php';
-    Route::get('/books', function () {
-    require_once('src/app/view/books.php');
-
+    Route::get('/', function () use (&$controllBook) {
+        $allBooks = $controllBook->getInfoBookAndAuthor();
+        if (isset($_COOKIE['remember_token'])) {
+            $getToken  = $controllUser->checkToken($_COOKIE['remember_token']);
+        }
+       return view("home");
     });
+    Route::get('/books', function () use ($controllBook) {
+        $allBooks = $controllBook->getInfoBookAndAuthor();
+        $allCategory = $controllBook->getAllCategory();
+        if (isset($_GET['id_category'])) {
+            $id = $_GET['id_category'];
+            $bookByCategory = $controllBook->getBookByCategory($id);
+        }
+
+        require_once('src/app/view/books.php');
+    });
+
     Route::dispatch();
     // switch ($URL) {
     //     case Route::home->value:
-    //         $allBooks = $controllBook->getInfoBookAndAuthor();
-    //         if (isset($_COOKIE['remember_token'])) {
-    //             $getToken  = $controllUser->checkToken($_COOKIE['remember_token']);
-    //         }
-    //         require_once('src/app/view/' . $route[$URL]);
+    //         
     //         break;
     //     case Route::books->value:
-    //         $allBooks = $controllBook->getInfoBookAndAuthor();
-    //         $allCategory = $controllBook->getAllCategory();
-    //         if (isset($_GET['id_category'])) {
-    //             $id = $_GET['id_category'];
-    //             $bookByCategory = $controllBook->getBookByCategory($id);
-    //         }
-    //         require_once('src/app/view/' . $route[$URL]);
+    //   uire_once('src/app/view/' . $route[$URL]);
     //         break;
     //     case Route::authors->value:
     //         $allAuthor = $controllAuthor->getAll();
