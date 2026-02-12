@@ -14,6 +14,8 @@ include_once  'src/app/Controller/MailerController.php';
 include_once  'src/app/Controller/AuthController.php';
 require_once  'public/Authentication/AuthenticationUser.php';
 require_once  'config/database.php';
+require_once  'Route/route.php';
+require_once  'Route/web.php';
 include 'validated/Request.php';
 require  'src/app/verfiy-email/autoload.php';
 include 'src/app/helpers/handlingFiles.php';

@@ -1,7 +1,7 @@
 <script src="public/js/main.js"></script>
  <footer>
     <div class="logo-footer">
-        <img src="public/images/iconMidad.png" alt="">
+        <img src="/Madad/public/images/iconMidad.png" alt="">
     </div>
     <div class="links">
       <a href="#">عن المكتبة</a>
