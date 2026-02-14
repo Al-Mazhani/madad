@@ -1,8 +1,5 @@
 <?php
 
-$URL = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$URL = rtrim($URL, '/');
-
 // if (preg_match('#^/Madad/book_ditles/id/(\d+)$#', $URL, $m)) {
 //     $_GET['bookID'] = $m[1];
 //     $URL = Route::book_ditles->value;

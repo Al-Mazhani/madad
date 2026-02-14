@@ -1,12 +1,14 @@
     <?php
+
     require_once 'autoload.php';
-    Route::get('/', function () use (&$controllBook) {
+    Route::get('/', function () use ($controllBook, $controllUser) {
         $allBooks = $controllBook->getInfoBookAndAuthor();
         if (isset($_COOKIE['remember_token'])) {
             $getToken  = $controllUser->checkToken($_COOKIE['remember_token']);
         }
-       return view("home");
+        require_once('src/app/view/home.php');
     });
+
     Route::get('/books', function () use ($controllBook) {
         $allBooks = $controllBook->getInfoBookAndAuthor();
         $allCategory = $controllBook->getAllCategory();
@@ -17,7 +19,76 @@
 
         require_once('src/app/view/books.php');
     });
+    Route::get('/register', function () {
+        view('register');
+    });
+    Route::get('/login', function () {
+        view('login');
+    });
+    Route::post('/login', function () use ($AuthController, $controllAdmin) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (isset($_POST['login'])) {
+                if ($_POST['login-as'] == 'user') {
 
+                    $errorLogin = $AuthController->isLoggedIn($_POST['email'], $_POST['password']);
+                } else {
+                    $errorLogin = $controllAdmin->isLoggedIn($_POST['email'], $_POST['password']);
+                }
+            }
+        }
+    });
+    Route::post('/register', function () use ($AuthController) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_register'])) {
+            $error = $AuthController->create($_POST['username'], $_POST['email'], $_POST['password'], 'user');
+        }
+        require "src/app/view/register.php";
+    });
+    Route::get('/profile', function () {
+        view('profile');
+    });
+    Route::get('/authors', function () use ($controllAuthor) {
+        $allAuthor = $controllAuthor->getAll();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['name'])) {
+            $SearchAuthor = $controllAuthor->search($_GET['name']);
+        }
+
+        require "src/app/view/authors.php";
+    });
+
+    Route::get('/book_ditles/id/(\d{6})', function ($bookID) use ($controllBook) {
+        $infoBook = $controllBook->getInfoBookByID($bookID);
+        if (isset($_POST['idDownloadBook'])) {
+            $controllBook->incrementDonwnload($_POST['idDownloadBook']);
+        }
+        if (isset($_POST['idReadBook'])) {
+            $controllBook->incrementReadBook($_POST['idReadBook']);
+        }
+        $OtherBooks = $controllBook->OtherBooks();
+        $id_category = $infoBook['category_public_id'];
+        $bookByCategory = $controllBook->getBookByCategory($id_category);
+        require "src/app/view/book_ditles.php";
+    });
+    Route::get("/info_author/id/(\d{6})", function ($id_author) use ($controllAuthor) {
+
+        $infoAuthor = $controllAuthor->findByID($id_author);
+        $allBooksAuthor = $controllAuthor->findMoreOne($id_author);
+        require "src/app/view/info_author.php";
+    });
+
+    Route::get('', function () use ($controllBook) {
+        $allBooks = $controllBook->getAll();
+        if (isset($_POST['idDeleteBook'])) {
+            $controllBook->delete($_POST['idDeleteBook']);
+        }
+        if (isset($_GET['search-for'])) {
+            $resultSearchBook = $controllBook->search($_GET['search-for']);
+        }
+        require "src/app/view/info_author.php";
+    });
+    Route::get('/verify-email', function () {
+        require "src/app/view/verify-email.php";
+    });
     Route::dispatch();
     // switch ($URL) {
     //     case Route::home->value:
@@ -27,10 +98,7 @@
     //   uire_once('src/app/view/' . $route[$URL]);
     //         break;
     //     case Route::authors->value:
-    //         $allAuthor = $controllAuthor->getAll();
-    //         if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['name'])) {
-    //             $SearchAuthor = $controllAuthor->search($_GET['name']);
-    //         }
+
     //         require_once('src/app/view/' . $route[$URL]);
     //         break;
     //     case Route::register->value:
@@ -55,28 +123,11 @@
 
     //     case Route::book_ditles->value:
 
-    //         if (isset($_GET['bookID'])) {
 
-    //             $infoBook = $controllBook->getInfoBookByID($_GET['bookID']);
-    //         }
-    //         if (isset($_POST['idDownloadBook'])) {
-    //             $controllBook->incrementDonwnload($_POST['idDownloadBook']);
-    //         }
-    //         if (isset($_POST['idReadBook'])) {
-    //             $controllBook->incrementReadBook($_POST['idReadBook']);
-    //         }
-    //         $OtherBooks = $controllBook->OtherBooks();
-    //         $id_category = $infoBook['category_public_id'];
-    //         $bookByCategory = $controllBook->getBookByCategory($id_category);
     //         require_once('src/app/view/' . $route[$URL]);
     //         break;
     //     case Route::info_author->value:
-    //         if (isset($_GET['authroID'])) {
-    //             $id = $_GET['authroID'];
-    //         }
-
-    //         $infoAuthor = $controllAuthor->findByID($id);
-    //         $allBooksAuthor = $controllAuthor->findMoreOne($id);
+    //    
     //         require_once('src/app/view/' . $route[$URL]);
     //         break;
     //     case Route::category->value:
@@ -112,13 +163,7 @@
     //         break;
     //     // Admin
     //     case Route::homePageAdmin->value:
-    //         $allBooks = $controllBook->getAll();
-    //         if (isset($_POST['idDeleteBook'])) {
-    //             $controllBook->delete($_POST['idDeleteBook']);
-    //         }
-    //         if (isset($_GET['search-for'])) {
-    //             $resultSearchBook = $controllBook->search($_GET['search-for']);
-    //         }
+    //      
     //         require_once('src/app/view/' . $route[$URL]);
     //         break;
     //     case Route::pageAdmin->value:
@@ -143,8 +188,7 @@
 
     //             $Message  = $controllBook->addBook($dataAddBook);
     //         }
-    //         $allCategory = $controllBook->getAllCategory();
-    //         $authors = $controllAuthor->getAll();
+
     //         require_once('src/app/view/' . $route[$URL]);
     //         break;
     //     case Route::pageAdminAddAdmin->value:

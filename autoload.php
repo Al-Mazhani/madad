@@ -13,13 +13,11 @@ include_once  'src/app/Controller/ControllUser.php';
 include_once  'src/app/Controller/MailerController.php';
 include_once  'src/app/Controller/AuthController.php';
 require_once  'public/Authentication/AuthenticationUser.php';
-include 'src/app/helpers/handlingFiles.php';
-require  'src/app/verfiy-email/autoload.php';
-include 'src/app/helpers/view.php';
+include_once  'src/app/helpers/handlingFiles.php';
+require_once  'src/app/verfiy-email/autoload.php';
+include_once  'src/app/helpers/view.php';
 require_once  'config/database.php';
 require_once  'Route/Route.php';
-require_once  'Route/web.php';
-include 'validated/Request.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -35,3 +33,4 @@ $ModelBook = new ModelBook();
 $controllBook = new ControllBook($ModelBook);
 $ModelAuthor = new ModelAuthor();
 $controllAuthor = new ControllerAuthor($ModelAuthor);
+?>

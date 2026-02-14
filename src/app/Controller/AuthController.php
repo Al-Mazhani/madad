@@ -41,7 +41,8 @@ class AuthController  extends ControllUser
             if ($role != "admin") {
                 $_SESSION['username'] = $username;
                 
-                $this->HeaderToVerfyEmail();
+                // $this->HeaderToVerfyEmail();
+            $this->SetCookieToUser($token);
             }
         } else {
             return ['invalidRegister' => 'فشل انشاء حساب'];
