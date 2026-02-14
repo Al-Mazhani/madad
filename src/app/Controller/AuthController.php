@@ -2,9 +2,11 @@
 class AuthController  extends ControllUser
 {
     public $model;
-    public function __construct($model)
+    public $MailerController;
+    public function __construct($model, $MailerController)
     {
         $this->model = $model;
+        $this->MailerController = $MailerController;
     }
     protected function ProcceDataUser(&$username, &$email, &$password, &$token)
     {
@@ -13,8 +15,19 @@ class AuthController  extends ControllUser
         $password = password_hash(trim($password), PASSWORD_BCRYPT);
         $token = $this->Generate4UUID();
     }
+    protected function CheckExitEmail($email)
+    {
 
-    private function HeaderToVerfyEmail() {
+        $resultExitEmail = $this->model->CheckEmailExit($email);
+        if ($resultExitEmail && $resultExitEmail['email'] === $email) {
+            return ['hasErrorInput' => 'البريد الالكتروني موجود بالفعل'];
+        }
+        return [];
+    }
+
+
+    private function HeaderToVerfyEmail()
+    {
         header('Location:/Madad/verify-email');
     }
     public function create($username, $email, $password, $role)
@@ -31,8 +44,14 @@ class AuthController  extends ControllUser
         if ($errorPassword = $this->validatePassword($password)) {
             return $errorPassword;
         }
+
         // Send Code To User Email
         $this->ProcceDataUser($username, $email, $password, $token);
+        $reustlConfirCode = $this->MailerController->SendMessageToEmail("hgh29171@gmail.com", $email);
+        if ($reustlConfirCode){
+            $this->SetCookieToUser($token);
+        }
+        if($this->MailerController->CheckVerifyCode())
 
         $resultRegister =  $this->model->insert($username, $email, $password, $token, $role);
 
@@ -40,9 +59,6 @@ class AuthController  extends ControllUser
 
             if ($role != "admin") {
                 $_SESSION['username'] = $username;
-                
-                // $this->HeaderToVerfyEmail();
-            $this->SetCookieToUser($token);
             }
         } else {
             return ['invalidRegister' => 'فشل انشاء حساب'];

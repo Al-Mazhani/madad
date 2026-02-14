@@ -27,3 +27,4 @@ include(__DIR__ . '/../includes/header.php');?>
         </div>
     </section>
 </main>
+<?php include(__DIR__ . '/../includes/footer.php'); ?>

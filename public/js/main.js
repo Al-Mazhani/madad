@@ -52,3 +52,4 @@ inputs.forEach((input, index) => {
   });
 
 }); 
+let btnREgister = document.getElementById("btn-register");

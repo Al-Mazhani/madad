@@ -41,6 +41,18 @@
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_register'])) {
             $error = $AuthController->create($_POST['username'], $_POST['email'], $_POST['password'], 'user');
         }
+        if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['code1'],$_POST['code2'],$_POST['code3'],$_POST['code4'],$_POST['code5'],$_POST['code6'])){
+            $Code = "";
+            $Code .= $_POST['code1'];
+            $Code .= $_POST['code2'];
+            $Code .= $_POST['code3'];
+            $Code .= $_POST['code4'];
+            $Code .= $_POST['code5'];
+            $Code .= $_POST['code6'];
+            
+
+        }
+
         require "src/app/view/register.php";
     });
     Route::get('/profile', function () {
@@ -85,6 +97,11 @@
             $resultSearchBook = $controllBook->search($_GET['search-for']);
         }
         require "src/app/view/info_author.php";
+    });
+    Route::get('/sign_out', function () use ($controllUser) {
+                $controllUser->LogOut();
+
+        require "src/app/view/sign_out.php";
     });
     Route::get('/verify-email', function () {
         require "src/app/view/verify-email.php";

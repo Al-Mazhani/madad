@@ -72,19 +72,10 @@ class ControllUser  extends BaseController
         header("Location:/Madad/");
         exit();
     }
-    protected function CheckExitEmail($email)
-    {
-
-        $resultExitEmail = $this->model->CheckEmailExit($email);
-        if ($resultExitEmail['email'] === $email) {
-            return ['hasErrorInput' => 'البريد الالكتروني موجود بالفعل'];
-        }
-        return [];
-    }
 
     //  confirm Code Email 
 
-    protected function CheckVerifyCode() {}
+  
     private function lockedAccount()
     {
         if (!isset($_SESSION['AccountLocked'])) {
