@@ -66,12 +66,7 @@ class ControllUser  extends BaseController
     }
     // Clean Data User
 
-    protected function SetCookieToUser($token)
-    {
-        setcookie('remember_token', $token, time() + 86400 * 30, "/");
-        header("Location:/Madad/");
-        exit();
-    }
+
 
     //  confirm Code Email 
 

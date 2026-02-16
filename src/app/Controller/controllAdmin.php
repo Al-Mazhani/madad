@@ -30,7 +30,6 @@ class controllAdmin extends ControllUser
         
         $_SESSION['adminName'] = $resultLogIn['username'];
         $_SESSION['role'] = "admin";
-        header("location:/Madad/homeAdmin");
-        exit();
+       
     }
 }

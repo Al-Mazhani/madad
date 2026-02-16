@@ -28,12 +28,7 @@
     Route::post('/login', function () use ($AuthController, $controllAdmin) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (isset($_POST['login'])) {
-                if ($_POST['login-as'] == 'user') {
-
-                    $errorLogin = $AuthController->isLoggedIn($_POST['email'], $_POST['password']);
-                } else {
-                    $errorLogin = $controllAdmin->isLoggedIn($_POST['email'], $_POST['password']);
-                }
+                $errorLogin = $AuthController->isLoggedIn($_POST['email'], $_POST['password']);
             }
         }
     });
@@ -41,16 +36,17 @@
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_register'])) {
             $error = $AuthController->create($_POST['username'], $_POST['email'], $_POST['password'], 'user');
         }
-        if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['code1'],$_POST['code2'],$_POST['code3'],$_POST['code4'],$_POST['code5'],$_POST['code6'])){
-            $Code = "";
-            $Code .= $_POST['code1'];
-            $Code .= $_POST['code2'];
-            $Code .= $_POST['code3'];
-            $Code .= $_POST['code4'];
-            $Code .= $_POST['code5'];
-            $Code .= $_POST['code6'];
-            
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm-email'])) {
+            if (!isset($_SESSION['code-from-form'])) {
 
+                $_SESSION['code-from-form'] =
+                    $_POST['code1'] .
+                    $_POST['code2'] .
+                    $_POST['code3'] .
+                    $_POST['code4'] .
+                    $_POST['code5'] .
+                    $_POST['code6'];
+            }
         }
 
         require "src/app/view/register.php";
@@ -99,12 +95,15 @@
         require "src/app/view/info_author.php";
     });
     Route::get('/sign_out', function () use ($controllUser) {
-                $controllUser->LogOut();
+        $controllUser->LogOut();
 
         require "src/app/view/sign_out.php";
     });
     Route::get('/verify-email', function () {
         require "src/app/view/verify-email.php";
+    });
+    Route::get('/homeAdmin', function () {
+        require_once('src/app/view/page-admin.php');
     });
     Route::dispatch();
     // switch ($URL) {
@@ -280,14 +279,14 @@
     //         break;
     //     case Route::verifyEmail->value:
     //         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm-email'])) {
-    //             $code = "";
-    //             $code .= $_POST['code1'];
-    //             $code .= $_POST['code2'];
-    //             $code .= $_POST['code3'];
-    //             $code .= $_POST['code4'];
-    //             $code .= $_POST['code5'];
-    //             $code .= $_POST['code6'];
-    //             $MailerController->GetCodeEmail($code);
+    //             $_SESSION['code-from-form'] = "";
+    //             $_SESSION['code-from-form'] .= $_POST['code1'];
+    //             $_SESSION['code-from-form'] .= $_POST['code2'];
+    //             $_SESSION['code-from-form'] .= $_POST['code3'];
+    //             $_SESSION['code-from-form'] .= $_POST['code4'];
+    //             $_SESSION['code-from-form'] .= $_POST['code5'];
+    //             $_SESSION['code-from-form'] .= $_POST['code6'];
+    //             $MailerController->GetCodeEmail($_SESSION['code-from-form']);
     //         }
     //         require_once('src/app/view/' . $route[$URL]);
     //         break;

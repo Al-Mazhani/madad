@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Madad/public/css/style.css">
-    <link rel="stylesheet" href="/Madad/public/fontawesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="/Madad/public/fontawesome/css/brands.min.css">
-    <link rel="stylesheet" href="/Madad/public/fontawesome/css/solid.min.css">
-    <link rel="icon" href="/Madad/public/images/iconMidad.png" type="image/png">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/public/fontawesome/css/brands.min.css">
+    <link rel="stylesheet" href="/public/fontawesome/css/solid.min.css">
+    <link rel="icon" href="/public/images/iconMidad.png" type="image/png">
 
     <title><?php echo isset($pageTitle) ? $pageTitle : "مِداد"; ?></title>
 </head>
@@ -25,26 +25,26 @@
 
             <nav>
                 <ul>
-                    <li><a href="/Madad/">الرئيسية</a></li>
-                    <li><a href="/Madad/books">أقسام الكتب</a></li>
-                    <li><a href="/Madad/authors">مؤلفو الكتب</a></li>
+                    <li><a href="/">الرئيسية</a></li>
+                    <li><a href="/books">أقسام الكتب</a></li>
+                    <li><a href="/authors">مؤلفو الكتب</a></li>
                 </ul>
             </nav>
 
             <div class="register-box">
                 <?php if (empty($_COOKIE['remember_token'])): ?>
-                    <a href="/Madad/login" class="btn to-log-in">
+                    <a href="/login" class="btn to-log-in">
                         <i class="fas fa-right-to-bracket"></i>
                         دخول
 
                     </a>
-                    <a href="/Madad/register" class="btn ">
+                    <a href="/register" class="btn ">
                         <i class="fas fa-user"></i>
                         انشاء حساب
 
                     </a>
                 <?php else: ?>
-                    <a href="/Madad/profile" class="btn">
+                    <a href="/profile" class="btn">
                         <i class="fas fa-user"></i>
                         حسابي
                     </a>

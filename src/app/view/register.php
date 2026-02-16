@@ -26,6 +26,9 @@ include(__DIR__ . '/../includes/header.php'); ?>
     </section>
     <?php else: ?>
     <section class="container " id="verify-email" >
+        <?php if(isset($error['hasInputEmpty'])):?>
+         <p><?= $error['hasInputEmpty'] ?></p>
+         <?php endif?>
         <form action="" method="post" class="verify-email">
             <div class="box-codes">
 

@@ -1,8 +1,8 @@
 RewriteEngine On
-#RewriteBase /Madad/view
+RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [L,QSA]
+RewriteRule ^(.*)$ index.php [QSA,L]
 
 <IfModule mod_expires.c>
  ExpiresActive On

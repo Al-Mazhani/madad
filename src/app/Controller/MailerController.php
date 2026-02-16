@@ -48,10 +48,10 @@ class MailerController extends AuthController
             return ['hasInputEmpty' => 'لم يتم إرسال الرمز'];
         }
     }
-    public function CheckVerifyCode($code) {
-        return $code == $_SESSION['confrim-code'] ? true : false;
-    }
-    public function SendMessageToEmail($SendEmailFrom, $userEmail)
+    // public function CheckVerifyCode($code) {
+    //     return $code == $_SESSION['confrim-code'] ? true : false;
+    // }
+    public function SendMessageToEmail(&$SendEmailFrom, &$userEmail,&$Subject)
     {
         $ErrorSendCode = $this->SettingSMTP();
 
@@ -64,11 +64,16 @@ class MailerController extends AuthController
         $this->mailer->addAddress($userEmail);
 
         $this->mailer->isHTML(true);
-        $this->mailer->Subject = 'Madad verification code';
+        $this->mailer->Subject = $Subject;
         $this->mailer->Body = $this->MessageConfrimCode($code);
         $this->mailer->addEmbeddedImage('C:/xampp/htdocs/Madad/public/images/iconMidad.png', 'logo_cid');
         $this->mailer->send();
-
-        
     }
+    // public function SendToEmail(&$SendEmailFrom, &$userEmail)
+    // {
+    //     $reustlConfirCode = $this->MailerController->SendMessageToEmail($SendEmailFrom, $userEmail,$Subject);
+    //     if (isset($reustlConfirCode['hasInputEmpty'])) {
+    //         return $reustlConfirCode['hasInputEmpty'];
+    //     }
+    // }
 }
