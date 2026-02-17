@@ -15,10 +15,11 @@ class BaseController
         include __DIR__ . '/../view/errorURL.php';
         exit();
     }
+
     // Check IF ID has error
     protected function validateID($id): void
     {
-        if (strlen($id) != 6 || !filter_var($id,FILTER_VALIDATE_INT)) {
+        if (strlen($id) != 6 || !filter_var($id, FILTER_VALIDATE_INT)) {
             $this->NotAllowDisplayPage();
         }
     }
@@ -76,7 +77,12 @@ class BaseController
     {
 
         $this->validateID($id);
-        return $this->model->delete($id);
+        $resultBookToDelete = $this->findByID($id);
+
+        if ($this->model->delete($id)) {
+            $this->deleteFileFromUploads($resultBookToDelete['image']);
+            $this->deleteFileFromUploads($resultBookToDelete['book_url']);
+        }
     }
     public   function search(string $name)
     {
@@ -87,6 +93,12 @@ class BaseController
         }
 
         return $this->model->search($this->CleanInputText($name));
+    }
+    // Files 
+    protected function deleteFileFromUploads($pathImage)
+    {
+        if (file_exists($pathImage))
+            unlink($pathImage);
     }
     protected function CheckFileCacheExists($FileCacheName)
     {

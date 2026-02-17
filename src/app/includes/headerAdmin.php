@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Admin</title>
-    <link rel="stylesheet" href="/Madad/public/css/styleAdmin.css">
-    <link rel="stylesheet" href="/Madad/public/fontawesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="/Madad/public/fontawesome/css/brands.min.css">
-    <link rel="stylesheet" href="/Madad/public/fontawesome/css/solid.min.css">
-    <link rel="icon" href="/Madad/public/images/iconMidad.png" type="image/png">
+    <link rel="stylesheet" href="/public/css/styleAdmin.css">
+    <link rel="stylesheet" href="/public/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/public/fontawesome/css/brands.min.css">
+    <link rel="stylesheet" href="/public/fontawesome/css/solid.min.css">
+    <link rel="icon" href="/public/images/iconMidad.png" type="image/png">
 
 </head>
 
@@ -23,10 +23,10 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="/Madad/homeAdmin">الصفحة الرائيسية <i class="fa-solid fa-house"></i></a></li>
-                    <li><a href="/Madad/magagement-atuhor">المؤلفين<i class="fa-solid fa-user"></i></a></li>
-                    <li><a href="/Madad/ManagementUsers">المستخدمين<i class="fa-solid fa-user"></i></a></li>
-                    <li><a href="/Madad/admin">الادمن<i class="fa-solid fa-user"></i></a></li>
+                    <li><a href="/homeAdmin">الصفحة الرائيسية <i class="fa-solid fa-house"></i></a></li>
+                    <li><a href="/magagement-atuhor">المؤلفين<i class="fa-solid fa-user"></i></a></li>
+                    <li><a href="/ManagementUsers">المستخدمين<i class="fa-solid fa-user"></i></a></li>
+                    <li><a href="/admin">الادمن<i class="fa-solid fa-user"></i></a></li>
                     <li><a href="#">التقارير <i class="fa-solid fa-file-alt"></i></a></li>
                     <li><a href="#">الإعدادات<i class="fa-solid fa-gear"></i></a></li>
                 </ul>

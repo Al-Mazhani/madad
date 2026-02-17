@@ -65,13 +65,13 @@ class ControllBook extends BaseController
     private function ValidateNumberInputs($dataAddBook)
     {
 
-        if (empty($dataAddBook['id_author']) || !filter_var($dataAddBook['id_author'],FILTER_VALIDATE_INT)) {
+        if (empty($dataAddBook['id_author']) || !filter_var($dataAddBook['id_author'], FILTER_VALIDATE_INT)) {
             return ['hasInputEmpty' => 'يرجاء تحدد المؤلف'];
         }
         if (empty($dataAddBook['publish_year'])) {
             return ['hasInputEmpty' => 'يرجاء تحديد السنة'];
         }
-        if (empty($dataAddBook['id_category']) || !filter_var($dataAddBook['id_category'],FILTER_VALIDATE_INT)) {
+        if (empty($dataAddBook['id_category']) || !filter_var($dataAddBook['id_category'], FILTER_VALIDATE_INT)) {
             return ['hasInputEmpty' => 'يرجاء تحديد الفئة'];
         }
         if (empty($dataAddBook['pages']) || !filter_var($dataAddBook['pages'], FILTER_VALIDATE_INT)) {
@@ -198,6 +198,7 @@ class ControllBook extends BaseController
         } else {
 
             $dataUpdateBook['image'] = $this->uploadImage($dataUpdateBook['image']);
+            $this->deleteFileFromUploads($dataUpdateBook['oldPathImage']);
         }
     }
     private function checkExitFileBook(&$dataUpdateBook)
@@ -215,6 +216,7 @@ class ControllBook extends BaseController
 
         $dataUpdateBook['file_size'] = $dataUpdateBook['book']['size'] / 1024;
         $dataUpdateBook['book'] = $this->uploadBook($dataUpdateBook['book']);
+        $this->deleteFileFromUploads($dataUpdateBook['oldFileBook']);
     }
 
     //  Check If Come From Server And  No Error

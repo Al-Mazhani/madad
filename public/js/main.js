@@ -17,7 +17,9 @@ function incrementReadBook(readBook) {
   })
 }
 function deleteBook(id) {
-  fetch('/Madad/homeAdmin', {
+  console.log($id);
+
+  fetch('./homePageAdmin', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
