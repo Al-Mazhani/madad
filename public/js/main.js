@@ -17,7 +17,6 @@ function incrementReadBook(readBook) {
   })
 }
 function deleteBook(id) {
-  console.log($id);
 
   fetch('./homePageAdmin', {
     method: 'POST',

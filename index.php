@@ -260,6 +260,42 @@ Route::post('/updateBook/id/(\d+)', function ($id) use ($controllBook, $controll
 
     require_once('src/app/view/updateBook.php');
 });
+// عرض صفحة الإضافة
+Route::get('/addBook', function () use ($controllAuthor, $controllBook) {
+
+    $authors  = $controllAuthor->getAll();
+    $allCategory = $controllBook->getAllCategory();
+
+    require_once('src/app/view/addBook.php');
+});
+
+
+// تنفيذ الإضافة
+Route::post('/addBook', function () use ($controllBook, $controllAuthor) {
+
+    $authors  = $controllAuthor->getAll();
+    $allCategory = $controllBook->getAllCategory();
+
+    if (isset($_POST['addBook'])) {
+
+        $dataBook  = [
+            "nameBook"      => $_POST['bookName'],
+            "publish_year"  => $_POST['publish_year'],
+            "id_category"   => $_POST['id_category'],
+            "id_author"     => $_POST['id_author'],
+            "pages"         => $_POST['pages'],
+            "description"   => $_POST['description'],
+            "file_type"     => $_POST['file_type'],
+            "language"      => $_POST['language'],
+            "image"         => $_FILES['image_url'],
+            "book"          => $_FILES['book_url']
+        ];
+
+        $Message = $controllBook->addBook($dataBook);
+    }
+
+    require_once('src/app/view/addBook.php');
+});
 
 /*
 |--------------------------------------------------------------------------

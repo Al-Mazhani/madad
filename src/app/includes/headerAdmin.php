@@ -23,7 +23,7 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="/homeAdmin">الصفحة الرائيسية <i class="fa-solid fa-house"></i></a></li>
+                    <li><a href="/homePageAdmin">الصفحة الرائيسية <i class="fa-solid fa-house"></i></a></li>
                     <li><a href="/magagement-atuhor">المؤلفين<i class="fa-solid fa-user"></i></a></li>
                     <li><a href="/ManagementUsers">المستخدمين<i class="fa-solid fa-user"></i></a></li>
                     <li><a href="/admin">الادمن<i class="fa-solid fa-user"></i></a></li>
