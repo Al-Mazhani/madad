@@ -8,7 +8,7 @@ include(__DIR__ . '/../includes/header.php'); ?>
     <div class="book-main">
       <div class="book_info">
         <div class="img_book">
-          <img src="/Madad/<?= htmlspecialchars($infoBook['image']) ?>" alt="<?= htmlspecialchars($infoBook['title']) ?>" title="<?php echo htmlspecialchars($infoBook['title']) ?> " loading="lazy">
+          <img src="<?= htmlspecialchars($infoBook['image']) ?>" alt="<?= htmlspecialchars($infoBook['title']) ?>" title="<?php echo htmlspecialchars($infoBook['title']) ?> " loading="lazy">
 
         </div>
         <div class="ditles">
@@ -55,9 +55,11 @@ include(__DIR__ . '/../includes/header.php'); ?>
       <div class="last-book">
         <h3>كتب أخرى</h3>
         <ul>
-          <?php foreach ($OtherBooks as $books): ?>
-            <li> <a href="/Madad/book_ditles/id/<?= $books['book_public_id'] ?>" title="<?= htmlspecialchars($books['title']) ?>"> <?= htmlspecialchars($books['title']) ?></a> <i class="fas fa-book"></i></li>
-          <?php endforeach; ?>
+          <?php if (!empty($OtherBooks)): ?>
+            <?php foreach ($OtherBooks as $books): ?>
+              <li> <a href="/Madad/book_ditles/id/<?= $books['book_public_id'] ?>" title="<?= htmlspecialchars($books['title']) ?>"> <?= htmlspecialchars($books['title']) ?></a> <i class="fas fa-book"></i></li>
+            <?php endforeach; ?>
+          <?php endif; ?>
         </ul>
       </div>
     </div>
@@ -77,15 +79,20 @@ include(__DIR__ . '/../includes/header.php'); ?>
   <section class="container">
     <h4 class="title-like-you-book">كتب قد تعجبك</h4>
     <div class="books_madad">
-      <?php foreach ($bookByCategory as $book): ?>
-        <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
-          <a href="/book_ditles/id/<?= htmlspecialchars($book['book_public_id']) ?>" class="link-book">
-            <img src="<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
-          </a>
-          <a href="/book_ditles/id/<?= htmlspecialchars($book['book_public_id']) ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
-          <a href="/info_author/id/<?= htmlspecialchars($book['author_public_id']) ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
-        </div>
-      <?php endforeach; ?>
+
+      <?php if (!empty($bookByCategory)): ?>
+        <?php foreach ($bookByCategory as $book): ?>
+          <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
+            <a href="/book_ditles/id/<?= htmlspecialchars($book['book_public_id']) ?>" class="link-book">
+              <img src="<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
+            </a>
+            <a href="/book_ditles/id/<?= htmlspecialchars($book['book_public_id']) ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
+            <a href="/info_author/id/<?= htmlspecialchars($book['author_public_id']) ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
+          </div>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p>لا يوجد لديه كتب </p>
+      <?php endif; ?>
     </div>
   </section>
 </main>

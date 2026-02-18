@@ -22,7 +22,7 @@ class ModelAuthor extends BaseModel
   {
     $stmt = database::Connection()->prepare("SELECT * FROM view_info_author WHERE public_id = ?");
     $stmt->execute([$id]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+    return $stmt->rowCount() > 0 ?$stmt->fetch(PDO::FETCH_ASSOC) : [];
   }
   public function loadAllAuthorBook($id)
   {

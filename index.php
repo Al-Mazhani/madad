@@ -2,40 +2,29 @@
 
 require_once 'autoload.php';
 
-/*
-|--------------------------------------------------------------------------
-| Home
-|--------------------------------------------------------------------------
-*/
-Route::get('/', function () {
+
+
+Route::get('/', function () use ($controllBook) {
+    $allBooks = $controllBook->getInfoBookAndAuthor();
     require_once('src/app/view/home.php');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Books
-|--------------------------------------------------------------------------
-*/
+
+
 Route::get('/books', function () use ($controllBook) {
     $allBooks = $controllBook->getInfoBookAndAuthor();
     $allCategory = $controllBook->getAllCategory();
     require_once('src/app/view/books.php');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Authors
-|--------------------------------------------------------------------------
-*/
+
+
 Route::get('/authors', function () {
     require_once('src/app/view/authors.php');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Register
-|--------------------------------------------------------------------------
-*/
+
+
 Route::get('/register', function () {
     require_once('src/app/view/register.php');
 });
@@ -54,11 +43,8 @@ Route::post('/register', function () use ($AuthController) {
     require_once('src/app/view/register.php');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Login
-|--------------------------------------------------------------------------
-*/
+
+
 Route::get('/login', function () {
     require_once('src/app/view/login.php');
 });
@@ -72,29 +58,23 @@ Route::post('/login', function () use ($AuthController) {
     require_once('src/app/view/login.php');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Book Details
-|--------------------------------------------------------------------------
-*/
-Route::get('/book_ditles', function () {
+
+
+Route::get('/book_ditles/id/(\d+)', function ($id) use ($controllAuthor, $controllBook) {
+    $infoBook = $controllBook->getInfoBookByID($id);
+    $OtherBooks = $controllBook->getInfoBookAndAuthor($id);
+
     require_once('src/app/view/book_ditles.php');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Info Author
-|--------------------------------------------------------------------------
-*/
+
+
 Route::get('/info_author', function () {
     require_once('src/app/view/info_author.php');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Category
-|--------------------------------------------------------------------------
-*/
+
+
 Route::get('/category', function () use ($controllBook) {
 
     if (isset($_GET['id_category'])) {
@@ -107,11 +87,8 @@ Route::get('/category', function () use ($controllBook) {
     require_once('src/app/view/category.php');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Search
-|--------------------------------------------------------------------------
-*/
+
+
 Route::get('/search', function () use ($controllBook) {
 
     if (isset($_GET['name'])) {
@@ -124,11 +101,8 @@ Route::get('/search', function () use ($controllBook) {
     require_once('src/app/view/search.php');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Profile
-|--------------------------------------------------------------------------
-*/
+
+
 Route::get('/profile', function () {
     require_once('src/app/view/profile.php');
 });
@@ -145,24 +119,16 @@ Route::post('/profile', function () use ($controllUser) {
     require_once('src/app/view/profile.php');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Sign Out
-|--------------------------------------------------------------------------
-*/
+
 Route::get('/sign_out', function () use ($controllUser) {
 
     $controllUser->LogOut();
     require_once('src/app/view/sign_out.php');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Admin Section
-|--------------------------------------------------------------------------
-*/
 
-// Home Page Admin
+
+
 Route::get('/homePageAdmin', function () use ($controllBook) {
     $allBooks = $controllBook->getAll();
     require_once('src/app/view/page-admin.php');
@@ -175,14 +141,12 @@ Route::post('/homePageAdmin', function () use ($controllBook) {
 });
 
 
-// Page Admin
 Route::get('/pageAdmin', function () use ($controllAdmin) {
 
     $allAdmins = $controllAdmin->show();
     require_once('src/app/view/pageAdmin.php');
 });
 
-// Add Book
 Route::get('/pageAdminAddBook', function () {
     require_once('src/app/view/pageAdminAddBook.php');
 });
@@ -209,13 +173,9 @@ Route::post('/pageAdminAddBook', function () use ($controllBook) {
 
     require_once('src/app/view/pageAdminAddBook.php');
 });
-/*
-|--------------------------------------------------------------------------
-| Update Book
-|--------------------------------------------------------------------------
-*/
 
-// عرض صفحة التعديل
+
+
 Route::get('/updateBook/id/(\d+)', function ($id) use ($controllAuthor, $controllBook) {
 
     $id = (int) $id;
@@ -228,7 +188,6 @@ Route::get('/updateBook/id/(\d+)', function ($id) use ($controllAuthor, $control
 });
 
 
-// تنفيذ التحديث
 Route::post('/updateBook/id/(\d+)', function ($id) use ($controllBook, $controllAuthor) {
 
     $id = (int) $id;
@@ -260,7 +219,6 @@ Route::post('/updateBook/id/(\d+)', function ($id) use ($controllBook, $controll
 
     require_once('src/app/view/updateBook.php');
 });
-// عرض صفحة الإضافة
 Route::get('/addBook', function () use ($controllAuthor, $controllBook) {
 
     $authors  = $controllAuthor->getAll();
@@ -270,7 +228,6 @@ Route::get('/addBook', function () use ($controllAuthor, $controllBook) {
 });
 
 
-// تنفيذ الإضافة
 Route::post('/addBook', function () use ($controllBook, $controllAuthor) {
 
     $authors  = $controllAuthor->getAll();
@@ -297,9 +254,7 @@ Route::post('/addBook', function () use ($controllBook, $controllAuthor) {
     require_once('src/app/view/addBook.php');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Dispatch
-|--------------------------------------------------------------------------
-*/
+
+
+
 Route::dispatch();

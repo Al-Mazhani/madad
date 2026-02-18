@@ -2,7 +2,7 @@
 class ControllerAuthor extends BaseController
 {
   public $model;
- public function __construct($model)
+  public function __construct($model)
   {
     $this->model = $model;
     parent::__construct($model);
@@ -41,7 +41,6 @@ class ControllerAuthor extends BaseController
   private function uploadImage($image)
   {
     return HandlingFiles::UploadFile($image, __DIR__ . '/../../../uploads/Author_profile/', 'uploads/Author_profile/');
-    
   }
   private function ProcessInputsAuhtor($name, $image, $bio, $public_id = null, $oldImage = null)
   {
@@ -73,15 +72,13 @@ class ControllerAuthor extends BaseController
   public function findByID($id)
   {
     $this->validateID($id);
-    
-    $resultInofAuhtor = $this->model->loadInfoAuthorByID($this->CleanInputText($id));
-
-    if (empty($resultInofAuhtor)){
+    $resultInofAuhtor = $this->model->loadInfoAuthorByID($this->CleanInputNumber($id));
+    var_dump($resultInofAuhtor);
+    if (empty($resultInofAuhtor)) {
 
       $this->NotAllowDisplayPage();
-
     }
-    
+
     return $resultInofAuhtor;
   }
 
@@ -92,20 +89,20 @@ class ControllerAuthor extends BaseController
       return $error;
     }
     $public_id = "";
-    
+
     $data = $this->ProcessInputsAuhtor($nameAuthor, $imageURLAuthro, $bio, $public_id);
-    
+
     $result = $this->model->insert($data);
-    return ($result) ? [ 'successAdd' => "تم إضافة المؤلف بنجاح" ] : [ 'successFild' =>  "فشل إضافة المؤلف"];
+    return ($result) ? ['successAdd' => "تم إضافة المؤلف بنجاح"] : ['successFild' =>  "فشل إضافة المؤلف"];
   }
 
   public function update($public_id, $name, $image, $oldImage, $bio)
   {
-    $error = $this->validateAuthor($name, $bio, $image); 
-    if(!empty($error) && isset($error['hasInputEmpty'])){
+    $error = $this->validateAuthor($name, $bio, $image);
+    if (!empty($error) && isset($error['hasInputEmpty'])) {
       return $error['hasInputEmpty'];
     }
-    
+
     $cleanData = $this->ProcessInputsAuhtor($name, $image, $bio, $public_id, $oldImage);
     $ResultUpdateAuthor = $this->model->update($cleanData);
     return ($ResultUpdateAuthor) ? ['successUpdate' => 'تم تعديل بيانات المؤلف'] : ['failedUpdate' => 'فشل تعديل بيانات الكتاب'];
