@@ -2,10 +2,10 @@
 
 require_once 'autoload.php';
 
-
-
-Route::get('/', function () use ($controllBook) {
+Route::get('/', function () use ($controllBook, $controllUser) {
     $allBooks = $controllBook->getInfoBookAndAuthor();
+    if (isset($_COOKIE['remember_token']))
+        $controllUser->checkToken($_COOKIE['remember_token']);
     require_once('src/app/view/home.php');
 });
 
@@ -19,10 +19,10 @@ Route::get('/books', function () use ($controllBook) {
 
 
 
-Route::get('/authors', function () {
+Route::get('/authors', function () use ($controllAuthor) {
+    $allAuthor = $controllAuthor->getAll();
     require_once('src/app/view/authors.php');
 });
-
 
 
 Route::get('/register', function () {
@@ -69,7 +69,8 @@ Route::get('/book_ditles/id/(\d+)', function ($id) use ($controllAuthor, $contro
 
 
 
-Route::get('/info_author', function () {
+Route::get('/info_author/id/(\d+)', function ($id) use ($controllAuthor) {
+    $infoAuthor = $controllAuthor->findByID($id);
     require_once('src/app/view/info_author.php');
 });
 

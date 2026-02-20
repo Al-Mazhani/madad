@@ -33,9 +33,7 @@ class MailerController extends AuthController
     </div>';
     }
     public function SettingSMTP()
-    {
-        try {
-
+{     
             $this->mailer->isSMTP();
             $this->mailer->Host = 'smtp.gmail.com';
             $this->mailer->SMTPAuth = true;
@@ -43,21 +41,16 @@ class MailerController extends AuthController
             $this->mailer->Password = 'whshtreawzhshmwy';
             $this->mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $this->mailer->Port = 587;
-            return true;
-        } catch (Exception $e) {
-            return ['hasInputEmpty' => 'لم يتم إرسال الرمز'];
-        }
+
     }
     // public function CheckVerifyCode($code) {
     //     return $code == $_SESSION['confrim-code'] ? true : false;
     // }
-    public function SendMessageToEmail(&$SendEmailFrom, &$userEmail,&$Subject)
+    public function SendMessageToEmail(&$SendEmailFrom, &$userEmail, &$Subject)
     {
-        $ErrorSendCode = $this->SettingSMTP();
+         $this->SettingSMTP();
 
-        if ($ErrorSendCode !== true) {
-            return $ErrorSendCode;
-        }
+    
         $code = $this->MakeCodeForEmail();
         $_SESSION['confrim-code'] = $code;
         $this->mailer->setFrom($SendEmailFrom, 'Madad');
@@ -67,7 +60,13 @@ class MailerController extends AuthController
         $this->mailer->Subject = $Subject;
         $this->mailer->Body = $this->MessageConfrimCode($code);
         $this->mailer->addEmbeddedImage('C:/xampp/htdocs/Madad/public/images/iconMidad.png', 'logo_cid');
-        $this->mailer->send();
+        try {
+            $this->mailer->SMTPDebug = 2;
+            $this->mailer->send();
+            return true;
+        } catch (Exception $e) {
+            return ['hasInputEmpty' => 'لم يتم إرسال الرمز'];
+        }
     }
     // public function SendToEmail(&$SendEmailFrom, &$userEmail)
     // {

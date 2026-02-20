@@ -7,7 +7,7 @@ include(__DIR__ . '/../includes/header.php'); ?>
         <div class="authro-card">
             <div class="header-authro">
                 <div class="img_author">
-                    <img src="/Madad/<?= $infoAuthor['image'] ?>" alt="" loading="lazy">
+                    <img src="<?= $infoAuthor['image'] ?>" alt="<?= $infoAuthor['name'] ?>" loading="lazy">
                 </div>
                 <div class="authro-name">
                     <h1 title="name"> <?php echo $infoAuthor['name'] ?> </h1>
@@ -46,7 +46,7 @@ include(__DIR__ . '/../includes/header.php'); ?>
             <h2>كتب له</h2>
             <div class="books_madad">
                 <!-- Start -->
-                <?php if (is_array($allBooksAuthor)): ?>
+                <?php if (!empty($allBooksAuthor)): ?>
                     <?php foreach ($allBooksAuthor as $book): ?>
                     <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
                         <a href="/book_ditles/id/<?= htmlspecialchars($book['book_public_id']) ?>" class="link-book">

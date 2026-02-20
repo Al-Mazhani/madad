@@ -40,14 +40,18 @@ class HandlingFiles
         $outputFile = dirname($book) . DIRECTORY_SEPARATOR . "compressed_" . basename($book);
         $command = "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=\"$outputFile\" \"$book\"";
         shell_exec($command);
-        
+
         if (file_exists($outputFile)) {
             unlink($book);
             rename($outputFile, $book);
         }
         return $book;
     }
+    /* ابعاد الصورة
+✅ العرض: 200px
 
+✅ الارتفاع: 300px
+   */
     public static function UploadFile($File, $foderPath, $pathDB)
     {
         $FileExtension = strtolower(pathinfo($File['name'], PATHINFO_EXTENSION));

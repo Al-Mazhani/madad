@@ -73,7 +73,6 @@ class ControllerAuthor extends BaseController
   {
     $this->validateID($id);
     $resultInofAuhtor = $this->model->loadInfoAuthorByID($this->CleanInputNumber($id));
-    var_dump($resultInofAuhtor);
     if (empty($resultInofAuhtor)) {
 
       $this->NotAllowDisplayPage();

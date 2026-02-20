@@ -38,7 +38,7 @@ class AuthController  extends ControllUser
     protected function SetCookieToUser($token)
     {
         setcookie('remember_token', $token, time() + 86400 * 30, "/");
-        header("Location:/Madad/");
+        header("Location:/");
         exit();
     }
     public function CheckVerifyCode()
@@ -66,33 +66,28 @@ class AuthController  extends ControllUser
         }
 
         // Send Code To User Email
-        $Subject = 'Madad verification code';
 
         $this->ProcceDataUser($username, $email, $password, $token);
-        $emailSend = "hgh29171@gmail.com";
-        $reustlConfirCode = $this->MailerController->SendMessageToEmail($emailSend, $email, $Subject);
-        if (isset($reustlConfirCode['hasInputEmpty'])) {
-            return $reustlConfirCode['hasInputEmpty'];
-        }
-        $resultCode = 0;
-        if (isset($_SESSION['code-from-form'], $_SESSION['confrim-code'])) {
-            echo $_SESSION['code-from-form'] . " " . $_SESSION['confrim-code'];
+        try {
 
-            $resultCode =  $_SESSION['code-from-form'] == $_SESSION['confrim-code'] ? true : false;
-        }
-        if (!$resultCode) {
-            return ['hasInputEmpty' => 'عفواً الرمز غير صحيح'];
-        }
-        $resultRegister =  $this->model->insert($username, $email, $password, $token, $role);
+            $resultRegister = $this->model->insert($username, $email, $password, $token, $role);
 
-        if ($resultRegister) {
-            $this->SetCookieToUser($token);
-
-            if ($role != "admin") {
-                $_SESSION['username'] = $username;
+            if ($resultRegister) {
+                $this->SetCookieToUser($token);
+            } else {
+                return ['invalidRegister' => 'فشل انشاء حساب'];
             }
-        } else {
-            return ['invalidRegister' => 'فشل انشاء حساب'];
+        } catch (Exception $e) {
+            return ['invalidRegister' => 'حدث خطأ أثناء التسجيل'];
+        }
+    }
+    private function refreshLoginToken($email)
+    {
+        $token = $this->Generate4UUID();
+
+        if ($this->model->updateToken($token, $email)) {
+
+            $this->SetCookieToUser($token);
         }
     }
     public function isLoggedIn($email, $password)
@@ -114,18 +109,17 @@ class AuthController  extends ControllUser
 
         if (password_verify($password, $userLogggedIn['password'])) {
 
-            $token = $this->Generate4UUID();
 
-            if ($this->model->updateToken($token, $email) && $userLogggedIn['role'] = 'user') {
+            if ($userLogggedIn['role'] == 'user') {
 
-                $this->SetCookieToUser($token);
+                $this->refreshLoginToken($email);
             }
             if ($userLogggedIn['role'] == 'Admin') {
                 $this->HeaderToDashbord();
             }
         } else {
 
-            return ['filedLogin' => 'يرجاء انشاء حساب اولاً'];
+            return ['filedLogin' => '   كلمة المرور غير صحيحة'];
         }
     }
 }
