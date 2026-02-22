@@ -18,20 +18,20 @@ a {
 }
 
 :root {
-   --color-bg: #ffff;
-   --color-text: #000000;
-   --color-text-secondary: #444444;
-   --color-primary: #000000;
-   --color-secondary: #FFFFFF;
-   --background-header: #ebebeb;
-   --btn: #3bad9a;
-   --btn-hover: #2e8c7cd4;
-   --transition: 0.30s;
-   --box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
-   --Radius: 0.5rem;
+   --color-bg: #f8fafc;                 /* خلفية عامة مريحة */
+   --color-text: #1e293b;               /* نص رئيسي أهدأ من الأسود */
+   --color-text-secondary: #475569;     /* نص ثانوي */
+   --color-primary: #2f9e8f;            /* اللون الأساسي */
+   --color-secondary: #ffffff;          /* الكروت والصناديق */
+   --background-header: #ebebeb;        /* خلفية الهيدر */
+   --btn: #2f9e8f;                      /* زر أساسي */
+   --btn-hover: #247c70;                /* هوفر الزر */
+   --transition: 0.3s ease;
+   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+   --Radius: 0.6rem;
+   --Background-Red-Message: #dc2626;
 
 }
-
 html {
    scroll-behavior: smooth;
 }
@@ -265,6 +265,45 @@ ul li a:hover {
    gap: 20px;
    margin-bottom: 100px;
 
+}
+
+.list-of-links-profile {
+   position: fixed;
+   top: 4rem;
+   z-index: 222143214341234;
+   text-align: center;
+   display: none;
+   flex-direction: column;
+   align-items: center;
+   height: fit-content;
+   width: fit-content;
+
+
+}
+
+.show-info-user {
+   background-color: var(--btn);
+   color: var(--color-bg);
+   padding: 10px;
+   margin: 5px;
+   border-radius: 0.4rem;
+   width: 7rem;
+   text-align: center;
+   cursor: pointer;
+}
+
+.show-info-user i {
+   margin-right: 1rem;
+}
+
+.list-of-links-profile li {
+   color: var(--color-text-secondary);
+
+   width: 100%;
+   padding: 0.5rem 1rem;
+   text-align: center;
+   margin: 1px 0px;
+   background-color: var(--background-header);
 }
 
 .books_madad .box_madad {
@@ -569,13 +608,14 @@ ul li a:hover {
    box-shadow: var(--box-shadow);
    transition: var(--transition);
 }
+
 .sharing {
    color: var(--color-text-secondary);
    background-color: var(--background-header);
    border: none;
 }
 
- .btn-like-book {
+.btn-like-book {
    border: none;
    font-size: 1.8rem;
    position: relative;
@@ -584,12 +624,15 @@ ul li a:hover {
    background-color: var(--background-header);
    cursor: pointer;
 }
+
 .btn-like-book i {
    color: var(--color-text-secondary);
 }
+
 .sharing i {
-   font-size:  1.2rem;
-} 
+   font-size: 1.2rem;
+}
+
 .container .book-main .book_info .action_book .btn-like-book:hover {
    background-color: var(--background-header);
    color: var(--color-text-secondary);
@@ -706,22 +749,15 @@ ul li a:hover {
    background-color: var(--background-header);
    padding: 1rem;
    border-radius: var(--Radius);
-   margin-bottom: 12rem;
+   margin-bottom: 23rem;
 }
 
-.logOut {
-   width: 7rem;
-   height: 2rem;
-   padding: 0.3rem 0rem;
-   text-align: center;
-   border-radius: var(--Radius) ;
-   margin: 0.5rem 0px;
-   background-color: #dcdcdcb0;
-   position: absolute;
-   left: 1rem;
-   top: 1.5rem;
-
+.Message-sesccs {
+   background-color: #d4edda;
+   color: #155724;
+   border: 1px solid #c3e6cb;
 }
+
 
 .container .profile-box .update-profile {
    position: absolute;
@@ -752,10 +788,12 @@ ul li a:hover {
    color: var(--color-text-secondary);
 
 }
-.container .profile-box form #username{
+
+.container .profile-box form #username {
    border: 1px solid var(--btn);
 
 }
+
 .container .profile-box form input:focus {
    outline: 1px solid var(--btn);
 }
@@ -766,6 +804,59 @@ ul li a:hover {
 }
 
 /* end Page Profile user */
+/* Start Page Change Password */
+.container .box-chnage-password {
+   width: 50%;
+   height: 20rem;
+   text-align: center;
+   position: relative;
+   top: 10rem;
+   right: 20rem;
+   margin-bottom: 18.5rem;
+   background-color: var(--background-header);
+   border-radius: var(--Radius);
+   padding: 1rem;
+}
+
+.container .box-chnage-password .form-passwords {
+   width: 100%;
+   height: 80%;
+   /* background-color: red ; */
+}
+
+.form-passwords .old-password,
+.new-password,
+.config-password {
+   display: flex;
+   justify-content: space-between;
+   margin: 0.5rem 0rem;
+}
+
+.form-passwords .old-password input,
+.new-password input,
+.config-password input {
+   padding: 0.5rem;
+   width: 70%;
+   border-radius: var(--Radius);
+   border: none;
+}
+
+.form-passwords .old-password input:focus,
+.new-password input:focus,
+.config-password input:focus {
+   outline: 1px solid var(--btn);
+
+}
+
+.Message-error {
+   background-color: var(--Background-Red-Message);
+   width: 90%;
+   margin: 0px auto;
+   border-radius: var(--Radius);
+   color: var(--color-secondary);
+}
+
+/* End Page Change Password */
 
 /* Start Page Register */
 .container .register {
@@ -795,7 +886,8 @@ ul li a:hover {
 
 .container .register form input,
 .container .register form select,
-.container .register .btn-register {
+.container .register .btn-register,
+.btn-change-password {
    width: 90%;
    margin: 0.3rem auto;
    border-radius: var(--Radius);
@@ -808,7 +900,8 @@ ul li a:hover {
    outline: 1px solid var(--btn);
 }
 
-.container .register form .btn-register {
+.container .register form .btn-register,
+.btn-change-password {
    background-color: var(--btn) !important;
    color: var(--color-bg);
    font-size: 1.1rem;
@@ -818,19 +911,20 @@ ul li a:hover {
 
 /* End Page Register */
 /* Start Page Verify Email */
-.container .verify-email{
-  position: relative;
-  top: 14rem;
-  /* left: 25vw;  */
-  right: 25rem;
-  margin-bottom: 25.3rem;
-  width: 30rem;
-  height: 15rem;
-  border: 1px solid var(--btn);
-  box-shadow: var(--box-shadow);
-  text-align: center;
+.container .verify-email {
+   position: relative;
+   top: 14rem;
+   /* left: 25vw;  */
+   right: 25rem;
+   margin-bottom: 25.3rem;
+   width: 30rem;
+   height: 15rem;
+   border: 1px solid var(--btn);
+   box-shadow: var(--box-shadow);
+   text-align: center;
 }
-.verify-email .box-codes{
+
+.verify-email .box-codes {
    text-align: center;
    display: flex;
    justify-content: space-between;
@@ -838,44 +932,50 @@ ul li a:hover {
    margin-top: 6rem;
 
 }
-.verify-email input{
+
+.verify-email input {
    width: 10%;
    margin: 0px 0.2rem;
    padding: 0.2rem;
-   border-radius: 5px ;
+   border-radius: 5px;
    border: 1px solid var(--btn);
-  text-align: center;
+   text-align: center;
 
 }
-.verify-email input:focus{
+
+.verify-email input:focus {
    outline: 1px solid var(--btn);
    border: none;
 }
-.btn-verify-email{
+
+.btn-verify-email {
    width: 90%;
    padding: 0.5rem 0rem;
    margin-top: 2rem;
    background-color: var(--btn);
    border: none;
-   border-radius:var(--Radius) ;
+   border-radius: var(--Radius);
    color: var(--color-bg);
-   
+
 }
-.message-code{
+
+.message-code {
    width: 30rem;
    height: 15rem;
    border-radius: 1px solid var(--btn);
    border: 1px solid var(--btn);
    padding: 1rem;
 }
-.message-code img{
+
+.message-code img {
    position: relative;
    left: 35%;
    width: 30%;
    height: 50%;
-   border-radius:1rem ;
-   
+   border-radius: 1rem;
+
 }
+
 /* End Page Verify Email */
 /*Footer page */
 footer {

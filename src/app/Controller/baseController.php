@@ -80,8 +80,8 @@ class BaseController
         $resultBookToDelete = $this->findByID($id);
 
         if ($this->model->delete($id)) {
-            $this->deleteFileFromUploads($resultBookToDelete['image']);
-            $this->deleteFileFromUploads($resultBookToDelete['book_url']);
+            $this->deleteFile($resultBookToDelete['image']);
+            $this->deleteFile($resultBookToDelete['book_url']);
         }
     }
     public   function search(string $name)
@@ -95,11 +95,7 @@ class BaseController
         return $this->model->search($this->CleanInputText($name));
     }
     // Files 
-    protected function deleteFileFromUploads($pathImage)
-    {
-        if (file_exists($pathImage))
-            unlink($pathImage);
-    }
+
     protected function CheckFileCacheExists($FileCacheName)
     {
 
@@ -113,7 +109,7 @@ class BaseController
     {
         return json_decode(file_get_contents($FileCacheName), true);
     }
-    protected function DeleteFileCache($FileCacheName)
+    protected function deleteFile($FileCacheName)
     {
         if ($this->CheckFileCacheExists($FileCacheName)) {
             unlink($FileCacheName);

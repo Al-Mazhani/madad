@@ -37,7 +37,6 @@ if(!isset($_COOKIE['remember_token'])){
             endif;
             ?>" readonly>
             </div>
-            <a href="/Madad/sign_out" class="logOut">تسجيل خروج</a>
             <button type="submit" class="update-profile" name="updateProfile" >تعديل</button>
         </form>
     </div>

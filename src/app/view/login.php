@@ -5,12 +5,12 @@ include(__DIR__ . '/../includes/header.php');?>
         <div class="container">
             <div class="register">
                 <h1> تسجيل دخول </h1>
-                <form action="/Madad/login" method="post">
+                <form action="/login" method="post">
                       <?php if (isset($errorLogin['filedLogin'])): ?>
-                        <span><?php echo $errorLogin['filedLogin'] ?></span>
+                        <span class="Message-error"><?php echo $errorLogin['filedLogin'] ?></span>
                     <?php endif; ?>
                     <?php if (isset($errorLogin['hasErrorInput'])): ?>
-                        <span><?php echo $errorLogin['hasErrorInput'] ?></span>
+                        <span class="Message-error"><?php echo $errorLogin['hasErrorInput'] ?></span>
                     <?php endif; ?>
                     <label for="email">البريد الالكتروني</label>
                     <input type="email" name="email" id="email" placeholder="you@email.com" required>

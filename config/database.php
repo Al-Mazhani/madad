@@ -3,19 +3,23 @@ define('DBHOST', 'localhost');
 define('DBNAME', 'madadOne');
 define('DBUSER', 'root');
 define('DBPASS', '');
-
-class database
+class Database
 {
+    private static $pdo = null;
 
-   public  static function Connection()
+    public static function Connection()
     {
-        try {
-            $connection = "mysql:host=" . DBHOST . ";dbname=" . DBNAME . ";charset=utf8";
-            $pdo = new PDO($connection, DBUSER, DBPASS);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return $pdo;
-        } catch (PDOException $e) {
-            die("فشل الاتصال بقاعدة البيانات: " . $e->getMessage());
+        if (self::$pdo === null) {
+
+            try {
+                $connection = "mysql:host=" . DBHOST . ";dbname=" . DBNAME . ";charset=utf8";
+                self::$pdo = new PDO($connection, DBUSER, DBPASS);
+                self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $e) {
+                die("فشل الاتصال بقاعدة البيانات: " . $e->getMessage());
+            }
         }
+
+        return self::$pdo;
     }
 }

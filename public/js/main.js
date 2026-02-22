@@ -54,4 +54,7 @@ inputs.forEach((input, index) => {
 
 }); 
 let btnREgister = document.getElementById("btn-register");
-
+let GetInfoUser = document.getElementById("info-user");
+function DisplayInfo(){
+  GetInfoUser.style.display = "block";
+}

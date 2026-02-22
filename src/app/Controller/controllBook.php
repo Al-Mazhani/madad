@@ -243,7 +243,7 @@ class ControllBook extends BaseController
 
         $resultUpdate =  $this->modelBook->update($id, $dataUpdateBook);
         $FileCacheName = __DIR__ . '/../cache/baseBook.json';
-        $this->DeleteFileCache($FileCacheName);
+        $this->deleteFile($FileCacheName);
         return ($resultUpdate) ? ['successUpdate' => 'تم تعديل الكتاب'] : ['failedUpdate' => 'فشل تعديل الكتاب'];
     }
 
@@ -260,7 +260,7 @@ class ControllBook extends BaseController
         $result = $this->modelBook->insertBook($dataAddBook);
 
         $FileCacheName = __DIR__ . '/../cache/' . "baseBook.json";
-        $this->DeleteFileCache($FileCacheName);
+        $this->deleteFile($FileCacheName);
 
         return ($result) ? ['successAddBook' => 'تم إضافة الكتاب بنجاح'] :  ['NotsuccessAddBook' => 'فشل إضافة الكتاب'];
     }

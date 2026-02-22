@@ -8,11 +8,23 @@ class AuthController  extends ControllUser
         $this->model = $model;
         $this->MailerController = $MailerController;
     }
+    private function CleanUserName(&$username)
+    {
+        return strtolower(trim(preg_replace("/[^a-zA-Z0-9_]/", '', $username)));
+    }
+    private function CleanEmail(&$email)
+    {
+        return strtolower(filter_var($email, FILTER_SANITIZE_EMAIL));
+    }
+    private function CleanPassword(&$password)
+    {
+        return password_hash(trim($password), PASSWORD_BCRYPT);
+    }
     protected function ProcceDataUser(&$username, &$email, &$password, &$token)
     {
-        $username = strtolower(trim(preg_replace("/[^a-zA-Z0-9_]/", '', $username)));
-        $email = strtolower(filter_var($email, FILTER_SANITIZE_EMAIL));
-        $password = password_hash(trim($password), PASSWORD_BCRYPT);
+        $username =  $this->CleanUserName($username);
+        $email = $this->CleanEmail($email);
+        $password = $this->CleanPassword($password);
         $token = $this->Generate4UUID();
     }
     protected function CheckExitEmail($email)
@@ -121,5 +133,40 @@ class AuthController  extends ControllUser
 
             return ['filedLogin' => '   كلمة المرور غير صحيحة'];
         }
+    }
+    private function idantaclPassword($passwords)
+    {
+        return !($passwords['newPassword'] == $passwords['configPassword']);
+    }
+    private function CheckPasswordForChange($passwords)
+    {
+
+        if ($errorPassword = $this->validatePassword($passwords['oldPassword'])) {
+
+            return $errorPassword;
+        }
+        if ($errorPassword = $this->validatePassword($passwords['newPassword'])) {
+            return $errorPassword;
+        }
+        if ($errorPassword = $this->validatePassword($passwords['configPassword'])) {
+            return $errorPassword;
+        }
+        if ($this->idantaclPassword($passwords)) {
+            return ['NOTSamePassword' => 'كلمة المرور ليست مشابة'];
+        }
+    }
+    private function ProcessPasswordToChangeIt(&$passwords)
+    {
+        $passwords['newPassword'] = $this->CleanPassword($passwords['newPassword']);
+    }
+    public function ChangePassword($passwords)
+    {
+        if ($errorPassword = $this->CheckPasswordForChange($passwords)) {
+            return $errorPassword;
+        }
+        $this->ProcessPasswordToChangeIt($passwords);
+
+
+        return ($this->model->changePassword($passwords['newPassword'],$_SESSION['email'])) ? ['SescesChangePassword' => "تم تغير كلمة المرور"] : ['InvaludChangePassword' => "كلمة المرور غير صحيحة"];
     }
 }

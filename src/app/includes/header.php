@@ -44,11 +44,18 @@
 
                     </a>
                 <?php else: ?>
-                    <a href="/profile" class="btn">
-                        <i class="fas fa-user"></i>
+                    <!-- <a href="/profile" class="btn">
                         حسابي
-                    </a>
+                    </a> -->
+
+                    <p class="show-info-user" onclick="DisplayInfo()"> حسابي<i class="fas fa-user"></i></p>
                 <?php endif; ?>
+                <ul class="list-of-links-profile" id="info-user">
+                    <li><a href="/profile">الملف الشخصي</a></li>
+                    <li><a href="/change-password">تغير كلمة المرور</a></li>
+                    <li><a href="/sign_out" >تسجيل خروج</a></li>
+                    
+                </ul>
             </div>
         </div>
     </header>

@@ -1,7 +1,6 @@
 <?php
 
 require_once 'autoload.php';
-
 Route::get('/', function () use ($controllBook, $controllUser) {
     $allBooks = $controllBook->getInfoBookAndAuthor();
     if (isset($_COOKIE['remember_token']))
@@ -15,6 +14,16 @@ Route::get('/books', function () use ($controllBook) {
     $allBooks = $controllBook->getInfoBookAndAuthor();
     $allCategory = $controllBook->getAllCategory();
     require_once('src/app/view/books.php');
+});
+Route::get('/change-password', function ()  {
+    
+    require_once('src/app/view/changePass.php');
+});
+
+
+Route::post('/change-password', function () use ($AuthController) {
+    $Message = $AuthController->ChangePassword($_POST);
+    require_once('src/app/view/changePass.php');
 });
 
 

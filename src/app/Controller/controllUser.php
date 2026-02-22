@@ -34,7 +34,7 @@ class ControllUser  extends BaseController
         }
         return [];
     }
-    public function validatePassword($password)
+    public function validatePassword(&$password)
     {
         $lenghtPassword =  strlen($password);
         if (empty($password)) {
@@ -107,7 +107,7 @@ class ControllUser  extends BaseController
     {
 
         setcookie('remember_token', '', time() - 3600, "/");
-        header("Location:/Madad/");
+        header("Location:/");
         exit();
     }
 
