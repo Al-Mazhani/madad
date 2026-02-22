@@ -52,6 +52,7 @@
                 <?php endif; ?>
                 <ul class="list-of-links-profile" id="info-user">
                     <li><a href="/profile">الملف الشخصي</a></li>
+                    <li><a href="/change-profile" >تعديل الملف الشخصي</a></li>
                     <li><a href="/change-password">تغير كلمة المرور</a></li>
                     <li><a href="/sign_out" >تسجيل خروج</a></li>
                     

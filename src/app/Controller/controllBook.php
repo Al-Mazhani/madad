@@ -198,7 +198,7 @@ class ControllBook extends BaseController
         } else {
 
             $dataUpdateBook['image'] = $this->uploadImage($dataUpdateBook['image']);
-            $this->deleteFileFromUploads($dataUpdateBook['oldPathImage']);
+            $this->deleteFile($dataUpdateBook['oldPathImage']);
         }
     }
     private function checkExitFileBook(&$dataUpdateBook)
@@ -216,7 +216,7 @@ class ControllBook extends BaseController
 
         $dataUpdateBook['file_size'] = $dataUpdateBook['book']['size'] / 1024;
         $dataUpdateBook['book'] = $this->uploadBook($dataUpdateBook['book']);
-        $this->deleteFileFromUploads($dataUpdateBook['oldFileBook']);
+        $this->deleteFile($dataUpdateBook['oldFileBook']);
     }
 
     //  Check If Come From Server And  No Error

@@ -18,20 +18,29 @@ a {
 }
 
 :root {
-   --color-bg: #f8fafc;                 /* خلفية عامة مريحة */
-   --color-text: #1e293b;               /* نص رئيسي أهدأ من الأسود */
-   --color-text-secondary: #475569;     /* نص ثانوي */
-   --color-primary: #2f9e8f;            /* اللون الأساسي */
-   --color-secondary: #ffffff;          /* الكروت والصناديق */
-   --background-header: #ebebeb;        /* خلفية الهيدر */
-   --btn: #2f9e8f;                      /* زر أساسي */
-   --btn-hover: #247c70;                /* هوفر الزر */
+   --color-bg: #f8fafc;
+   /* خلفية عامة مريحة */
+   --color-text: #1e293b;
+   /* نص رئيسي أهدأ من الأسود */
+   --color-text-secondary: #475569;
+   /* نص ثانوي */
+   --color-primary: #2f9e8f;
+   /* اللون الأساسي */
+   --color-secondary: #ffffff;
+   /* الكروت والصناديق */
+   --background-header: #ebebeb;
+   /* خلفية الهيدر */
+   --btn: #2f9e8f;
+   /* زر أساسي */
+   --btn-hover: #247c70;
+   /* هوفر الزر */
    --transition: 0.3s ease;
    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
    --Radius: 0.6rem;
    --Background-Red-Message: #dc2626;
 
 }
+
 html {
    scroll-behavior: smooth;
 }
@@ -743,13 +752,43 @@ ul li a:hover {
 /* start Page Profile user */
 .container .profile-box {
    position: relative;
-   top: 145px;
+   top: 5rem;
    width: 100%;
-   height: 33vh;
+   height: 10%;
    background-color: var(--background-header);
    padding: 1rem;
    border-radius: var(--Radius);
-   margin-bottom: 23rem;
+   margin-bottom: 5rem;
+}
+
+#main-profile {
+   top: 4rem;
+   padding: 0.1rem;
+   margin-bottom: 11.5rem;
+
+}
+
+#main-profile .background-image-profile {
+   width: 100%;
+   height: 40vh;
+   object-fit: cover;
+}
+
+.profile-image {
+   width: 150px;
+   height: 150px;
+   border-radius: 50%;
+   position: relative;
+   right: 43%;
+   bottom: 5rem;
+}
+
+.profile-image img {
+   width: 100%;
+   height: 100%;
+   object-fit: cover;
+   border-radius: 50%;
+
 }
 
 .Message-sesccs {

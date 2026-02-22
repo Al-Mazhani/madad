@@ -167,6 +167,11 @@ class AuthController  extends ControllUser
         $this->ProcessPasswordToChangeIt($passwords);
 
 
-        return ($this->model->changePassword($passwords['newPassword'],$_SESSION['email'])) ? ['SescesChangePassword' => "تم تغير كلمة المرور"] : ['InvaludChangePassword' => "كلمة المرور غير صحيحة"];
+        if ($this->model->changePassword($passwords['newPassword'], $_SESSION['email'])) {
+            
+        return ['SescesChangePassword' => "تم تغير كلمة المرور"];
+        } else {
+           return ['InvaludChangePassword' => "كلمة المرور غير صحيحة"];
+        }
     }
 }

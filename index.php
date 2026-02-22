@@ -116,6 +116,9 @@ Route::get('/search', function () use ($controllBook) {
 Route::get('/profile', function () {
     require_once('src/app/view/profile.php');
 });
+Route::get('/change-profile', function () {
+    require_once('src/app/view/change-profile.php');
+});
 
 Route::post('/profile', function () use ($controllUser) {
 
