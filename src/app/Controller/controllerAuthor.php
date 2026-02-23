@@ -23,7 +23,7 @@ class ControllerAuthor extends BaseController
       return  ['hasFileEmpty' => "يرجاء ادخال الصورة"];
     }
 
-    if (!$this->CheckAllowedExtensionImage($image)) {
+    if (!$this->CheckAllowedMimeTypeFile($image,'image')) {
       return ['hasFileEmpty' => "خطأ في تحميل  امتداد الصورة"];
     }
     return null;

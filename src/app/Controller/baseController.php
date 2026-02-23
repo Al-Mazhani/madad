@@ -115,22 +115,34 @@ class BaseController
             unlink($FileCacheName);
         }
     }
-    protected function CheckAllowedExtensionImage($image)
+    private function isMimeTypeAllowed($File, $FileType)
     {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $MIME = finfo_file($finfo, $File['tmp_name']);
+        finfo_close($finfo);
 
-        $imgExt  = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
-        $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+        $allowed = [
+            'image' => ['image/jpeg', 'image/png', 'image/webp'],
+            'book' => ['application/pdf']
+        ];
 
-        return (in_array($imgExt, $allowed)) ? true : false;
+        return in_array($MIME, $allowed[$FileType], true);
     }
-    protected function CheckAllowedExtensionBook($book)
+    protected function CheckAllowedMimeTypeFile($File, $FileType)
     {
+        if (!is_uploaded_file($File['tmp_name'])) {
+            return false;
+        }
 
-        $bookExt = strtolower(pathinfo($book['name'], PATHINFO_EXTENSION));
-        $allowedExtBook = ["pdf", "zip"];
 
-        return (in_array($bookExt, $allowedExtBook)) ? true : false;
+        $imgExt  = strtolower(pathinfo($File['name'], PATHINFO_EXTENSION));
+        $allowed = [
+            'image' => ['jpg', 'jpeg', 'png', 'webp'],
+            'book' =>  ['pdf']
+        ];
+        return (in_array($imgExt, $allowed[$FileType]) && $this->isMimeTypeAllowed($File, $FileType));
     }
+
     protected function MakePublicID()
     {
         return random_int(111111, 999999);

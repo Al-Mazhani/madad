@@ -1,6 +1,7 @@
 <?php
 
 require_once 'autoload.php';
+
 Route::get('/', function () use ($controllBook, $controllUser) {
     $allBooks = $controllBook->getInfoBookAndAuthor();
     if (isset($_COOKIE['remember_token']))

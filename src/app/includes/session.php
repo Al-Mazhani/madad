@@ -6,6 +6,6 @@
         exit();
     }
 }
-NotAllowDisplayPage();  
+// NotAllowDisplayPage();  
 
 ?> 
