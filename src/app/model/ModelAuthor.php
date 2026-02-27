@@ -8,7 +8,12 @@ class ModelAuthor extends BaseModel
     parent::__construct( 'authors', 'public_id');
   }
 
-
+    public function checkIDExit($id){
+      $QueryFindAuthorByID = "SELECT id_author FROM authors WHERE id_author = :id";
+      $stmt = database::Connection()->prepare($QueryFindAuthorByID);
+      $stmt->execute(['id' =>$id]);
+      return $stmt->rowCount();
+    }
   //  Add Author
   public function insert($cleanData)
   {

@@ -30,7 +30,7 @@ $AuthController = new AuthController($ModelUser,$MailerController);
 $ModelAdmin = new ModelAdmin();
 $controllAdmin = new controllAdmin($ModelAdmin);
 $ModelBook = new ModelBook();
-$controllBook = new ControllBook($ModelBook);
 $ModelAuthor = new ModelAuthor();
+$controllBook = new ControllBook($ModelBook,$ModelAuthor,);
 $controllAuthor = new ControllerAuthor($ModelAuthor);
 ?>
