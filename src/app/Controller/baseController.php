@@ -80,8 +80,8 @@ class BaseController
         $resultBookToDelete = $this->findByID($id);
 
         if ($this->model->delete($id)) {
-            $this->deleteFile($resultBookToDelete['image']);
-            $this->deleteFile($resultBookToDelete['book_url']);
+            $this->DeleteFile($resultBookToDelete['image']);
+            $this->DeleteFile($resultBookToDelete['book_url']);
         }
     }
     public   function search(string $name)
@@ -101,7 +101,7 @@ class BaseController
 
         return (file_exists($FileCacheName)) ? true : false;
     }
-    protected function MakeFileCache($FileCacheName, $data)
+    protected function CreateFile($FileCacheName, $data)
     {
         file_put_contents($FileCacheName, json_encode($data));
     }
@@ -109,7 +109,7 @@ class BaseController
     {
         return json_decode(file_get_contents($FileCacheName), true);
     }
-    protected function deleteFile($FileCacheName)
+    protected function DeleteFile($FileCacheName)
     {
         if ($this->CheckFileCacheExists($FileCacheName)) {
             unlink($FileCacheName);

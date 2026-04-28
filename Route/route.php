@@ -4,43 +4,43 @@
 class Route
 {
     public static $routes =  [];
-public static function get($URL, $callback)
-{
-    self::$routes['GET'][] = [$URL, $callback];
-}
-
-public static function post($URL, $callback)
-{
-    self::$routes['POST'][] = [$URL, $callback];
-}
-public static function dispatch()
-{
-    $method = $_SERVER['REQUEST_METHOD'];
-
-    $URL = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    $URL = str_replace('/Madad', '', $URL);
-    $URL = rtrim($URL, '/');
-
-    if ($URL === '') {
-        $URL = '/';
+    public static function get($URL, $callback)
+    {
+        self::$routes['GET'][] = [$URL, $callback];
     }
 
-    if (!isset(self::$routes[$method])) {
-        require_once('src/app/view/404.php');
-        return;
+    public static function post($URL, $callback)
+    {
+        self::$routes['POST'][] = [$URL, $callback];
     }
+    public static function dispatch()
+    {
+        $method = $_SERVER['REQUEST_METHOD'];
 
-    foreach (self::$routes[$method] as [$route, $callback]) {
+        $URL = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $URL = str_replace('/Madad', '', $URL);
+        $URL = rtrim($URL, '/');
 
-        $pattern = "#^" . $route . "$#";
-
-        if (preg_match($pattern, $URL, $matches)) {
-            array_shift($matches); // remove full match
-            return $callback(...$matches);
+        if ($URL === '') {
+            $URL = '/';
         }
+
+        if (!isset(self::$routes[$method])) {
+            require_once('src/app/view/404.php');
+            return;
+        }
+
+        foreach (self::$routes[$method] as [$route, $callback]) {
+
+            $pattern = "#^" . $route . "$#";
+
+            if (preg_match($pattern, $URL, $matches)) {
+                array_shift($matches);
+                return $callback(...$matches);
+            }
+        }
+
+        // إذا ما تطابق أي route
+        require_once('src/app/view/404.php');
     }
-
-    require_once('src/app/view/404.php');
-}
-
 }

@@ -174,7 +174,7 @@ class ControllBook extends BaseController
             return $this->GetDataFromFileCahce($FileCacheName);
         } else {
             $dataBaseBook = $this->model->join_books_authors();
-            $this->MakeFileCache($FileCacheName, $dataBaseBook);
+            $this->CreateFile($FileCacheName, $dataBaseBook);
             return $dataBaseBook;
         }
     }

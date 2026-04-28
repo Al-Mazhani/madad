@@ -47,11 +47,8 @@ class HandlingFiles
         }
         return $book;
     }
-    /* ابعاد الصورة
-✅ العرض: 200px
 
-✅ الارتفاع: 300px
-   */
+ 
     public static function UploadFile($File, $foderPath, $pathDB)
     {
         $FileExtension = strtolower(pathinfo($File['name'], PATHINFO_EXTENSION));
