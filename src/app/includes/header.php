@@ -44,9 +44,9 @@
 
                     </a>
                 <?php else: ?>
-                    <a href="/Madad/profile" class="btn">
+                    <!-- <a href="/Madad/profile" class="btn">
                         حسابي
-                    </a>
+                    </a> -->
 
                     <p class="show-info-user" onclick="DisplayInfo()"> حسابي<i class="fas fa-user"></i></p>
                 <?php endif; ?>

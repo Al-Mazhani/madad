@@ -50,7 +50,7 @@ class AuthController  extends ControllUser
     protected function SetCookieToUser($token)
     {
         setcookie('remember_token', $token, time() + 86400 * 30, "/");
-        header("Location:/");
+        header("Location:/Madad/");
         exit();
     }
     public function CheckVerifyCode()
