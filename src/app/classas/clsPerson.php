@@ -1,17 +1,22 @@
 <?php
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+
 class clsPerson
 {
-    private $_ID;
-    private $_Username;
-    private $_Email;
-    private $_Password;
-    private $_Role;
-    private $_Active;
-    private $_Token;
+    private int $_ID;
+    private string $_Username;
+    private string $_Email;
+    private string $_Password;
+    private string $_Role;
+    private bool $_Active;
+    private string $_Token;
     private $_Created_at;
-    private $_Image;
+    private string $_Image;
 
-    function __construct(int $ID, string $Username, string $Email, string $Password, int $Role, bool $Active, string $Token, string $Created_at, string $Image)
+    function __construct(int $ID, string $Username, string $Email, string $Password, string $Role, bool $Active, string $Token, string $Created_at, string $Image)
     {
         $this->_ID = $ID;
         $this->_Username = $Username;
@@ -23,54 +28,55 @@ class clsPerson
         $this->_Created_at = $Created_at;
         $this->_Image = $Image;
     }
+    // Read Only
     public function ID()
     {
         return $this->_ID;
     }
 
-    public function setUsername($Username)
+    public function setUsername($Username): void
     {
         $this->_Username = $Username;
     }
-    public function Username()
+    public function Username(): string
     {
         return $this->_Username;
     }
 
-    public function setEmail($Email)
+    public function setEmail($Email): void
     {
         $this->_Email = $Email;
     }
-    public function Email()
+    public function Email(): string
     {
         return $this->_Email;
     }
 
-    public function setPassword($Password)
+    public function setPassword($Password): void
     {
         $this->_Password = $Password;
     }
 
-    public function Password()
+    public function Password(): string
     {
         return $this->_Password;
     }
-    public function setRole($Role)
+    public function setRole(string $Role): void
     {
         $this->_Role = $Role;
     }
 
-    public function  Role()
+    public function  Role(): string
     {
         return  $this->_Role;
     }
 
-    public function setToke($Toke)
+    public function setToke($Toke): void
     {
         $this->_Token = $Toke;
     }
 
-    public function Toke()
+    public function Toke(): string
     {
         return $this->_Token;
     }
@@ -84,32 +90,41 @@ class clsPerson
         return $this->_Created_at;
     }
 
-    public function setImage($Image)
+    public function setImage($Image): void
     {
         $this->_Image = $Image;
     }
 
-    public function Image()
+    public function Image(): string
     {
         return $this->_Image;
     }
-    public function setActive(bool $Active)
+    public function setActive(bool $Active): void
     {
         if ($Active == 1 || $Active == 0) {
             $this->_Active = $Active;
         }
     }
-    public function Active()
+    public function Active(): bool
     {
         return $this->_Active;
     }
 
-    protected function IsActive() : bool
+    public function IsActive(): bool
     {
         return $this->_Active;
     }
-    protected function IsAdmin() : bool
+    public function IsAdmin(): string
     {
-     return $this->_Role == 1;
+        return ($this->Role() == "admin");
+    }
+    
+    
+
+    
+
+    public  function SendEmail(string $From,string $Subject,string $Body)
+    {
+        return MailerController::SendEmail($From,$this->Email(),$Subject,$Body);
     }
 }

@@ -1,12 +1,16 @@
 <?php
+session_start();
 
 
 
 Route::get('/', function () use ($controllBook, $controllUser) {
-    $allBooks = $controllBook->getInfoBookAndAuthor();
-    if (isset($_COOKIE['remember_token']))
-        $controllUser->checkToken($_COOKIE['remember_token']);
-    require_once('src/app/view/home.php');
+    // $allBooks = $controllBook->getInfoBookAndAuthor();
+    // if (isset($_COOKIE['remember_token']))
+    //     $controllUser->checkToken($_COOKIE['remember_token']);
+    
+    // require_once('src/app/view/home.php');
+ include 'testClassas.php';
+
 });
 
 

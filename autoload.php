@@ -1,5 +1,4 @@
 <?php
-session_start();
 // Start Model
 include_once  'src/app/model/ModelBook.php';
 include_once  'src/app/model/ModelUser.php';
@@ -18,6 +17,7 @@ include_once  'src/app/Controller/MailerController.php';
 // Start Classas
 include_once  'src/app/classas/clsPerson.php';
 include_once  'src/app/classas/clsUser.php';
+include_once  'src/app/classas/clsAdmin.php';
 
 // End Classas
 require_once  'public/Authentication/AuthenticationUser.php';
@@ -30,15 +30,16 @@ require_once  'Route/Route.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-$mailer = new PHPMailer(true);
-$MailerController = new MailerController($mailer);
+// $MailerController = new MailerController($mailer);
 $ModelUser = new ModelUser();
 $controllUser = new ControllUser($ModelUser);
-$AuthController = new AuthController($ModelUser,$MailerController);
+$AuthController = new AuthController($ModelUser);
 $ModelAdmin = new ModelAdmin();
 $controllAdmin = new controllAdmin($ModelAdmin);
 $ModelBook = new ModelBook();
 $ModelAuthor = new ModelAuthor();
 $controllBook = new ControllBook($ModelBook,$ModelAuthor,);
 $controllAuthor = new ControllerAuthor($ModelAuthor);
+ 
+
 ?>

@@ -8,7 +8,7 @@ if (!isset($_COOKIE['remember_token'])) {
     <div class="profile-box " id="main-profile">
         <img class="background-image-profile" src="uploads/image_user/default_image.jpg" loading="lazy" alt="default image">
         <div class="profile-image">
-            <img src="/uploads/image_user/main_image.jpg" loading="lazy" alt="default image">
+            <img src="<?php echo ($_SESSION['Image'])?>" loading="lazy" alt="default image">
         </div>
     </div>
 </div>

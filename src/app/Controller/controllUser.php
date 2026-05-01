@@ -1,5 +1,5 @@
 <?php
-
+//   include("../classas/clsUser.php");
 class ControllUser  extends BaseController
 {
     public function __construct($model)
@@ -22,6 +22,10 @@ class ControllUser  extends BaseController
         }
 
         return [];
+    }
+    private function _MapToUser($LineUser)
+    {
+        return new clsUser($LineUser['user_id'], $LineUser['username'], $LineUser['email'], $LineUser['password'], (int)$LineUser['role'], (bool)$LineUser['active_user'], $LineUser['token'], $LineUser['created_at'], $LineUser['image'], $LineUser['background_image']);
     }
     public function validateEmail($email)
     {
@@ -70,7 +74,7 @@ class ControllUser  extends BaseController
 
     //  confirm Code Email 
 
-  
+
     private function lockedAccount()
     {
         if (!isset($_SESSION['AccountLocked'])) {
@@ -79,7 +83,7 @@ class ControllUser  extends BaseController
 
         die("Account Locked");
     }
-    
+
     private function CheckIfLogginThen5Times()
     {
         $allowedLoggin = 5;
@@ -107,18 +111,24 @@ class ControllUser  extends BaseController
     {
 
         setcookie('remember_token', '', time() - 3600, "/");
-        header("Location:/");
+        header("Location:/Madad/");
         exit();
     }
-
+    private function _MakeSessionForUser($User)
+    {
+        $_SESSION['user_id'] = $User->ID();
+        $_SESSION['username'] = $User->Username();
+        $_SESSION['email'] = $User->Email();
+        $_SESSION['Role'] = $User->Role();
+        $_SESSION['Active'] = $User->Active();
+        $_SESSION['Image'] = $User->Image();
+        $_SESSION['BackgroundImage'] = $User->BackgroundImage();
+    }
     public function checkToken($token)
     {
-        $getToken = $this->model->checkToken($token);
-        if (!empty($getToken)) {
 
-            $_SESSION['user_id'] = $getToken['user_id'];
-            $_SESSION['username'] = $getToken['username'];
-            $_SESSION['email'] = $getToken['email'];
-        }
+        $User =  $this->_MapToUser($this->model->checkToken($token));
+        $this->_MakeSessionForUser($User);
+        return true;
     }
 }

@@ -15,28 +15,11 @@
         <div class="search-book">
             <form action="/Madad/search" method="GET">
                 <input type="text" name="name" id="search-for" placeholder="ابحث عن كتاب" required>
-                <button type="submit"  class="submit-search"> بحث</button>
+                <button type="submit" class="submit-search"> بحث</button>
             </form>
         </div>
     </section>
-    <section class="container">
-        <div class="books_madad">
-            <?php if (!empty($allBooks)): ?>
-                <?php foreach ($allBooks as &$book): ?>
-                    <div class="box_madad" title="<?= htmlspecialchars($book['title']) ?>">
-                        <a href="/book_ditles/id/<?= htmlspecialchars($book['book_public_id']) ?>" class="link-book">
-                            <img src="<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['title']) ?>" loading="lazy">
-                        </a>
-                        <a href="/book_ditles/id/<?= htmlspecialchars($book['book_public_id']) ?>" class="book_title" title="<?= htmlspecialchars($book['title']) ?>"> <?= htmlspecialchars($book['title']) ?></a>
-                        <a href="/info_author/id/<?= htmlspecialchars($book['author_public_id']) ?>" class="author" title="<?= htmlspecialchars($book['name']) ?>"> <?= htmlspecialchars($book['name']) ?></a>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>لا يوجد كتب </p>
-            <?php endif; ?>
-        </div>
-        <button class="loadMore" onclick="LoadloadMoreBooks()">تحميل المزيد...</button>
+    <?php include('src/app/includes/BoxBook.php') ?>
 
-    </section>
 </main>
 <?php include(__DIR__ . '/../includes/footer.php'); ?>

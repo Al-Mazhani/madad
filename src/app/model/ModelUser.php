@@ -1,6 +1,10 @@
 <?php
 include_once('BaseModel.php');
-
+enum enSaveIntoDB: int
+{
+    case SucceedSave = 1;
+    case failSave = 0;
+};
 class ModelUser extends BaseModel
 {
     protected $database;
@@ -8,24 +12,27 @@ class ModelUser extends BaseModel
     {
         parent::__construct("users", 'user_id');
     }
-
-    public function checkLogin($email)
+    static function loadAllUsers()
     {
-        $queryLogin = "SELECT * FROM users WHERE email = :email AND role = :User LIMIT 1";
-        $stmt = database::Connection()->prepare($queryLogin);
-        $stmt->execute([":email" => $email, ":User" => 'user']);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (empty($result)) {
-            return false;
-        }
-        return $result;
+        $query = "SELECT * FROM users ";
+        $stmt = database::Connection()->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function update($username, $email)
+
+    static public function FindByEmail($email)
     {
-        $QueryUpdateProfile = "UPDATE users SET username = :updateName WHERE email = :email";
+        $queryLogin = "SELECT * FROM users WHERE email = :email";
+        $stmt = database::Connection()->prepare($queryLogin);
+        $stmt->execute([":email" => $email]);
+        return  $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public static function update(clsUser $User) : enSaveIntoDB
+    {
+        $QueryUpdateProfile = "UPDATE users SET username  = :updateName ,image = :image,background_image = :background_image WHERE email = :email";
         $stmt = database::Connection()->prepare($QueryUpdateProfile);
-        $stmt->execute(["updateName" => $username, "email" => $email]);
-        return ($stmt->rowCount()) ? true : false;
+        $stmt->execute(["updateName" => $User->Username(), "email" => $User->Email(), ":image" => $User->Image(), ":background_image" => $User->BackgroundImage()]);
+        return ($stmt->rowCount()) ? enSaveIntoDB::SucceedSave : enSaveIntoDB::failSave;
     }
     public function checkToken($token)
     {

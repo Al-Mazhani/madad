@@ -3,10 +3,9 @@ class AuthController  extends ControllUser
 {
     public $model;
     public $MailerController;
-    public function __construct($model, $MailerController)
+    public function __construct($model)
     {
         $this->model = $model;
-        $this->MailerController = $MailerController;
     }
     private function CleanUserName(&$username)
     {
