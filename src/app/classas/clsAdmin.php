@@ -8,10 +8,14 @@ enum enPermissionRole: int
     case eUpdate = 8;
     case eFind = 16;
 };
-class clsAdmin extends clsPerson
+class clsAdmin extends clsUser
 {
     private int $_Permission;
-
+     
+      function __construct(enMode $Mode, int $ID, string $Username, string $Email, string $Password, string $Role, bool $Active, string $Token, string $Created_at, string $Image, string $BackgroundImage)
+      {
+         parent::__construct($Mode, $ID, $Username, $Email, $Password, $Role, $Active, $Token, $Created_at, $Image, $BackgroundImage);
+      }
     public function setPermission(string $Permission): void
     {
         $this->_Permission = $Permission;
@@ -21,16 +25,29 @@ class clsAdmin extends clsPerson
     {
         return $this->_Permission;
     }
-    private function setPermissionRole(array $arrOfPermission) : int
+    public static function setPermissionRole(array $arrOfPermission) : int
     {
         $TotalOfPermission = 0;
 
-        if($arrOfPermission['eAllAccess'] == -1)
+         if(in_array(enPermissionRole::eAllAccess,$arrOfPermission)){
             return -1;
-        foreach ($arrOfPermission as $Permission)
-          {
-                $TotalOfPermission += $Permission;    
-          }
+         }
+         if(in_array(enPermissionRole::eShowAll,$arrOfPermission)){
+            $TotalOfPermission += enPermissionRole::eShowAll->value;
+         }
+         if(in_array(enPermissionRole::eAdd,$arrOfPermission)){
+            $TotalOfPermission += enPermissionRole::eAdd->value;
+         }
+         if(in_array(enPermissionRole::eDelete,$arrOfPermission)){
+            $TotalOfPermission += enPermissionRole::eDelete->value;
+         }
+         if(in_array(enPermissionRole::eUpdate,$arrOfPermission)){
+            $TotalOfPermission += enPermissionRole::eUpdate->value;
+         }
+         if(in_array(enPermissionRole::eFind,$arrOfPermission)){
+            $TotalOfPermission += enPermissionRole::eFind->value;
+         }
+
       return $TotalOfPermission;
     }
 };

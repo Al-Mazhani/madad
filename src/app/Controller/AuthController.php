@@ -26,15 +26,7 @@ class AuthController  extends ControllUser
         $password = $this->CleanPassword($password);
         $token = $this->Generate4UUID();
     }
-    protected function CheckExitEmail($email)
-    {
 
-        $resultExitEmail = $this->model->CheckEmailExit($email);
-        if ($resultExitEmail && $resultExitEmail['email'] === $email) {
-            return ['hasErrorInput' => 'البريد الالكتروني موجود بالفعل'];
-        }
-        return [];
-    }
 
 
     private function HeaderToPageVerfyEmail()
@@ -61,35 +53,41 @@ class AuthController  extends ControllUser
         }
         return false;
     }
-    public function create($username, $email, $password, $role)
+    public function create($Username, $Email, $Password)
     {
-        if ($errorUsername = $this->ValidateInputUsername($username)) {
+        if ($errorUsername = $this->ValidateInputUsername($Username)) {
             return $errorUsername;
         }
-        if ($errorEmail = $this->validateEmail($email)) {
+        if ($errorEmail = $this->validateEmail($Email)) {
             return $errorEmail;
         }
-        if ($errorExitEmail = $this->CheckExitEmail($email)) {
-            return $errorExitEmail;
-        }
-        if ($errorPassword = $this->validatePassword($password)) {
+        if ($errorPassword = $this->validatePassword($Password)) {
             return $errorPassword;
         }
 
         // Send Code To User Email
 
-        $this->ProcceDataUser($username, $email, $password, $token);
+        $this->ProcceDataUser($Username, $Email, $Password, $Token);
+  
         try {
 
-            $resultRegister = $this->model->insert($username, $email, $password, $token, $role);
-
-            if ($resultRegister) {
-                $this->SetCookieToUser($token);
+            if (clsUser::IsUserExist($Email)) {
+                return enSaveIntoDB::EmailExists;
+            }
+            $user = clsUser::GetAddNewUser($Email);
+            $user->setUsername($Username);
+            $user->setPassword($Password);
+            $user->setToke($Token);
+            $user->setRole("admin");
+            print_r($user);
+            $SaveResult = $user->Save();
+            if ($SaveResult == enSaveIntoDB::SucceedSave) {
+                $this->SetCookieToUser($Token);
             } else {
-                return ['invalidRegister' => 'فشل انشاء حساب'];
+                return enSaveIntoDB::failSave;
             }
         } catch (Exception $e) {
-            return ['invalidRegister' => 'حدث خطأ أثناء التسجيل'];
+            return enSaveIntoDB::failSave;
         }
     }
     private function refreshLoginToken($email)
@@ -167,10 +165,53 @@ class AuthController  extends ControllUser
 
 
         if ($this->model->changePassword($passwords['newPassword'], $_SESSION['email'])) {
-            
-        return ['SescesChangePassword' => "تم تغير كلمة المرور"];
+
+            return ['SescesChangePassword' => "تم تغير كلمة المرور"];
         } else {
-           return ['InvaludChangePassword' => "كلمة المرور غير صحيحة"];
+            return ['InvaludChangePassword' => "كلمة المرور غير صحيحة"];
+        }
+    }
+    public static function ShowRegisterResult($RegisterResult)
+    {
+        // Check For Errors
+        switch ($RegisterResult) {
+
+            case enUserInputErrors::InvalidUsername:
+                {
+                    return '<span>  "  خطاء في  اسم المستخدم"  </span>';
+                }
+            case enUserInputErrors::LanthUserName:
+                {
+                    return '<span>  " يرجاء إدخال اسم المستخدم"  </span>';
+                }
+            case enUserInputErrors::MissinUsername:
+                {
+                    return '<span>  " يرجاء إدخال اسم المستخدم"  </span>';
+                }
+            case enUserInputErrors::InvalidEmail:
+                {
+                    return '<span>  "  البريد الالكتروني غير صحيح"  </span>';
+                }
+            case enUserInputErrors::MissinPassword:
+                {
+                    return '<span>  "يرجاء إدخال كلمة المرور"  </span>';
+                }
+            case enUserInputErrors::LenghtPassword:
+                {
+                    return '<span>  "Lneght Password"  </span>';
+                }
+
+        }
+        // Check For DB
+        switch ($RegisterResult) {
+            case enSaveIntoDB::EmailExists:
+                {
+                    return '<span>  "البريد الالكتروني موجود بالفعل" </span>';
+                }
+            case enSaveIntoDB::failSave:
+                {
+                    return '<span> "خطاء في انشاء حساب! حاول مرة اخرى"  </span>';
+                }
         }
     }
 }

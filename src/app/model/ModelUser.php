@@ -1,10 +1,6 @@
 <?php
 include_once('BaseModel.php');
-enum enSaveIntoDB: int
-{
-    case SucceedSave = 1;
-    case failSave = 0;
-};
+
 class ModelUser extends BaseModel
 {
     protected $database;
@@ -27,13 +23,7 @@ class ModelUser extends BaseModel
         $stmt->execute([":email" => $email]);
         return  $stmt->fetch(PDO::FETCH_ASSOC);
     }
-    public static function update(clsUser $User) : enSaveIntoDB
-    {
-        $QueryUpdateProfile = "UPDATE users SET username  = :updateName ,image = :image,background_image = :background_image WHERE email = :email";
-        $stmt = database::Connection()->prepare($QueryUpdateProfile);
-        $stmt->execute(["updateName" => $User->Username(), "email" => $User->Email(), ":image" => $User->Image(), ":background_image" => $User->BackgroundImage()]);
-        return ($stmt->rowCount()) ? enSaveIntoDB::SucceedSave : enSaveIntoDB::failSave;
-    }
+
     public function checkToken($token)
     {
         $queryToken = "SELECT * FROM users WHERE token = :Token";
@@ -59,12 +49,9 @@ class ModelUser extends BaseModel
         $stmt->execute([':newToken' => $newToken, ':email' => $email]);
         return ($stmt->rowCount()) ? true : false;
     }
-    public function insert($username, $email, $password, $token, $role)
+    public static function insert(clsUser $User)
     {
-        $QueryCreateUser = "INSERT INTO users (username,email,password,token,role) VALUES (:username,:email,:password,:token,:role)";
-        $stmt = database::Connection()->prepare($QueryCreateUser);
-        $stmt->execute([":username" => $username, ":email" => $email, ":password" => $password, ":token" => $token, ":role" => $role]);
-        return ($stmt->rowCount()) ? true : false;
+
     }
     public function changePassword(&$newPassword, &$email)
     {

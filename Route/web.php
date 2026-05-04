@@ -49,8 +49,7 @@ Route::post('/register', function () use ($AuthController) {
         $error = $AuthController->create(
             $_POST['username'],
             $_POST['email'],
-            $_POST['password'],
-            'user'
+            $_POST['password']
         );
     }
 

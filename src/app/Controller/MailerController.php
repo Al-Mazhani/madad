@@ -17,7 +17,8 @@ class MailerController
         $mailer->Host = 'smtp.gmail.com';
         $mailer->SMTPAuth = true;
         $mailer->Username = 'hussein.a.al.mazhani@gmail.com';
-        $mailer->Password = 'zpsrclmhpsjuqupl';
+        $mailer->Password = 'hlrbpzvtdxijzuyx';
+        $mailer->CharSet = 'UTF-8';
         $mailer->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mailer->Port = 587;
     }

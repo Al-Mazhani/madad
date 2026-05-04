@@ -1,5 +1,20 @@
 <?php
+
 //   include("../classas/clsUser.php");
+
+enum enUserInputErrors: int
+{
+    case  MissinUsername = 1;
+     case   LanthUserName = 2;
+     case   InvalidUsername = 3;
+     case  MissinPassword = 4;
+     case  LenghtPassword = 5;
+     case   MissinImage = 6;
+     case   MissinBackgroundImage = 7;
+     case   MissinToken = 8;
+     case  InvalidEmail = 9;
+     case NoErrors = 10;
+     };
 class ControllUser  extends BaseController
 {
     public function __construct($model)
@@ -11,43 +26,40 @@ class ControllUser  extends BaseController
     {
         $lenghtUserName =  strlen($username);
         if (empty($username)) {
-            return ['hasErrorInput' => "يرجاء املاء حقل الاسم"];
+            return enUserInputErrors::MissinUsername;
         }
         if ($lenghtUserName < 3 || $lenghtUserName > 30) {
-            return ['hasErrorInput' => 'يرجاء ان يكون الاسم بين 3 و 30 حرف'];
+            return enUserInputErrors::LanthUserName;
         }
         if (!preg_match('/^[a-zA-Z0-9_]{3,30}$/', $username)) {
 
-            return ['hasErrorInput' => " [ a - z A - Z 0 - 9 _ ] {  3 , 20 } يرجاء املاء حقل الاسم"];
+            return enUserInputErrors::InvalidUsername;
         }
 
-        return [];
+        return enUserInputErrors::NoErrors;
     }
-    private function _MapToUser($LineUser)
-    {
-        return new clsUser($LineUser['user_id'], $LineUser['username'], $LineUser['email'], $LineUser['password'], (int)$LineUser['role'], (bool)$LineUser['active_user'], $LineUser['token'], $LineUser['created_at'], $LineUser['image'], $LineUser['background_image']);
-    }
+
     public function validateEmail($email)
     {
 
         if (empty($email)) {
-            return ['hasErrorInput' => 'يرجاءاملاء حقل البريد الالكتروني'];
+            return enUserInputErrors::InvalidEmail;
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return ['hasErrorInput' => 'يرجاء املاء حقل البريد'];
+            return enUserInputErrors::InvalidEmail;
         }
-        return [];
+        return enUserInputErrors::NoErrors;
     }
-    public function validatePassword(&$password)
+    public function validatePassword($password)
     {
         $lenghtPassword =  strlen($password);
         if (empty($password)) {
-            return ['hasErrorInput' => 'يرجاء إملاء حقل كلمة المرور'];
+            return enUserInputErrors::MissinPassword;
         }
         if ($lenghtPassword   < 10  || $lenghtPassword > 15) {
-            return ['hasErrorInput' => 'يرجاء املا كلمة المرور  بين 10 و 15 حرف'];
+            return enUserInputErrors::LenghtPassword;
         }
-        return [];
+        return enUserInputErrors::NoErrors;
     }
     public function show()
     {
@@ -127,8 +139,8 @@ class ControllUser  extends BaseController
     public function checkToken($token)
     {
 
-        $User =  $this->_MapToUser($this->model->checkToken($token));
-        $this->_MakeSessionForUser($User);
+        // $User =  clsUser::Find($this->model->checkToken($token));
+        // $this->_MakeSessionForUser($User);
         return true;
     }
 }
