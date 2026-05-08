@@ -1,86 +1,128 @@
- <?php
-    $Email = "husseinnoor@gmail.com";
-    if (clsUser::IsUserExist($Email)) {
-        echo "Yes, User Exist" . '<br>';
-    }
-    
+<?php
 
-    $user = clsUser::Find($Email);
-    if($user->Delete() == SaveResult::Deleted){
-        echo "User Deleted successfully";
-    }
-    else{
-        echo "Conn't Delete This User";
-    }
-    ?>
- <!DOCTYPE html>
- <html lang="en">
+   $user = clsAdmin::Find("hfrtcukur@gmail.com");
+if (clsAdmin::CanShowAll($user->Permission())) {
+  echo "Yes, Can Show All";
+} else {
+  echo "NO, Not Cam Show All";
+}
+?>
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
 
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Document</title>
-     <style>
-         .table-wrap {
-             width: 90%;
-             overflow-x: auto;
-             margin-top: 20px;
-             font-family: Arial;
-         }
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-         .user-table {
-             width: 100%;
-             border-collapse: collapse;
-         }
+.card {
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
 
-         .user-table th,
-         .user-table td {
-             border: 1px solid #ddd;
-             padding: 10px;
-             text-align: left;
-         }
+h2 {
+  margin-bottom: 15px;
+}
 
-         .user-table th {
-             background: #f2f2f2;
-         }
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 15px 0;
+}
 
-         .user-table tr:nth-child(even) {
-             background: #fafafa;
-         }
+.perm {
+  background: #334155;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  transition: 0.2s;
+}
 
-         .user-table tr:hover {
-             background: #f1f1f1;
-         }
-     </style>
+.perm:hover {
+  background: #475569;
+}
 
- </head>
+.perm input {
+  accent-color: #22c55e;
+}
 
- <body>
+.all {
+  background: #7c3aed;
+}
 
- </body>
+.result {
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 18px;
+}
 
- </html>
- <div class="table-wrap">
-     <table class="user-table">
-         <tr>
-             <th>ID</th>
-             <th>Username</th>
-             <th>Email</th>
-             <th>Token</th>
-             <th>Role</th>
-             <th>Active</th>
-             <th>Is Admin</th>
-         </tr>
-         <tr>
-             <th><?php echo $user->ID() ?></th>
-             <th><?php echo $user->Username() ?></th>
-             <th><?php echo $user->Email() ?></th>
-             <th><?php echo $user->Toke() ?></th>
-             <th><?php echo $user->Role() ?></th>
-             <th><?php echo $user->Active() ?></th>
-             <th><?php echo $user->IsAdmin() ?></th>
+#result {
+  color: #22c55e;
+}
+    </style>
+</head>
 
-         </tr>
-     </table>
+<body>
+    <div class="card">
+        <form action="" method="get">
+        <h2>User Permissions</h2>
 
- </div>
+        <label class="perm all">
+            <input type="checkbox" name="permissions[]" id="allAccess" value="-1">
+            All Access (Admin)
+        </label>
+
+        <div class="grid">
+            <label class="perm">
+                <input type="checkbox" name="permissions[]" class="perm-item" value="1">
+                Show All
+            </label>
+
+            <label class="perm">
+                <input type="checkbox"  name="permissions[]" class="perm-item" value="2">
+                Add
+            </label>
+
+            <label class="perm">
+                <input type="checkbox" name="permissions[]" class="perm-item" value="4">
+                Delete
+            </label>
+
+            <label class="perm">
+                <input type="checkbox" name="permissions[]" class="perm-item" value="8">
+                Update
+            </label>
+
+            <label class="perm">
+                <input type="checkbox" name="permissions[]" class="perm-item" value="16">
+                Find
+            </label>
+        </div>
+
+        <div class="result">
+              <input type="submit" name="set" value="Set">
+        </div>
+    </div>
+    </form>
+
+  </body>
+
+</html> -->

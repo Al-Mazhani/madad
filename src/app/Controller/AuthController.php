@@ -7,18 +7,7 @@ class AuthController  extends ControllUser
     {
         $this->model = $model;
     }
-    private function CleanUserName(&$username)
-    {
-        return strtolower(trim(preg_replace("/[^a-zA-Z0-9_]/", '', $username)));
-    }
-    private function CleanEmail(&$email)
-    {
-        return strtolower(filter_var($email, FILTER_SANITIZE_EMAIL));
-    }
-    private function CleanPassword(&$password)
-    {
-        return password_hash(trim($password), PASSWORD_BCRYPT);
-    }
+    
     protected function ProcceDataUser(&$username, &$email, &$password, &$token)
     {
         $username =  $this->CleanUserName($username);
@@ -72,7 +61,7 @@ class AuthController  extends ControllUser
         try {
 
             if (clsUser::IsUserExist($Email)) {
-                return enSaveIntoDB::EmailExists;
+                return SaveResult::EmailExists;
             }
             $user = clsUser::GetAddNewUser($Email);
             $user->setUsername($Username);
@@ -81,7 +70,7 @@ class AuthController  extends ControllUser
             $user->setRole("admin");
             print_r($user);
             $SaveResult = $user->Save();
-            if ($SaveResult == enSaveIntoDB::SucceedSave) {
+            if ($SaveResult == SaveResult::SucceedSave) {
                 $this->SetCookieToUser($Token);
             } else {
                 return enSaveIntoDB::failSave;

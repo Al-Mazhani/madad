@@ -243,6 +243,12 @@ Route::get('/addBook', function () use ($controllAuthor, $controllBook) {
 
     require_once('src/app/view/addBook.php');
 });
+Route::get('/ManagementUsers', function ()  {
+
+    $AllUsers  = clsUser::LoadAllUsers();
+
+    require_once('src/app/view/ManagementUsers.php');
+});
 
 
 Route::post('/addBook', function () use ($controllBook, $controllAuthor) {

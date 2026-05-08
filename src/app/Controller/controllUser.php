@@ -2,19 +2,7 @@
 
 //   include("../classas/clsUser.php");
 
-enum enUserInputErrors: int
-{
-    case  MissinUsername = 1;
-     case   LanthUserName = 2;
-     case   InvalidUsername = 3;
-     case  MissinPassword = 4;
-     case  LenghtPassword = 5;
-     case   MissinImage = 6;
-     case   MissinBackgroundImage = 7;
-     case   MissinToken = 8;
-     case  InvalidEmail = 9;
-     case NoErrors = 10;
-     };
+
 class ControllUser  extends BaseController
 {
     public function __construct($model)

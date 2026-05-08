@@ -28,33 +28,46 @@ class clsPerson
         $this->_Created_at = $Created_at;
         $this->_Image = $Image;
     }
+    // anitization Date
+    private function CleanUserName(string $Username)
+    {
+        return strtolower(trim(preg_replace("/[^a-zA-Z0-9_]/", '', $Username)));
+    }
+    private function CleanEmail(string $Email)
+    {
+        return strtolower(filter_var($Email, FILTER_SANITIZE_EMAIL));
+    }
+    private function CleanPassword(string $Password)
+    {
+        return password_hash(trim($Password), PASSWORD_BCRYPT);
+    }
     // Read Only
     public function ID()
     {
         return $this->_ID;
     }
 
-    public function setUsername($Username): void
+    public function setUsername(string  $Username): void
     {
-        $this->_Username = $Username;
+        $this->_Username = $this->CleanUserName($Username);
     }
     public function Username(): string
     {
         return $this->_Username;
     }
 
-    public function setEmail($Email): void
+    public function setEmail(string $Email): void
     {
-        $this->_Email = $Email;
+        $this->_Email = $this->CleanEmail($Email);
     }
     public function Email(): string
     {
         return $this->_Email;
     }
 
-    public function setPassword($Password): void
+    public function setPassword(string $Password): void
     {
-        $this->_Password = $Password;
+        $this->_Password = $this->CleanPassword($Password);
     }
 
     public function Password(): string
@@ -71,7 +84,7 @@ class clsPerson
         return  $this->_Role;
     }
 
-    public function setToke($Toke): void
+    public function setToke(string $Toke): void
     {
         $this->_Token = $Toke;
     }
@@ -90,7 +103,7 @@ class clsPerson
         return $this->_Created_at;
     }
 
-    public function setImage($Image): void
+    public function setImage(string $Image): void
     {
         $this->_Image = $Image;
     }
@@ -118,13 +131,13 @@ class clsPerson
     {
         return ($this->Role() == "admin");
     }
-    
-    
 
-    
 
-    public  function SendEmail(string $From,string $Subject,string $Body)
+
+
+
+    public  function SendEmail(string $From, string $Subject, string $Body)
     {
-        return MailerController::SendEmail($From,$this->Email(),$Subject,$Body);
+        return MailerController::SendEmail($From, $this->Email(), $Subject, $Body);
     }
 }

@@ -18,6 +18,8 @@ include_once  'src/app/Controller/MailerController.php';
 include_once  'src/app/classas/clsPerson.php';
 include_once  'src/app/classas/clsUser.php';
 include_once  'src/app/classas/clsAdmin.php';
+require 'librarys/vendor/autoload.php';
+require_once "src/app/classas/clsExcelSheet.php";
 
 // End Classas
 require_once  'public/Authentication/AuthenticationUser.php';
@@ -29,7 +31,7 @@ require_once  'Route/Route.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // $MailerController = new MailerController($mailer);
 $ModelUser = new ModelUser();
 $controllUser = new ControllUser($ModelUser);
