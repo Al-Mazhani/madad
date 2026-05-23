@@ -1,31 +1,31 @@
 <?php
-$pageTitle =   ' تحميل كتاب  ' . $infoBook['title'];
-
+$pageTitle =   ' تحميل كتاب  ' . $infoBook->Title();
 include('src/app/includes/header.php'); ?>
+
 <main>
   <section class="container">
-    <h1 class="title_book_info"> تحميل كتاب <?php echo htmlspecialchars($infoBook['title']) ?> PDF </h1>
+    <h1 class="title_book_info"> تحميل كتاب <?php echo htmlspecialchars($infoBook->Title()) ?> PDF </h1>
     <div class="book-main">
       <div class="book_info">
         <div class="img_book">
-          <img src="<?= htmlspecialchars($infoBook['image']) ?>" alt="<?= htmlspecialchars($infoBook['title']) ?>" title="<?php echo htmlspecialchars($infoBook['title']) ?> " loading="lazy">
+          <img src="<?= htmlspecialchars($infoBook->Image()) ?>" alt="<?= htmlspecialchars($infoBook->Title()) ?>" title="<?php echo htmlspecialchars($infoBook->Title()) ?> " loading="lazy">
 
         </div>
         <div class="ditles">
-          <h2><?php echo htmlspecialchars($infoBook['title']) ?> </h2>
+          <h2><?php echo htmlspecialchars($infoBook->Title()) ?> </h2>
           <table>
             <tbody>
               <tr>
                 <td>مؤلف</td>
-                <td title="<?php echo htmlspecialchars($infoBook['name']) ?>"> <?php echo htmlspecialchars($infoBook['name']) ?> </td>
+                <td title="<?php echo htmlspecialchars($infoBook->Title()) ?>"> <?php echo htmlspecialchars($infoBook->Title()) ?> </td>
               </tr>
               <tr>
                 <td>القسم</td>
-                <td><?php echo htmlspecialchars($infoBook['title_category']) ?></td>
+                <td><?php echo htmlspecialchars($infoBook->Title()) ?></td>
               </tr>
               <tr>
                 <td>اللغة</td>
-                <td><?php echo htmlspecialchars($infoBook['language']) ?></td>
+                <td><?php echo htmlspecialchars($infoBook->Language()) ?></td>
               </tr>
               <tr>
                 <td>الناشر</td>
@@ -33,19 +33,19 @@ include('src/app/includes/header.php'); ?>
               </tr>
               <tr>
                 <td>الصفحات</td>
-                <td><?php echo htmlspecialchars($infoBook['pages']) ?></td>
+                <td><?php echo htmlspecialchars($infoBook->Pages()) ?></td>
               </tr>
               <tr>
                 <td>حجم الملف </td>
-                <td><?php echo htmlspecialchars($infoBook['file_size']) ?> KB</td>
+                <td><?php echo htmlspecialchars($infoBook->FileSize()) ?> KB</td>
               </tr>
               <tr>
                 <td>نوع الملف</td>
-                <td><?php echo htmlspecialchars($infoBook['file_type']) ?></td>
+                <td><?php echo htmlspecialchars($infoBook->FileType()) ?></td>
               </tr>
               <tr>
                 <td> تاريخ الانشاء</td>
-                <td><?php echo htmlspecialchars($infoBook['year']) ?></td>
+                <td><?php echo htmlspecialchars($infoBook->CreatedAt()->format('Y-m-d')) ?></td>
               </tr>
             </tbody>
           </table>
@@ -65,15 +65,15 @@ include('src/app/includes/header.php'); ?>
     </div>
     <section class="info_book">
       <div class="action_book">
-        <a href="/Madad/<?php echo htmlspecialchars($infoBook['book_url']); ?> " title="عدد التحميلات" download data-id="<?php echo $infoBook['book_public_id'] ?> " onclick="incrementDownload(this)"><i class="fas fa-download"></i> <?php echo htmlspecialchars($infoBook['downloads']) ?></a>
-        <a href="/Madad/<?php echo htmlspecialchars($infoBook['book_url']); ?>" title="عدد القراءة" target="_blank" data-id="<?php echo $infoBook['book_public_id'] ?>" onclick="incrementReadBook(this)"> <i class="fa-solid fa-book-open"></i> <?php echo htmlspecialchars($infoBook['readBook']) ?></a>
+        <a href="/Madad/<?php echo htmlspecialchars($infoBook->Book()); ?> " title="عدد التحميلات" download data-id="<?php echo $infoBook->PublicID() ?> " onclick="incrementDownload(this)"><i class="fas fa-download"></i> <?php echo htmlspecialchars($infoBook->CountDownload()) ?></a>
+        <a href="/Madad/<?php echo htmlspecialchars($infoBook->Book()); ?>" title="عدد القراءة" target="_blank" data-id="<?php echo $infoBook->PublicID ?>" onclick="incrementReadBook(this)"> <i class="fa-solid fa-book-open"></i> <?php echo htmlspecialchars($infoBook->ReadCount()) ?></a>
         <button class="sharing" title="مشاركة"><i class="fas fa-share-alt"></i></button>
         <button class="btn-like-book" title="اعجبني"><i class="fas fa-thumbs-up"></i></button>
       </div>
     </section>
     <div class="book_descrption">
       <h3>وصف الكتب</h3>
-      <p><?php echo htmlspecialchars($infoBook['description']) ?></p>
+      <p><?php echo htmlspecialchars($infoBook->Description()) ?></p>
     </div>
   </section>
   <h4 class="title-like-you-book">كتب قد تعجبك</h4>

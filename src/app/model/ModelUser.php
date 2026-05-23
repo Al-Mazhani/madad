@@ -8,6 +8,42 @@ class ModelUser extends BaseModel
     {
         parent::__construct("users", 'user_id');
     }
+    public static function FindByPublicID(int $ID)
+    {
+        $QueryFind = "SELECT * FROM users  WHERE user_id = :ID";
+        $stmt = database::Connection()->prepare($QueryFind);
+        $stmt->execute([":ID" => $ID]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public static function findByUsername(string $Username)
+    {
+        $QueryFind = "SELECT * FROM users  WHERE username = :Username";
+        $stmt = database::Connection()->prepare($QueryFind);
+        $stmt->execute([":Username" => $Username]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    public static function Update(clsUser $User): OperationResult
+    {
+
+        $QueryUpdateProfile = "UPDATE users SET username  = :Username ,image = :image,background_image = :background_image,password = :password,email = :email,token = :Token,role = :Role,Status = :Status,created_at = :CreatedAt ,permission = :permission WHERE user_id = :user_id";
+        $stmt = database::Connection()->prepare($QueryUpdateProfile);
+        $stmt->execute([":Username" => $User->Username(), ":email" => $User->Email(), ":image" => $User->Image(), ":background_image" => $User->BackgroundImage(), ":password" => $User->Password(), ":Token" => $User->Token(), ":Role" => $User->Role(), ":Status" => $User->Status(), ":CreatedAt" => $User->Created_at(), ":permission" => $User->Permission(), ":user_id" => $User->ID()]);
+        return OperationResult::Updated;
+    }
+    public static function AddUser(clsUser $User): OperationResult
+    {
+        $QueryCreateUser = "INSERT INTO users (username,email,password,token,role) VALUES (:username,:email,:password,:token,:role)";
+        $stmt = database::Connection()->prepare($QueryCreateUser);
+        $ResultAddUser = $stmt->execute([":username" => $User->Username(), ":email" => $User->Email(), ":password" => $User->Password(), ":token" => $User->Token(), ":role" => $User->Role()]);
+        return ($ResultAddUser) ? OperationResult::Success : OperationResult::Fail;
+    }
+    public static function Delete(int $ID): OperationResult
+    {
+        $QueryDelete = "DELETE FROM users WHERE user_id  = :ID";
+        $stmt = database::Connection()->prepare($QueryDelete);
+        $stmt->execute([":ID" => $ID]);
+        return ($stmt->rowCount()) ? OperationResult::Deleted : OperationResult::Fail;
+    }
     static function loadAllUsers()
     {
         $query = "SELECT * FROM users ";
@@ -49,10 +85,7 @@ class ModelUser extends BaseModel
         $stmt->execute([':newToken' => $newToken, ':email' => $email]);
         return ($stmt->rowCount()) ? true : false;
     }
-    public static function insert(clsUser $User)
-    {
-
-    }
+    public static function insert(clsUser $User) {}
     public function changePassword(&$newPassword, &$email)
     {
         $QueryChangePassword = "UPDATE users SET password = :newPassword WHERE email = :email";

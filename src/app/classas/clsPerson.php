@@ -11,35 +11,35 @@ class clsPerson
     private string $_Email;
     private string $_Password;
     private string $_Role;
-    private bool $_Active;
+    private UserStatus $_Status;
     private string $_Token;
-    private $_Created_at;
+    private DateTime $_Created_at;
     private string $_Image;
 
-    function __construct(int $ID, string $Username, string $Email, string $Password, string $Role, bool $Active, string $Token, string $Created_at, string $Image)
+    function __construct(int $ID, string $Username, string $Email, string $Password, string $Role, int $Status, string $Token, string $Created_at, string $Image)
     {
         $this->_ID = $ID;
         $this->_Username = $Username;
         $this->_Email = $Email;
         $this->_Password = $Password;
         $this->_Role = $Role;
-        $this->_Active = $Active;
+        $this->_Status = UserStatus::from($Status);
         $this->_Token = $Token;
-        $this->_Created_at = $Created_at;
+        $this->_Created_at = new DateTime($Created_at);
         $this->_Image = $Image;
     }
     // anitization Date
-    private function CleanUserName(string $Username)
+    static protected function CleanUserName(string $Username)
     {
         return strtolower(trim(preg_replace("/[^a-zA-Z0-9_]/", '', $Username)));
     }
-    private function CleanEmail(string $Email)
+    static protected function CleanEmail(string $Email)
     {
         return strtolower(filter_var($Email, FILTER_SANITIZE_EMAIL));
     }
-    private function CleanPassword(string $Password)
+    static protected function CleanPassword(string $Password)
     {
-        return password_hash(trim($Password), PASSWORD_BCRYPT);
+        return trim($Password);
     }
     // Read Only
     public function ID()
@@ -84,21 +84,21 @@ class clsPerson
         return  $this->_Role;
     }
 
-    public function setToke(string $Toke): void
+    public function setToken(string $Toke): void
     {
         $this->_Token = $Toke;
     }
 
-    public function Toke(): string
+    public function Token(): string
     {
         return $this->_Token;
     }
-    public function setCreated_at($Created_at)
+    public function setCreated_at(DateTime $Created_at)
     {
         $this->_Created_at = $Created_at;
     }
 
-    public function Created_at()
+    public function Created_at(): DateTime
     {
         return $this->_Created_at;
     }
@@ -112,21 +112,20 @@ class clsPerson
     {
         return $this->_Image;
     }
-    public function setActive(bool $Active): void
+    public function setStatus(int $Status): void
     {
-        if ($Active == 1 || $Active == 0) {
-            $this->_Active = $Active;
+        if ($Status >= 0 && $Status <= 3) {
+            $this->_Status = UserStatus::from($Status);
+        } else {
+            $this->_Status = UserStatus::Pending;
         }
     }
-    public function Active(): bool
+    public function Status(): UserStatus
     {
-        return $this->_Active;
+        return $this->_Status;
     }
 
-    public function IsActive(): bool
-    {
-        return $this->_Active;
-    }
+
     public function IsAdmin(): string
     {
         return ($this->Role() == "admin");

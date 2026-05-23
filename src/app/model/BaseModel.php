@@ -4,9 +4,9 @@ class BaseModel
     protected $database;
     protected $table;
     protected $primaryKey;
-   public function  __construct( $table, $primaryKey)
+    public function  __construct($table, $primaryKey)
     {
-    
+
         $this->table = $table;
         $this->primaryKey = $primaryKey;
     }
@@ -18,20 +18,10 @@ class BaseModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function delete($id)
+
+
+    public function checkIDExit($IDExit)
     {
-        $QueryDelete = "DELETE FROM $this->table WHERE $this->primaryKey = :ID";
-        $stmt = database::Connection()->prepare($QueryDelete);
-        return $stmt->execute(["ID" => $id]);
-    }
-    public  function findByID($id)
-    {
-        $QueryFind = "SELECT * FROM $this->table  WHERE $this->primaryKey = ?";
-        $stmt = database::Connection()->prepare($QueryFind);
-        $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-    public function checkIDExit($IDExit) {
         $QueryCheckIDExit = "SELECT * FROM $this->table  WHERE $this->primaryKey = :Public_id";
         $stmt = database::Connection()->prepare($QueryCheckIDExit);
         $stmt->execute([':Public_id' => $IDExit]);

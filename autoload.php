@@ -18,6 +18,7 @@ include_once  'src/app/Controller/MailerController.php';
 include_once  'src/app/classas/clsPerson.php';
 include_once  'src/app/classas/clsUser.php';
 include_once  'src/app/classas/clsAdmin.php';
+include_once  'src/app/classas/clsBook.php';
 require 'librarys/vendor/autoload.php';
 require_once "src/app/classas/clsExcelSheet.php";
 
@@ -38,7 +39,7 @@ $controllUser = new ControllUser($ModelUser);
 $AuthController = new AuthController($ModelUser);
 $ModelAdmin = new ModelAdmin();
 $controllAdmin = new controllAdmin($ModelAdmin);
-$ModelBook = new ModelBook();
+$ModelBook = new DABook();
 $ModelAuthor = new ModelAuthor();
 $controllBook = new ControllBook($ModelBook,$ModelAuthor,);
 $controllAuthor = new ControllerAuthor($ModelAuthor);

@@ -29,7 +29,6 @@ class MailerController
         MailerController::_SettingSMTP($mailer);
         $mailer->setFrom($From, 'Madad');
         $mailer->addAddress($To);
-
         $mailer->isHTML(true);
         $mailer->Subject = $Subject;
         $mailer->Body = $Body;

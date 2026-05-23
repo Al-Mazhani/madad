@@ -10,10 +10,10 @@ class AuthController  extends ControllUser
     
     protected function ProcceDataUser(&$username, &$email, &$password, &$token)
     {
-        $username =  $this->CleanUserName($username);
-        $email = $this->CleanEmail($email);
-        $password = $this->CleanPassword($password);
-        $token = $this->Generate4UUID();
+        // $username =  $this->CleanUserName($username);
+        // $email = $this->CleanEmail($email);
+        // $password = $this->CleanPassword($password);
+        // $token = $this->Generate4UUID();
     }
 
 
@@ -42,42 +42,15 @@ class AuthController  extends ControllUser
         }
         return false;
     }
-    public function create($Username, $Email, $Password)
+    public static function AddUser(string $Username,string $Email, string $Password)
     {
-        if ($errorUsername = $this->ValidateInputUsername($Username)) {
-            return $errorUsername;
-        }
-        if ($errorEmail = $this->validateEmail($Email)) {
-            return $errorEmail;
-        }
-        if ($errorPassword = $this->validatePassword($Password)) {
-            return $errorPassword;
-        }
-
-        // Send Code To User Email
-
-        $this->ProcceDataUser($Username, $Email, $Password, $Token);
-  
-        try {
-
-            if (clsUser::IsUserExist($Email)) {
-                return SaveResult::EmailExists;
-            }
-            $user = clsUser::GetAddNewUser($Email);
-            $user->setUsername($Username);
-            $user->setPassword($Password);
-            $user->setToke($Token);
-            $user->setRole("admin");
-            print_r($user);
-            $SaveResult = $user->Save();
-            if ($SaveResult == SaveResult::SucceedSave) {
-                $this->SetCookieToUser($Token);
-            } else {
-                return enSaveIntoDB::failSave;
-            }
-        } catch (Exception $e) {
-            return enSaveIntoDB::failSave;
-        }
+        $User = clsUser::GetAddNewUser($Email);
+        $User->setUsername($Username);
+        $User->setPassword($Password);
+        $User->setPassword("user");
+        $ResultValidateInput = $User->ValidateDataUser();
+        return $User->Save();
+        
     }
     private function refreshLoginToken($email)
     {
@@ -163,44 +136,6 @@ class AuthController  extends ControllUser
     public static function ShowRegisterResult($RegisterResult)
     {
         // Check For Errors
-        switch ($RegisterResult) {
-
-            case enUserInputErrors::InvalidUsername:
-                {
-                    return '<span>  "  خطاء في  اسم المستخدم"  </span>';
-                }
-            case enUserInputErrors::LanthUserName:
-                {
-                    return '<span>  " يرجاء إدخال اسم المستخدم"  </span>';
-                }
-            case enUserInputErrors::MissinUsername:
-                {
-                    return '<span>  " يرجاء إدخال اسم المستخدم"  </span>';
-                }
-            case enUserInputErrors::InvalidEmail:
-                {
-                    return '<span>  "  البريد الالكتروني غير صحيح"  </span>';
-                }
-            case enUserInputErrors::MissinPassword:
-                {
-                    return '<span>  "يرجاء إدخال كلمة المرور"  </span>';
-                }
-            case enUserInputErrors::LenghtPassword:
-                {
-                    return '<span>  "Lneght Password"  </span>';
-                }
-
-        }
-        // Check For DB
-        switch ($RegisterResult) {
-            case enSaveIntoDB::EmailExists:
-                {
-                    return '<span>  "البريد الالكتروني موجود بالفعل" </span>';
-                }
-            case enSaveIntoDB::failSave:
-                {
-                    return '<span> "خطاء في انشاء حساب! حاول مرة اخرى"  </span>';
-                }
-        }
+        
     }
 }

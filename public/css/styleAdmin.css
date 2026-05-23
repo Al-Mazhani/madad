@@ -36,6 +36,15 @@ html {
    scroll-behavior: smooth;
 }
 
+.result-action {
+   width: 400px;
+   position: relative;
+   left: 880px;
+   margin-top: 15px;
+   box-shadow: var(--box-shadow);
+   border-radius: var(--Radius);
+   color: red;
+}
 body {
    width: 100%;
    height: 100%;
