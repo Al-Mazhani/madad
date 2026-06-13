@@ -50,13 +50,18 @@ $controllAuthor = new ControllerAuthor($ModelAuthor);
 
 
 
+
+
 $CurrentUser = clsUser::FindByPublicID(2);
+
+
 
 
 Route::get('/', function () use ($controllBook, $controllUser) {
     $ListBook = clsBook::GetListBook();
     if (isset($_COOKIE['remember_token']))
         $controllUser->checkToken($_COOKIE['remember_token']);
+
 
     require_once('src/app/view/home.php');
     // require_once('testClassas.php');
@@ -91,6 +96,37 @@ Route::get('/authors', function () use ($controllAuthor) {
 Route::get('/register', function () {
     require_once('src/app/view/register.php');
 });
+Route::get('/verify-email', function () {
+    require_once('src/app/view/verify-email.php');
+});
+Route::post('/verify-email', function () {
+    if (isset($_POST['confirm-email'])) {
+        $Code = '';
+        $Code .= $_POST['code1'];
+        $Code .= $_POST['code2'];
+        $Code .= $_POST['code3'];
+        $Code .= $_POST['code4'];
+        $Code .= $_POST['code5'];
+        $Code .= $_POST['code6'];
+        $User = clsUser::FindByEmail($_SESSION['email']);
+        if (!$User->IsEmpty()) {
+            $ResultValidateOTP = $User->IsOTPValid($Code);
+            switch ($ResultValidateOTP) {
+                case OperationResult::Success:
+                    echo "Yes";
+                    header('Location:/Madad/');
+                    exit;
+                    break;
+                case OperationResult::FailOTP:
+                    $Message = "Error In Code";
+                    break;
+            }
+        }
+    } else {
+        echo "No";
+    }
+    require_once('src/app/view/verify-email.php');
+});
 
 Route::post('/register', function () {
     if (isset($_POST['submit_register'])) {
@@ -99,9 +135,14 @@ Route::post('/register', function () {
         $User->setUsername($_POST['username']);
         $User->setPassword($_POST['password']);
         $User->setPassword("user");
-        $ResultValidateInput = $User->ValidateDataUser();
-        if ($ResultValidateInput === enUserInputErrors::NoErrors) {
-            $ResultSave = $User->Save();
+        // $ResultValidateInput = $User->ValidateDataUser();
+        // if ($ResultValidateInput === enUserInputErrors::NoErrors) {
+        $ResultSave = $User->Save();
+        // }
+        if ($ResultSave === OperationResult::Success) {
+            if ($User->SendAccountVerificationOTP() === OperationResult::Success);
+            $_SESSION['email'] = $_POST['email'];
+            header('Location:/Madad/verify-email');
         }
     }
 
@@ -200,7 +241,6 @@ Route::get('/sign_out', function () use ($controllUser) {
 
 
 Route::get('/homePageAdmin', function () use ($controllBook) {
-    $allBooks = $controllBook->getAll();
     require_once('src/app/view/page-admin.php');
 });
 Route::post('/homePageAdmin', function () use ($controllBook) {
@@ -221,28 +261,8 @@ Route::get('/pageAdminAddBook', function () {
     require_once('src/app/view/pageAdminAddBook.php');
 });
 
-Route::post('/pageAdminAddBook', function () use ($controllBook) {
 
-    if (isset($_POST['addBook'])) {
 
-        $dataAddBook  = [
-            "nameBook" => $_POST['bookName'],
-            "publish_year" => $_POST['publish_year'],
-            "id_category" => $_POST['id_category'],
-            "id_author" => $_POST['id_author'],
-            "pages" => $_POST['pages'],
-            "description" => $_POST['description'],
-            "file_type" => $_POST['file_type'],
-            "image" => $_FILES['image_url'],
-            "book" => $_FILES['book_url'],
-            "language" => $_POST['language']
-        ];
-
-        $Message  = $controllBook->addBook($dataAddBook);
-    }
-
-    require_once('src/app/view/pageAdminAddBook.php');
-});
 
 
 
@@ -298,15 +318,7 @@ Route::get('/addBook', function () use ($controllAuthor, $controllBook) {
 });
 Route::get('/ManagementUsers', function () use ($CurrentUser) {
 
-    $AllUsers  = clsUser::LoadAllUsers();
-    $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
-    if ($id) {
-        if (clsUser::IsUserExistByPublicID($id)) {
-            $User = clsUser::FindByPublicID($id);
-            $ResultDelete = $User->Delete($CurrentUser->Permission());
-        }
-    }
     require_once('src/app/view/ManagementUsers.php');
 });
 
@@ -317,21 +329,17 @@ Route::post('/addBook', function () use ($controllBook, $controllAuthor) {
     $allCategory = $controllBook->getAllCategory();
 
     if (isset($_POST['addBook'])) {
-
-        $dataBook  = [
-            "nameBook"      => $_POST['bookName'],
-            "publish_year"  => $_POST['publish_year'],
-            "id_category"   => $_POST['id_category'],
-            "id_author"     => $_POST['id_author'],
-            "pages"         => $_POST['pages'],
-            "description"   => $_POST['description'],
-            "file_type"     => $_POST['file_type'],
-            "language"      => $_POST['language'],
-            "image"         => $_FILES['image_url'],
-            "book"          => $_FILES['book_url']
-        ];
-
-        $Message = $controllBook->addBook($dataBook);
+        $NewBook = clsBook::GetAddNewBook($_POST['bookName']);
+        $NewBook->SetYear($_POST['publish_year']);
+        $NewBook->SetCategoryID($_POST['id_category']);
+        $NewBook->SetAuthorID($_POST['id_author']);
+        $NewBook->SetPages($_POST['pages']);
+        $NewBook->SetDescription($_POST['description']);
+        $NewBook->SetFileType($_POST['file_type']);
+        $NewBook->SetLanguage($_POST['language']);
+        $NewBook->SetImage($_FILES['image_url']);
+        $NewBook->SetBook($_FILES['book_url']);
+        $Message = $NewBook->Save();
     }
 
     require_once('src/app/view/addBook.php');

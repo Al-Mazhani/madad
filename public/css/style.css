@@ -954,7 +954,7 @@ ul li a:hover {
 .container .verify-email {
    position: relative;
    top: 14rem;
-   /* left: 25vw;  */
+   left: 25vw; 
    right: 25rem;
    margin-bottom: 25.3rem;
    width: 30rem;

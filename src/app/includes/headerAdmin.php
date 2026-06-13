@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Admin</title>
-    <link rel="stylesheet" href="public/css/styleAdmin.css">
-    <link rel="stylesheet" href="public/fontawesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="public/fontawesome/css/brands.min.css">
-    <link rel="stylesheet" href="public/fontawesome/css/solid.min.css">
-    <link rel="icon" href="public/images/iconMidad.png" type="image/png">
+    <link rel="stylesheet" href="../../../public/css/styleAdmin.css">
+    <link rel="stylesheet" href="../../../public/fontawesome/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../../../public/fontawesome/css/brands.min.css">
+    <link rel="stylesheet" href="../../../public/fontawesome/css/solid.min.css">
+    <link rel="icon" href="../../../public/images/iconMidad.png" type="image/png">
 
 </head>
 

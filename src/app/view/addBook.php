@@ -1,21 +1,151 @@
 <?php require(__DIR__ . '/../includes/headerAdmin.php'); ?>
 <?php require(__DIR__ . '/../includes/session.php'); ?>
+<?php require __DIR__ . '/../../../autoload.php'; ?>
+<?php
+
+class clsAddBookScrren
+{
+
+    private static function _UploadImage(array $Image)
+    {
+        return HandlingFiles::UploadFile($Image, __DIR__ . '/../../../uploads/image_book/', 'uploads/image_book/');
+    }
+    private static  function _UploadBook(array $Book)
+    {
+        return HandlingFiles::UploadFile($Book, __DIR__ . '/../../../uploads/book_url/', 'uploads/book_url/');
+    }
+    private static function AddNewBook()
+    {
+
+
+        $NewBook = clsBook::GetAddNewBook($_POST['bookName']);
+        $NewBook->SetYear($_POST['publish_year']);
+        $NewBook->SetCategoryID($_POST['id_category']);
+        $NewBook->SetAuthorID($_POST['id_author']);
+        $NewBook->SetPages($_POST['pages']);
+        $NewBook->SetDescription($_POST['description']);
+        $NewBook->SetFileType($_POST['file_type']);
+        $NewBook->SetLanguage($_POST['language']);
+        $NewBook->SetImage(self::_UploadImage($_FILES['image']));
+        $NewBook->SetBook(self::_UploadBook($_FILES['book']));
+        $NewBook->SetFileSize((int) round($_FILES['image']['size'] / 1024));
+        return $NewBook->Save();
+    }
+
+    public static function ShowAddNewBookScrren()
+    {
+        $ResultInputs = ClsBookValidation::ValidationBook($_POST, $_FILES);
+        if ($ResultInputs !== enBookError::NoErrors) {
+            return $ResultInputs;
+        }
+        if (!clsBook::ExistsByTitle($_POST['bookName'])) {
+            return self::AddNewBook();
+        }
+        return OperationResult::ExistTitle;
+    }
+}
+if (isset($_POST['addBook'])) {
+    $Message  = clsAddBookScrren::ShowAddNewBookScrren();
+}
+$allCategory = $controllBook->getAllCategory();
+$authors  = $controllAuthor->getAll();
+?>
 
 <main>
     <section>
         <div class="container">
             <div class="box-add-book">
-                <?php if ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
-                <?php if (!empty($Message['successAddBook'])): ?>
-                    <p class="success"> <?php echo $Message['successAddBook'] ?></p>
+                <div class="Message">
+                <?php if (isset($Message)): ?>
+                    <?php
+
+                    switch ($Message) {
+                        case OperationResult::Success:
+                            echo '<span class="alert-success"> Success </span>';
+                            break;
+                        case OperationResult::FailEmptyObject: {
+                                echo '<span class="result-action"> Fail Empty Object </span>';
+                                break;
+                            }
+                        case OperationResult::Fail: {
+                                echo '<span class="result-action"> Fail </span>';
+                                break;
+                            }
+                        case OperationResult::Updated: {
+                                echo '<span class="result-action"> Updated </span>';
+                                break;
+                            }
+                        case OperationResult::ExistTitle: {
+                                echo '<span class="result-action"> Book Exist </span>';
+                                break;
+                            }
+                        case enBookError::EmptyTitle:
+                            echo '<span class="result-action">اسم الكتاب فارغ</span>';
+                            break;
+
+                        case enBookError::EmptyDescription:
+                            echo '<span class="result-action">الوصف فارغ</span>';
+                            break;
+
+                        case enBookError::EmptyLanguage:
+                            echo '<span class="result-action">اللغة فارغة</span>';
+                            break;
+
+                        case enBookError::EmptyFileType:
+                            echo '<span class="result-action">نوع الملف فارغ</span>';
+                            break;
+
+                        case enBookError::InvalidAuthor:
+                            echo '<span class="result-action">المؤلف غير صحيح</span>';
+                            break;
+
+                        case enBookError::InvalidCategory:
+                            echo '<span class="result-action">التصنيف غير صحيح</span>';
+                            break;
+
+                        case enBookError::EmptyYear:
+                            echo '<span class="result-action">سنة النشر فارغة</span>';
+                            break;
+
+                        case enBookError::EmptyPages:
+                            echo '<span class="result-action">عدد الصفحات فارغ</span>';
+                            break;
+
+                        case enBookError::InvalidPages:
+                            echo '<span class="result-action">عدد الصفحات غير صالح</span>';
+                            break;
+
+                        case enBookError::EmptyBookFile:
+                            echo '<span class="result-action">ملف الكتاب غير موجود</span>';
+                            break;
+
+                        case enBookError::InvalidBookType:
+                            echo '<span class="result-action">نوع ملف الكتاب غير مدعوم</span>';
+                            break;
+
+                        case enBookError::BookTooLarge:
+                            echo '<span class="result-action">حجم ملف الكتاب كبير</span>';
+                            break;
+
+                        case enBookError::EmptyImage:
+                            echo '<span> class="result-action"الصورة غير موجودة</span>';
+                            break;
+
+                        case enBookError::InvalidImageType:
+                            echo '<span class="result-action">نوع الصورة غير مدعوم</span>';
+                            break;
+
+                        case enBookError::ImageTooLarge:
+                            echo '<span class="result-action">حجم الصورة كبير</span>';
+                            break;
+
+                        case enBookError::InvalidYear:
+                            echo '<span class="result-action">سنة النشر غير صحيحة</span>';
+                            break;
+                    }
+                    ?>
                 <?php endif; ?>
-                <?php if (!empty($Message['hasInputEmpty'])): ?>
-                    <p class="Notsuccess"> <?php echo $Message['hasInputEmpty'] ?></p>
-                <?php endif; ?>
-                <?php if (!empty($Message['hasFileEmpty'])): ?>
-                    <p class="Notsuccess"> <?php echo $Message['hasFileEmpty'] ?></p>
-                <?php endif; ?>
-                <?php endif; ?>
+            </div>
                 <form action="" method="POST" enctype="multipart/form-data">
                     <div class="content-the-four-input">
                         <div class="fisrt-section">
@@ -30,8 +160,8 @@
                                         <option value="<?php echo $author['id_author'] ?>">
                                             <?php echo $author['name'] ?>
                                         </option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
                         </div>
                         <div class="fisrt-section">
@@ -46,14 +176,14 @@
                                         <option value="<?php echo $category['id_category'] ?>">
                                             <?php echo $category['title_category'] ?>
                                         </option>
-                                        <?php endforeach; ?>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
                         <div class="fisrt-section">
                             <div class="box-form">
                                 <label for="pages">عدد الصفحات </label>
-                                <input type="number" name="pages" id="pages" placeholder="ادخل عدد الصفحات" required>
+                                <input type="number" name="pages" id="pages" min="0" placeholder="ادخل عدد الصفحات" required>
                             </div>
                             <div class="box-form">
                                 <label for="file_type"> نوع الملف </label>
@@ -72,16 +202,16 @@
                             </div>
                             <div class="box-form">
                                 <label for="fileInputBook" class="upload-btn">إضافة كتاب</label>
-                                <input type="file" name="book_url" id="fileInputBook" placeholder="ادخل  الكتاب" accept=".pdf" required>
+                                <input type="file" name="book" id="fileInputBook" placeholder="ادخل  الكتاب" accept=".pdf" required>
                             </div>
                         </div>
                     </div>
                     <div class="box-form">
                         <label for="fileInput" class="upload-btn "> إضافة صورة</label>
-                        <input type="file" id="fileInput" name="image_url" accept="image/*" required>
+                        <input type="file" id="fileInput" name="image" accept="image/*" required>
                     </div>
                     <div class="box-form">
-                        <textarea name="description" id=""></textarea>
+                        <textarea name="description" id="" placeholder="وصف الكتاب"></textarea>
                     </div>
                     <button type="submit" id="btnAddNewBook" name="addBook"> إضافة</button>
                 </form>
@@ -89,4 +219,4 @@
         </div>
     </section>
 </main>
-<?php include(__DIR__ . '/../includes/footerAdmin.php');?>
+<?php include(__DIR__ . '/../includes/footerAdmin.php'); ?>

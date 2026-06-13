@@ -1,5 +1,15 @@
 <?php include(__DIR__ . '/../includes/headerAdmin.php'); ?>
-<?php require(__DIR__ . '/../includes/session.php'); ?>
+<?php require(__DIR__ . '/../includes/session.php');
+
+$AllUsers  = clsUser::LoadAllUsers();
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+
+if ($id) {
+    if (clsUser::IsUserExistByPublicID($id)) {
+        $User = clsUser::FindByPublicID($id);
+        $ResultDelete = $User->Delete();
+    }
+} ?>
 
 <main>
     <section>
@@ -59,7 +69,7 @@
                             <td><?php echo $user->ID() ?></td>
                             <td><?php echo $user->Username() ?></td>
                             <td><?php echo $user->Email() ?></td>
-                            <td><?php echo $user->Role() ?></td>
+                            <td><?php echo ($user->Role() === enRole::User) ? "User" : "Admin" ?></td>
                             <td><?php if ($user->Status() == UserStatus::Active)
                                     echo   "نشط";
                                 elseif ($user->Status() == UserStatus::InActive)

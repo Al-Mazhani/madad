@@ -1,50 +1,4 @@
 <?php
-enum UserStatus: int
-{
-  case InActive = 0;
-  case Active = 1;
-  case Pending = 2;
-  case Banned = 3;
-};
-enum enPermission: int
-{
-  case eAllAccess = -1;
-  case eShowAll = 1;
-  case eAdd = 2;
-  case eDelete = 4;
-  case eUpdate = 8;
-  case eFind = 16;
-};
-enum enMode: int
-{
-  case EmptyMode = 0;
-  case UpdateMode = 1;
-  case AddMode = 2;
-};
-enum OperationResult: int
-{
-  case Fail = 0;
-  case Success = 1;
-  case EmailExists = 2;
-  case Updated = 3;
-  case Deleted = 4;
-  case FailEmptyObject = 5;
-  case NoPermissions = 6;
-  case FailOTP = 7;
-};
-enum enUserInputErrors: int
-{
-  case  MissinUsername = 1;
-  case   LanthUserName = 2;
-  case   InvalidUsername = 3;
-  case  MissinPassword = 4;
-  case  LengthPassword = 5;
-  case   MissinImage = 6;
-  case   MissinBackgroundImage = 7;
-  case   MissinToken = 8;
-  case  InvalidEmail = 9;
-  case NoErrors = 10;
-};
 
 class clsUser extends clsPerson
 {
@@ -53,22 +7,21 @@ class clsUser extends clsPerson
   private int $_PublicID;
   private int $_Permission;
 
-  // private struct
 
   private static function _ConvertLineToUserObject(array $User)
   {
-    return new clsUser(enMode::UpdateMode, $User['user_id'], $User['PublicID'], $User['username'], $User['email'], $User['password'], $User['role'], $User['permission'], $User['Status'], $User['token'], $User['created_at'], $User['image'], $User['background_image']);
+    return new clsUser(enMode::UpdateMode, $User['user_id'], $User['PublicID'], $User['username'], $User['email'], $User['password'], enRole::from($User['role']), $User['permission'], UserStatus::from($User['Status']), $User['token'], $User['created_at'], $User['image'], $User['background_image']);
   }
   private static function _GetEmptyObject()
   {
-    return new clsUser(enMode::EmptyMode, -1, 0, '', '', '', '', 0, 0, '', '', '', '');
+    return new clsUser(enMode::EmptyMode, 0, 0, '', '', '', enRole::None, 0, UserStatus::InActive, '', '', '', '');
   }
-  public function _IsEmpty(): bool
+  public function IsEmpty(): bool
   {
     return ($this->_Mode == enMode::EmptyMode);
   }
 
-  public function __construct(enMode $Mode, int $ID, int $PublicID, string $Username, string $Email, string $Password, string $Role, int $Permission, int $Status, string $Token, string $Created_at, string $Image, string $BackgroundImage)
+  public function __construct(enMode $Mode, int $ID, int $PublicID, string $Username, string $Email, string $Password, enRole $Role, int $Permission, UserStatus $Status, string $Token, string $Created_at, string $Image, string $BackgroundImage)
   {
 
     parent::__construct($ID, $Username, $Email, $Password, $Role, $Status, $Token, $Created_at, $Image);
@@ -78,7 +31,10 @@ class clsUser extends clsPerson
     $this->_Permission = $Permission;
   }
 
-
+  public function PublicID(): int
+  {
+    return $this->_PublicID;
+  }
   public function setBackgroundImage(string $BackgroundImage)
   {
     $this->_BackgroundImage = $BackgroundImage;
@@ -124,12 +80,12 @@ class clsUser extends clsPerson
   public static function IsUserExist(string $Email)
   {
     $user = clsUser::FindByEmail($Email);
-    return (!$user->_IsEmpty());
+    return (!$user->IsEmpty());
   }
   public static function IsUserExistByPublicID(int $PublicID)
   {
     $user = clsUser::FindByPublicID($PublicID);
-    return (!$user->_IsEmpty());
+    return (!$user->IsEmpty());
   }
 
 
@@ -160,17 +116,20 @@ class clsUser extends clsPerson
 
   public static function GetAddNewUser(string $Email)
   {
-    return new clsUser(enMode::AddMode, 0, 0, '', $Email, '', '', 0, false, '', '', '', '');
+    return new clsUser(enMode::AddMode, 0, 0, '', $Email, '', enRole::User, 0, UserStatus::Pending, '', '', '', '');
   }
   // Delete User
-  public  function Delete(int $Permission): OperationResult
+  public  function Delete(): OperationResult
   {
-
-    if (clsUser::CanDelete($Permission)) {
-      return (ModelUser::Delete($this->ID())  === OperationResult::Deleted) ? OperationResult::Deleted : OperationResult::Fail;
-    } else {
+    if (!clsUser::CanDelete()) {
       return OperationResult::NoPermissions;
     }
+    $ResultDelete = ModelUser::Delete($this->ID());
+    if ($ResultDelete === OperationResult::Deleted) {
+      $this->_Mode = enMode::EmptyMode;
+      return OperationResult::Deleted;
+    }
+    return OperationResult::Fail;
   }
   private function _HashingPassword(string $HashingPassword)
   {
@@ -180,17 +139,45 @@ class clsUser extends clsPerson
   }
   // Otp Start:
 
-
-  private function _AddNewUser()
+  private function _CreateOTP()
+  {
+    $Otp = clsOTP::AddOTP($this->Email());
+    return $Otp->Save();
+  }
+  public function SendAccountVerificationOTP()
+  {
+    return $this->_CreateOTP();
+  }
+  public function SendPasswordResetOTP()
+  {
+    return $this->_CreateOTP();
+  }
+  public function IsOTPValid(int $Code): OperationResult
+  {
+    $ResultVerifyCode = clsOTP::VerifyUserCode($Code, $this->ID());
+    return ($ResultVerifyCode == OperationResult::Success) ? OperationResult::Success  : OperationResult::FailOTP;
+  }
+  private function _GenerateToken()
+  {
+    $this->_Token = $this->_Generate4UUID();
+  }
+  private function _GeneratePublicID()
+  {
+    $this->_PublicID = $this->_MakeRandomID();
+  }
+  private function _PrepareNewUserData()
+  {
+    $this->_GeneratePublicID();
+    $this->_HashingPassword($this->Password());
+    $this->_GenerateToken();
+  }
+  private function _AddNewUser(): OperationResult
   {
     if (clsUser::IsUserExist($this->Email())) {
       return OperationResult::EmailExists;
     }
-
-    $this->_HashingPassword($this->Password());
-    $this->setToken($this->_Generate4UUID());
-
-    return ModelUser::AddUser($this);
+    $this->_PrepareNewUserData();
+    return ModelUser::AddNewUser($this);
   }
   public  function Save()
   {
@@ -204,7 +191,13 @@ class clsUser extends clsPerson
           break;
         }
       case enMode::AddMode: {
-          return $this->_AddNewUser();
+
+          $ResultSave = $this->_AddNewUser();
+          if ($ResultSave === OperationResult::Success) {
+
+            $this->_Mode = enMode::UpdateMode;
+          }
+          return $ResultSave;
           break;
         }
     }
@@ -274,7 +267,9 @@ class clsUser extends clsPerson
   private  function _setPermissionRole(array $arrOfPermission): int
   {
     $TotalOfPermission = 0;
-
+    if (in_array(0, $arrOfPermission)) {
+      return $TotalOfPermission;
+    }
     if (in_array(enPermission::eAllAccess->value, $arrOfPermission)) {
       return enPermission::eAllAccess->value;
     }
@@ -311,12 +306,10 @@ class clsUser extends clsPerson
   {
     return self::_HasPermission($this->Permission(), enPermission::eAdd);
   }
-  static public  function CanDelete(int $Permission)
+  public  function CanDelete()
   {
-    // if ($this->ID() === $this->ID()) {
-    //   return false;
-    // }
-    return self::_HasPermission($Permission, enPermission::eDelete);
+
+    return self::_HasPermission($this->Permission(), enPermission::eDelete);
   }
   public  function CanFind()
   {
@@ -350,7 +343,7 @@ class clsUser extends clsPerson
     return $this->Save();
   }
   // Token
-  private function _Generate1UUID($sizeUUID)
+  private function _Generate1UUID(int $sizeUUID)
   {
     return bin2hex(random_bytes($sizeUUID));
   }
@@ -363,12 +356,21 @@ class clsUser extends clsPerson
     $UUID .= $this->_Generate1UUID(3);
     return $UUID;
   }
-  // private function _SendWelcomeEmail()
-  // {
-  //   $Body = '
-  //     <div style="width:25rem;margin:10rem auto;padding:2rem;background-color:#ebebeb;border-radius:0.6rem;box-shadow:0 4px 12px rgba(0,0,0,0.08);text-align:center;">
-  //         <h2 style="color:#2f9e8f;font-size:1.5rem;margin-bottom:0.8rem;">Welcome: ' . $this->Username() . ' ,You can start webing with Madad URL:<a href="http://localhost/Madad/">Madad.com</a> </h2> 
-  //     </div>';
-  //   return $this->SendEmail("hussein.a.al.mazhani@gmail.com", 'Welcome: ' . $this->UserName(), $Body);
-  // }
+  //  Account Status Management
+  public  function Ban()
+  {
+    $this->setStatus(UserStatus::Banned);
+  }
+  public function Active()
+  {
+    $this->setStatus(UserStatus::Active);
+  }
+  public function Pending()
+  {
+    $this->setStatus(UserStatus::Pending);
+  }
+  public function InActive()
+  {
+    $this->setStatus(UserStatus::InActive);
+  }
 }

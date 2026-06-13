@@ -1,4 +1,14 @@
-<?php include(__DIR__ . '/../includes/header.php'); ?>
+<?php include(__DIR__ . '/../includes/header.php');
+class clsBookScreen{
+
+  public static function ShowBookScreen()
+  {
+   return  clsBook::GetListBook();
+  }
+}
+ $ListBook = clsBookScreen::ShowBookScreen();
+?>
+
 <main>
     <section class="container categories">
         <div class="header-books">
@@ -19,7 +29,7 @@
             </form>
         </div>
     </section>
-    <?php include('src/app/includes/BoxBook.php') ?>
+    <?php include('../includes/BoxBook.php') ?>
 
 </main>
 <?php include(__DIR__ . '/../includes/footer.php'); ?>

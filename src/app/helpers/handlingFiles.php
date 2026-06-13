@@ -49,17 +49,17 @@ class HandlingFiles
     }
 
  
-    public static function UploadFile($File, $foderPath, $pathDB)
+    public static function UploadFile(array $File,string $foderPath,string $pathDB): string
     {
         $FileExtension = strtolower(pathinfo($File['name'], PATHINFO_EXTENSION));
         $newFile = uniqid() . "." . $FileExtension;
         $filePathDB = $pathDB . $newFile;
         move_uploaded_file($File['tmp_name'], $foderPath . $newFile);
+                return $filePathDB;
+        // if ($FileExtension == 'pdf') {
+        //     return  self::compressionBook($filePathDB);
+        // }
 
-        if ($FileExtension == 'pdf') {
-            return  self::compressionBook($filePathDB);
-        }
-
-        return  self::compressionImage($filePathDB);
+        // return  self::compressionImage($filePathDB);
     }
 }

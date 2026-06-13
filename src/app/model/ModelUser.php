@@ -30,11 +30,11 @@ class ModelUser extends BaseModel
         $stmt->execute([":Username" => $User->Username(), ":email" => $User->Email(), ":image" => $User->Image(), ":background_image" => $User->BackgroundImage(), ":password" => $User->Password(), ":Token" => $User->Token(), ":Role" => $User->Role(), ":Status" => $User->Status(), ":CreatedAt" => $User->Created_at(), ":permission" => $User->Permission(), ":user_id" => $User->ID()]);
         return OperationResult::Updated;
     }
-    public static function AddUser(clsUser $User): OperationResult
+    public static function AddNewUser(clsUser $User): OperationResult
     {
-        $QueryCreateUser = "INSERT INTO users (username,email,password,token,role) VALUES (:username,:email,:password,:token,:role)";
+        $QueryCreateUser = "INSERT INTO users (username,email,password,token,role,Status,PublicID) VALUES (:username,:email,:password,:token,:role,:Status,:PublicID)";
         $stmt = database::Connection()->prepare($QueryCreateUser);
-        $ResultAddUser = $stmt->execute([":username" => $User->Username(), ":email" => $User->Email(), ":password" => $User->Password(), ":token" => $User->Token(), ":role" => $User->Role()]);
+        $ResultAddUser = $stmt->execute([":username" => $User->Username(), ":email" => $User->Email(), ":password" => $User->Password(), ":token" => $User->Token(), ":role" => $User->Role()->value,":Status" => $User->Status()->value,":PublicID"=> $User->PublicID()]);
         return ($ResultAddUser) ? OperationResult::Success : OperationResult::Fail;
     }
     public static function Delete(int $ID): OperationResult

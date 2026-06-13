@@ -12,8 +12,15 @@ class DABook   extends BaseModel
     $stmt = database::Connection()->prepare($QueryDelete);
     return $stmt->execute(["ID" => $id]);
   }
+  public static function ExistsByTitle(string $Title) : bool
+  {
+    $Query = "SELECT 1 FROM books WHERE  title = :Title limit 1";
+    $Stmt = database::Connection()->prepare($Query);
+    $Stmt->execute([":Title" => $Title ]);
+    return $Stmt->fetchColumn() !== false;
+  }
   //  Insert New Book
-  public function insertBook(clsBook $Book) : bool
+  public static function insertBook(clsBook $Book): OperationResult
   {
     $QeruyinsertBook = "INSERT INTO books (title,pages,file_type,file_size,image,year,description,author_id,id_category,language,book_url,public_id)
     VALUES (:name,:pages,:file_type,:file_size,:pathImage,:year,:description,:id_author,:id_category,:language,:pathBook,:public_id)";
@@ -32,7 +39,7 @@ class DABook   extends BaseModel
       ":pathBook" => $Book->BooK(),
       ":public_id" => $Book->PublicID()
     ]);
-    return ($stmt->rowCount()) ? true : false;
+    return ($stmt->rowCount()) ? OperationResult::Success : OperationResult::Fail;
   }
   // Load All Books
   public function loadAllBooks()
@@ -86,7 +93,7 @@ class DABook   extends BaseModel
 
 
   //just Table  Like Book
-  public function like(int $IDUser,int $IDBook)
+  public function like(int $IDUser, int $IDBook)
   {
     $queryLike = "INSERT INTO likes_book (id_user,id_book,likes) VALUES (:IDUser,:IDBook,:incrment)";
     $stmt = database::Connection()->prepare($queryLike);
@@ -111,12 +118,12 @@ class DABook   extends BaseModel
   }
 
   // search For Book
-  public function search(string $search)
+  public static function Search(string $Keyword)
   {
-    $querSearchForBook = "SELECT * FROM base_view_book WHERE title LIKE :name";
-    $searchName = "%$search%";
+    $querSearchForBook = "SELECT * FROM books WHERE title LIKE :Keyword";
+    $searchName = "%$Keyword%";
     $stmt = database::Connection()->prepare($querSearchForBook);
-    $stmt->execute([":name" => $searchName]);
+    $stmt->execute([":Keyword" => $Keyword]);
     return ($stmt->rowCount() > 0) ? $stmt->fetchAll() : [];
   }
 
@@ -143,7 +150,7 @@ class DABook   extends BaseModel
     $stmt->execute();
     return ($stmt->rowCount() > 0) ? $stmt->fetchAll() : [];
   }
-  public function update(clsBook $Book)
+  public static function Update(clsBook $Book): OperationResult
   {
 
     $sql = "UPDATE books SET title = :title, author_id = :author_id, year = :year, id_category = :id_category, pages = :pages,
@@ -164,6 +171,6 @@ class DABook   extends BaseModel
       ':file_type' => $Book->FileType(),
       ':public_id' => $Book->PublicID()
     ]);
-    return ($stmt->rowCount()) ? true : false;
+    return ($stmt->rowCount()) ? OperationResult::Updated : OperationResult::Fail;
   }
 }

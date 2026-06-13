@@ -37,14 +37,18 @@ html {
 }
 
 .result-action {
-   width: 400px;
-   position: relative;
-   left: 880px;
-   margin-top: 15px;
-   box-shadow: var(--box-shadow);
+   padding: 8px 16px;
+   margin: 1rem 0;
+   width: 90%;
    border-radius: var(--Radius);
-   color: red;
+   background: #fee2e2;
+   border: 1px solid #ef4444;
+   color: #b91c1c;
+   font-size: 14px;
+   box-shadow: var(--box-shadow);
+
 }
+
 body {
    width: 100%;
    height: 100%;
@@ -79,8 +83,8 @@ header {
 }
 
 .Notsuccess {
-   color: #8b1c23 ;
-  font-size: 1.2rem;
+   color: #8b1c23;
+   font-size: 1.2rem;
 }
 
 header .container-header {
@@ -289,6 +293,21 @@ ul li :hover {
    margin-top: 2rem;
    padding: 1.5rem;
    border-radius: var(--Radius);
+   box-shadow: var(--box-shadow);
+
+}
+
+.container .box-add-book .Message {
+   min-height: 40px;
+   width: 100%;
+
+}
+.alert-success
+{
+    background: #dcfce7;
+    border: 1px solid #22c55e;
+    color: #166534;
+    border-radius: var(--Radius);
    box-shadow: var(--box-shadow);
 
 }
