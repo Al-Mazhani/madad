@@ -1,78 +1,97 @@
 <?php require(__DIR__ . '/../includes/headerAdmin.php');
- require(__DIR__ . '/../includes/session.php'); 
+require __DIR__ . '/../../../autoload.php';
+
+class clsAddAuthorScreen
+{
 
 
-$Message;
+    private static function _UploadImage(array $Image)
+    {
+        return HandlingFiles::UploadFile($Image, __DIR__ . '/../../../uploads/Author_profile/', 'uploads/Author_profile/');
+    }
+    private static function _AddAuthor()
+    {
+        $NewAuthor = clsAuthor::GetAddNewAuthor($_POST['Name']);
+        $NewAuthor->SetBio($_POST['Bio']);
+        $NewAuthor->SetImage(self::_UploadImage($_FILES['Image']));
+        $NewAuthor->SetNationality(enNationality::from($_POST['Nationality']));
+        $NewAuthor->SetGender(enGender::from($_POST['Gender']));
+        $NewAuthor->SetBirthDate($_POST['BirthDate']);
+        return $NewAuthor->Save();
+    }
+
+    public static function ShowAddAuthorScreen()
+    {
+        // $ResultImage = ClsBookValidation::validateFileInputImage($_FILES['Image']);
+        // if($ResultImage !== enBookError::NoErrors)
+        // {
+        //     return $ResultImage;
+        // }
+
+        if (clsAuthor::IsExistsAuthor($_POST['Name'])) {
+            return false;
+        } else {
+            return self::_AddAuthor();
+        }
+    }
+};
+if (isset($_POST['addauthor'])) {
+
+    print_r(clsAddAuthorScreen::ShowAddAuthorScreen());
+}
 ?>
 <main>
     <section>
         <div class="container">
 
             <div class="box-add-book">
-                <?php if (isset($Message['successAdd'])): ?>
-                    <p class="success"> <?php echo $Message['successAdd'] ?></p>
-                <?php endif; ?>
-                <?php if (isset($Message['successFild'])): ?>
-                    <p class="success"> <?php echo $Message['successFild'] ?></p>
-                <?php endif; ?>
-                <?php if (isset($resultUpdateAuhtor['successUpdate'])): ?>
-                    <p><?php echo $resultUpdateAuhtor['successUpdate'] ?></p>
-                <?php endif; ?>
-                <?php if (isset($resultUpdateAuhtor['failedUpdate'])): ?>
-                    <p><?php echo $resultUpdateAuhtor['failedUpdate'] ?> </p>
-                <?php endif; ?>
-                <?php if (isset($resultUpdateAuhtor['hasInputEmpty'])): ?>
-                    <p><?php echo $resultUpdateAuhtor['hasInputEmpty'] ?> </p>
-                <?php endif; ?>
+
                 <form action="" method="POST" enctype="multipart/form-data">
                     <div class="content-the-four-input">
-
-                        <div class="box-form">
-                            <input type="hidden" name="id" value="<?php if (isset($updateAuthor['public_id']))
-                                echo $updateAuthor['public_id'];
-                                ?>">
+                        <div class="box-form input-author">
                             <label for="author_name">اسم المؤلف</label>
-                            <input type="text" name="authorName" id="author_name" placeholder="ادخل اسم الكتاب" required value="<?php
-                            if (isset($updateAuthor)) {
-                                echo $updateAuthor['name'];
-                            }
-                            ?>">
+                            <input type="text" name="Name" id="author_name" placeholder="ادخل اسم الكتاب" required>
                         </div>
 
-                        <div class="box-form">
+                        <div class="box-form input-author">
+                            <label for="author_name"> تاريخ الميلاد</label>
+                            <input type="date" name="BirthDate" id="BirthDate" required>
+                        </div>
+                    </div>
+                    <div class="content-the-four-input">
+                        <div class="box-form input-author">
+                            <label for="Gender"> Gender</label>
+                            <select name="Gender" id="Gender" class="Input-Gender">
+                                <option value="<?= enGender::Male->value ?>"><?= enGender::Male->name ?></option>
+                                <option value="<?= enGender::Female->value ?>"><?= enGender::Female->name ?></option>
+                            </select>
+                        </div>
+                        <div class="box-form input-author">
+                            <label for="Nationality"> Nationality</label>
+                            <select name="Nationality" id="Nationality" class="Input-Nationality">
+                                <?php foreach (enNationality::cases() as $Nationality): ?>
+                                    <option value="<?= $Nationality->value ?>"><?= $Nationality->name ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="content-the-four-input">
+                        <div class="box-form input-author">
                             <label for="fileInput" class="upload-btn fileinputImageAuthor"> إضافة صورة</label>
-                            <input type="file" id="fileInput" name="imageURLAuthro" accept="image/*">
-                            <input type="hidden" name="oldImage" value="
-                            <?php
-                            if (isset($updateAuthor['image'])) {
-                                echo $updateAuthor['image'];
-                            }
-
-                            ?>
-                            ">
+                            <input type="file" id="fileInput" name="Image" accept="image/*">
                         </div>
+
                     </div>
 
                     <div class="box-form">
-                        <textarea name="bio" id="">
-                       <?php
-                        if (isset($updateAuthor['bio'])) {
-                            echo $updateAuthor['bio'];
-                        } else {
-                            echo "  وصف المؤلف";
-                        }
-                        ?>     
-                      </textarea>
-                        <?php if (isset($updateAuthor['public_id'])): ?>
-                            <button type="submit" id="btnAddNewauthor" name="update"> تعديل</button>
-                        <?php else: ?>
-                            <button type="submit" id="btnAddNewauthor" name="addauthor"> إضافة</button>
-                        <?php endif; ?>
+                        <textarea name="Bio">
 
+                      </textarea>
+                        <button type="submit" id="btnAddNewauthor" name="addauthor"> إضافة</button>
                 </form>
             </div>
         </div>
         </div>
     </section>
 </main>
-<?php include(__DIR__ . '/../includes/footerAdmin.php');?>
+<?php include(__DIR__ . '/../includes/footerAdmin.php'); ?>

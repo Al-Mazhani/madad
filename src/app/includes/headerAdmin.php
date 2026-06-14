@@ -23,8 +23,8 @@
             </div>
             <nav>
                 <ul>
-                    <li><a href="/homePageAdmin">الصفحة الرائيسية <i class="fa-solid fa-house"></i></a></li>
-                    <li><a href="/magagement-atuhor">المؤلفين<i class="fa-solid fa-user"></i></a></li>
+                    <li><a href="/Madad/Src/app/view/addBook.php">الصفحة الرائيسية <i class="fa-solid fa-house"></i></a></li>
+                    <li><a href="/Madad/Src/app/view/addAuthor.php">المؤلفين<i class="fa-solid fa-user"></i></a></li>
                     <li><a href="/ManagementUsers">المستخدمين<i class="fa-solid fa-user"></i></a></li>
                     <li><a href="/admin">الادمن<i class="fa-solid fa-user"></i></a></li>
                     <li><a href="#">التقارير <i class="fa-solid fa-file-alt"></i></a></li>

@@ -42,7 +42,7 @@ enum OperationResult: int
     case FailEmptyObject = 5;
     case NoPermissions = 6;
     case FailOTP = 7;
-     case ExistTitle = 8;
+    case ExistTitle = 8;
 };
 enum enUserInputErrors: int
 {

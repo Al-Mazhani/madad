@@ -16,6 +16,7 @@ include_once __DIR__ . '/src/app/classas/clsPerson.php';
 include_once __DIR__ . '/src/app/classas/clsUser.php';
 include_once __DIR__ . '/src/app/classas/clsAdmin.php';
 include_once __DIR__ . '/src/app/classas/clsBook.php';
+include_once __DIR__ . '/src/app/classas/clsAuthor.php';
 include_once __DIR__ . '/src/app/classas/clsBookValidation.php';
 
 include_once __DIR__ . '/src/app/helpers/handlingFiles.php';

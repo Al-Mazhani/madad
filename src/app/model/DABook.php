@@ -22,8 +22,8 @@ class DABook   extends BaseModel
   //  Insert New Book
   public static function insertBook(clsBook $Book): OperationResult
   {
-    $QeruyinsertBook = "INSERT INTO books (title,pages,file_type,file_size,image,year,description,author_id,id_category,language,book_url,public_id)
-    VALUES (:name,:pages,:file_type,:file_size,:pathImage,:year,:description,:id_author,:id_category,:language,:pathBook,:public_id)";
+    $QeruyinsertBook = "INSERT INTO books (title,pages,file_type,file_size,image,year,description,author_id,id_category,language,book_url,created_at,public_id)
+    VALUES (:name,:pages,:file_type,:file_size,:pathImage,:year,:description,:id_author,:id_category,:language,:pathBook,:created_at,:public_id)";
     $stmt = database::Connection()->prepare($QeruyinsertBook);
     $stmt->execute([
       ":name" => $Book->Title(),
@@ -37,6 +37,7 @@ class DABook   extends BaseModel
       ":id_category" => $Book->CategoryID(),
       ":language" => $Book->Language(),
       ":pathBook" => $Book->BooK(),
+      ":created_at" => $Book->CreatedAt(),
       ":public_id" => $Book->PublicID()
     ]);
     return ($stmt->rowCount()) ? OperationResult::Success : OperationResult::Fail;

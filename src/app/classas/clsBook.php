@@ -1,4 +1,13 @@
 <?php
+enum enLanguage : int {
+ case Arabic  = 1;
+ case English = 2;
+};
+ enum enFileType :int{
+    case Nono = 0;
+    case PDF = 1;
+    case ZIP = 2;
+ };
 class clsBook
 {
 private enMode $_Mode;
@@ -6,7 +15,7 @@ private int $_ID;
 private int $_PublicID;
 private string $_Title;
 private int $_Pages;
-private string $_FileType;
+private enFileType $_FileType;
 private int $_FileSize;
 private string $_Image;
 private int $_Year;
@@ -18,7 +27,7 @@ private int $_CountDownload;
 private DateTime $_CreatedAt;
 private int $_AuthorID;
 private int $_CategoryID;
-public function __construct(  enMode $Mode,  int $ID,  int $PublicID,  string $Title,  int $Pages,  string $FileType,  int $FileSize,  string $Image,  int $Year,  string $Description,  string $Book,  string $Language,  int $ReadCount,  int $CountDownload,  string | null $CreatedAt,  int $AuthorID,  int $CategoryID
+public function __construct(  enMode $Mode,  int $ID,  int $PublicID,  string $Title,  int $Pages,  enFileType $FileType,  int $FileSize,  string $Image,  int $Year,  string $Description,  string $Book,  string $Language,  int $ReadCount,  int $CountDownload,  string | null $CreatedAt,  int $AuthorID,  int $CategoryID
 ) {
     $this->_Mode            = $Mode;
     $this->_ID              = $ID;
@@ -40,11 +49,11 @@ public function __construct(  enMode $Mode,  int $ID,  int $PublicID,  string $T
 }
 private static function _GetEmptyObject()
 {
-    return new clsBook(enMode::EmptyMode, 0, 0, "", 0, "", 0, "", 0, "", "", "", 0, 0, null, 0, 0);
+    return new clsBook(enMode::EmptyMode, 0, 0, "", 0, enFileType::Nono, 0, "", 0, "", "", "", 0, 0, null, 0, 0);
 }
 private static  function _ConvertDateDBToObject(array $DataBook)
 {
-    return new clsBook(enMode::UpdateMode, $DataBook['id_book'], $DataBook['public_id'], $DataBook['title'], $DataBook['pages'], $DataBook['file_type'], $DataBook['file_size'], $DataBook['image'], $DataBook['year'], $DataBook['description'], $DataBook['book_url'], $DataBook['language'], $DataBook['readBook'], $DataBook['downloads'], $DataBook['created_at'], $DataBook['author_id'], $DataBook['id_category'],);
+    return new clsBook(enMode::UpdateMode, $DataBook['id_book'], $DataBook['public_id'], $DataBook['title'], $DataBook['pages'], enFileType::from($DataBook['file_type']), $DataBook['file_size'], $DataBook['image'], $DataBook['year'], $DataBook['description'], $DataBook['book_url'], $DataBook['language'], $DataBook['readBook'], $DataBook['downloads'], $DataBook['created_at'], $DataBook['author_id'], $DataBook['id_category'],);
 }
 // Onley Read
 public function ID(): int
@@ -75,9 +84,9 @@ public function Pages()
 {
     return $this->_Pages;
 }
-public function SetFileType(string $FileType)
+public function SetFileType(int $FileType) 
 {
-    $this->_FileType = $FileType;
+    $this->_FileType = enFileType::from($FileType);
 }
 public function FileType()
 {
@@ -151,9 +160,9 @@ public function SetCreatedAt(DateTime $CreatedAt): void
 {
     $this->_CreatedAt = $CreatedAt;
 }
-public function CreatedAt(): DateTime
+public function CreatedAt(): string
 {
-    return $this->_CreatedAt;
+    return $this->_CreatedAt->format('Y-m-d H:i:s');
 }
 public function SetAuthorID(int $AuthorID): void
 {
@@ -205,14 +214,7 @@ public static function Search(string $Keyword) : clsBook
     return (empty($ResultSearch)) ? self::_GetEmptyObject() : self::_ConvertDateDBToObject($ResultSearch);
 
 } 
-public function IsPDF() : bool
-{
-    return (strtoupper($this->_FileType) === "PDF");
-}
-public function IsZIP() : bool
-{
-    return (strtoupper($this->_FileType) === "ZIP");
-}
+
 public function IsLanguage(string $Language) : bool
 {
     return ($this->_Language === ucfirst($Language));
@@ -239,6 +241,7 @@ public function Delete(): OperationResult
 private function _PrepareDataBook()
 {
     $this->_PublicID = random_int(100000, 999999);
+    $this->_CreatedAt = new DateTime();
 }
 public static  function ExistsByTitle(string $Title): bool
 {
@@ -247,7 +250,7 @@ public static  function ExistsByTitle(string $Title): bool
 }
 public static function GetAddNewBook(string $Title)
 {
-    return new clsBook(enMode::AddMode, 0, 0, $Title, 0, "", 0, "", 0, "", "", "", 0, 0, null, 0, 0);
+    return new clsBook(enMode::AddMode, 0, 0, $Title, 0, enFileType::Nono, 0, "", 0, "", "", "", 0, 0, null, 0, 0);
 }
 private function _AddNewBook(): OperationResult
 {
@@ -261,7 +264,7 @@ private function _Update(): OperationResult
 {
     return DABook::Update($this);
 }
-public function Save()
+public function Save() 
 {
     switch ($this->_Mode) {
         case enMode::EmptyMode: {

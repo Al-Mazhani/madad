@@ -5,29 +5,52 @@ class ModelAuthor extends BaseModel
 
   public function __construct()
   {
-    parent::__construct( 'authors', 'public_id');
+    parent::__construct('authors', 'public_id');
+  }
+  public static function ExistsByName(string $Name): bool
+  {
+    $Query = "SELECT 1 FROM authors WHERE name = :name LIMIT 1";
+    $stmt = database::Connection()->prepare($Query);
+    $stmt->execute([":name" => $Name]);
+    return (bool) $stmt->fetchColumn();
   }
 
-    public function checkIDExit($id){
-      $QueryFindAuthorByID = "SELECT id_author FROM authors WHERE id_author = :id";
-      $stmt = database::Connection()->prepare($QueryFindAuthorByID);
-      $stmt->execute(['id' =>$id]);
-      return $stmt->rowCount();
-    }
-  //  Add Author
-  public function insert($cleanData)
+  public function checkIDExit($id)
   {
-    $queryAddAuthor  = "INSERT INTO 	authors (name,image,bio,public_id) VALUES (:name,:image,:bio,:public_id)";
+    $QueryFindAuthorByID = "SELECT id_author FROM authors WHERE id_author = :id";
+    $stmt = database::Connection()->prepare($QueryFindAuthorByID);
+    $stmt->execute(['id' => $id]);
+    return $stmt->rowCount();
+  }
+  public static function FindByName(string $Name)
+  {
+    $QueryFind = "SELECT * FROM authors  WHERE name = :name ";
+    $stmt = database::Connection()->prepare($QueryFind);
+    $stmt->execute([":name" => $Name]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+  }
+  //  Add Author
+  public static function Insert(clsAuthor $Author): OperationResult
+  {
+    $queryAddAuthor  = "INSERT INTO 	authors (name,image,bio,public_id,created_at,Gender,BirthDate,Nationality) VALUES (:name,:image,:bio,:public_id,:created_at,:Gender,:BirthDate,:Nationality)";
     $stmt = database::Connection()->prepare($queryAddAuthor);
-     $stmt->execute([':name' => $cleanData['name'], ':image' => $cleanData['pathImage'], ':bio' => $cleanData['bio'], ':public_id' => $cleanData['public_id']]);
-     return ($stmt->rowCount()) ? true : false;
+    $stmt->execute(
+      [':name' => $Author->Name(),
+       ':image' => $Author->Image(),
+        ':bio' => $Author->Bio(),
+         ':public_id' => $Author->PublicID(),
+          ":created_at" => $Author->CreatedAt(),
+          ":Gender" => $Author->Gender()->value,
+          ":BirthDate" => $Author->BirthDate(),
+          ":Nationality" => $Author->Nationality()->value]);
+    return ($stmt->rowCount()) ? OperationResult::Success : OperationResult::Fail;
   }
 
   public function loadInfoAuthorByID($id)
   {
     $stmt = database::Connection()->prepare("SELECT * FROM view_info_author WHERE public_id = ?");
     $stmt->execute([$id]);
-    return $stmt->rowCount() > 0 ?$stmt->fetch(PDO::FETCH_ASSOC) : [];
+    return $stmt->rowCount() > 0 ? $stmt->fetch(PDO::FETCH_ASSOC) : [];
   }
   public function loadAllAuthorBook($id)
   {
@@ -42,10 +65,11 @@ class ModelAuthor extends BaseModel
     $stmt->execute([":nameAuthor" => "%$search%"]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
   }
-  public function update($cleanData)
+  public static function Update(clsAuthor $Author) : OperationResult
   {
     $QueryUpdateAuhtor = "UPDATE authors set name = :name ,image = :image,bio = :bio WHERE public_id = :public_id";
     $stmt = database::Connection()->prepare($QueryUpdateAuhtor);
-    return $stmt->execute([':name' => $cleanData['name'], ':image' => $cleanData['pathImage'], ':bio' => $cleanData['bio'], ':public_id' => $cleanData['public_id']]);
+    $stmt->execute([':name' => $Author->Name(), ':image' => $Author->Image(), ':bio' => $Author->Bio(), ':public_id' => $Author->PublicID()]);
+    return ($stmt->rowCount()) ? OperationResult::Updated : OperationResult::Fail;
   }
 }

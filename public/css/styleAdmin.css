@@ -376,7 +376,9 @@ ul li :hover {
    align-items: flex-start;
    margin-bottom: 1rem;
 }
-
+.input-author{
+   /* background-color: red;; */
+}
 .container .box-add-book form .box-form label,
 .container .box-add-book .adminForm label {
    margin-bottom: 0.3rem;
