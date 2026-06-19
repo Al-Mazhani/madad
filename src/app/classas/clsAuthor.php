@@ -2,7 +2,7 @@
 enum enResultSave
 {
     case Success;
-    case AuthorExists;
+    case Exists;
     case EmptyObject;
     case Failed;
 }
@@ -32,7 +32,7 @@ class clsAuthor
     private DateTime | null $_BirthDate;
     private DateTime $_CreatedAt;
 
-    public function __construct(enMode $Mode, int $ID, int $PublicID, string $Name, enNationality $Nationality, enGender $Gender, string $Bio, string $Image, string | null $CreatedAt, DateTime | null $BirthDate)
+    public function __construct(enMode $Mode, int $ID, int $PublicID, string $Name, enNationality $Nationality, enGender $Gender, string $Bio, string $Image, string | null $CreatedAt, string | null $BirthDate)
     {
         $this->_Mode        = $Mode;
         $this->_ID          = $ID;
@@ -42,7 +42,7 @@ class clsAuthor
         $this->_Gender      = $Gender;
         $this->_Bio         = $Bio;
         $this->_Image       = $Image;
-        $this->_BirthDate   =  $BirthDate;
+        $this->_BirthDate   =  new DateTime($BirthDate);
         $this->_CreatedAt   =  new DateTime($CreatedAt);
     }
     private static function _GetEmptyObject(): clsAuthor
@@ -86,7 +86,7 @@ class clsAuthor
     {
         $this->_BirthDate = new DateTime($BirthDate);
     }
-    public function BirthDate() : string
+    public function BirthDate(): string
     {
         return $this->_BirthDate->format("Y-m-d");
     }
@@ -132,7 +132,16 @@ class clsAuthor
         return $this->_BirthDate->diff(new DateTime())->y;
     }
     public function Books() {} // كتب المؤلف
+    public static function GetListAuthor()
+    {
+        $ListAuthor = [];
+        $AllAuthor = ModelAuthor::LoadAllAuthor();
 
+        foreach ($AllAuthor as $Author) {
+            $ListAuthor[] = self::_ConvertDataDBToObject($Author);
+        }
+        return $ListAuthor;
+    }
     public static function FindByName(string $Name): clsAuthor
     {
         $Author = ModelAuthor::FindByName($Name);
@@ -148,22 +157,23 @@ class clsAuthor
         $this->_PublicID = random_int(111111, 999999);
         $this->_CreatedAt = new DateTime();
     }
-    private function _AddNewAuthor(): enResultSave
+    private function _AddNewAuthor(): bool
     {
         $this->_PrepareAuthorData();
-
-        if (ModelAuthor::Insert($this) === OperationResult::Success) {
-            $this->_Mode = enMode::UpdateMode;
-            return enResultSave::Success;
-        } else {
-            return enResultSave::Failed;
-        }
+        return ModelAuthor::Insert($this);
     }
     private function _Update()
     {
         return ModelAuthor::Update($this);
     }
-
+    public function Delete()
+    {
+        if (ModelAuthor::Delete($this->_ID)) {
+            $this->_Mode = enMode::EmptyMode;
+            return true;
+        }
+        return false;
+    }
     public function Save(): enResultSave
     {
         switch ($this->_Mode) {
@@ -172,7 +182,7 @@ class clsAuthor
                     break;
                 }
             case enMode::UpdateMode: {
-                    if ($this->_Update() === OperationResult::Updated) {
+                    if ($this->_Update()) {
                         return enResultSave::Success;
                     }
                     return enResultSave::Failed;
@@ -180,9 +190,13 @@ class clsAuthor
                 }
             case enMode::AddMode: {
                     if (clsAuthor::IsExistsAuthor($this->_Name)) {
-                        return enResultSave::AuthorExists;
+                        return enResultSave::Exists;
                     }
-                    return $this->_AddNewAuthor();
+                    if ($this->_AddNewAuthor()) {
+                        $this->_Mode = enMode::UpdateMode;
+                        return enResultSave::Success;
+                    }
+                    return enResultSave::Failed;
                     break;
                 }
         }

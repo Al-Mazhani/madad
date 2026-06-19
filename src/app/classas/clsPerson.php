@@ -32,18 +32,7 @@ enum enMode: int
     case UpdateMode = 1;
     case AddMode = 2;
 };
-enum OperationResult: int
-{
-    case Fail = 0;
-    case Success = 1;
-    case EmailExists = 2;
-    case Updated = 3;
-    case Deleted = 4;
-    case FailEmptyObject = 5;
-    case NoPermissions = 6;
-    case FailOTP = 7;
-    case ExistTitle = 8;
-};
+
 enum enUserInputErrors: int
 {
     case  MissinUsername = 1;

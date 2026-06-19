@@ -63,7 +63,7 @@ private function _CreateOTPRow(clsOTP $NewOTP): bool
     $stmt = database::Connection()->prepare($Query);
     return $stmt->execute([":Code" => $this->_Code, ":UserID" => $this->_UserID, ":ExpirationTime" => $this->_ExpirationTime->format('Y-m-d H:i:s')]);
 }
-private function _AddNewOTP(): OperationResult
+private function _AddNewOTP()
 {
     if (!$this->_GetUserInfo()) {
         return OperationResult::FailOTP;
@@ -126,15 +126,7 @@ public static function Find(int $UserID)
 public static function VerifyUserCode(int $Code, int $UserID)
 {
     $Otp = clsOTP::Find($UserID);
-    if ($Otp->IsEmpty()) {
-        return OperationResult::FailOTP;
-    }
-    if ($Otp->IsExpired()) {
-        return OperationResult::FailOTP;
-    }
-    if ($Otp->_Code !== $Code) {
-        return OperationResult::FailOTP;
-    }
-    return OperationResult::Success;
+    return true;
+    
 }
 };

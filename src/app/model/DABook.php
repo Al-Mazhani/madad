@@ -20,7 +20,7 @@ class DABook   extends BaseModel
     return $Stmt->fetchColumn() !== false;
   }
   //  Insert New Book
-  public static function insertBook(clsBook $Book): OperationResult
+  public static function insertBook(clsBook $Book): bool
   {
     $QeruyinsertBook = "INSERT INTO books (title,pages,file_type,file_size,image,year,description,author_id,id_category,language,book_url,created_at,public_id)
     VALUES (:name,:pages,:file_type,:file_size,:pathImage,:year,:description,:id_author,:id_category,:language,:pathBook,:created_at,:public_id)";
@@ -40,7 +40,7 @@ class DABook   extends BaseModel
       ":created_at" => $Book->CreatedAt(),
       ":public_id" => $Book->PublicID()
     ]);
-    return ($stmt->rowCount()) ? OperationResult::Success : OperationResult::Fail;
+    return $stmt->rowCount();
   }
   // Load All Books
   public function loadAllBooks()
@@ -151,7 +151,7 @@ class DABook   extends BaseModel
     $stmt->execute();
     return ($stmt->rowCount() > 0) ? $stmt->fetchAll() : [];
   }
-  public static function Update(clsBook $Book): OperationResult
+  public static function Update(clsBook $Book) : bool
   {
 
     $sql = "UPDATE books SET title = :title, author_id = :author_id, year = :year, id_category = :id_category, pages = :pages,
@@ -172,6 +172,6 @@ class DABook   extends BaseModel
       ':file_type' => $Book->FileType(),
       ':public_id' => $Book->PublicID()
     ]);
-    return ($stmt->rowCount()) ? OperationResult::Updated : OperationResult::Fail;
+    return $stmt->rowCount();
   }
 }

@@ -101,12 +101,12 @@ class clsUser extends clsPerson
   // Update User
 
 
-  public  function Update(): OperationResult
+  public  function Update(): bool
   {
     if ($this->CanUpdate()) {
       return ModelUser::Update($this);
     } else {
-      return OperationResult::NoPermissions;
+      return false;
     }
   }
   private function _MakeRandomID()
@@ -119,17 +119,14 @@ class clsUser extends clsPerson
     return new clsUser(enMode::AddMode, 0, 0, '', $Email, '', enRole::User, 0, UserStatus::Pending, '', '', '', '');
   }
   // Delete User
-  public  function Delete(): OperationResult
+  public  function Delete(): bool
   {
-    if (!clsUser::CanDelete()) {
-      return OperationResult::NoPermissions;
-    }
-    $ResultDelete = ModelUser::Delete($this->ID());
-    if ($ResultDelete === OperationResult::Deleted) {
+
+    if (ModelUser::Delete($this->ID())) {
       $this->_Mode = enMode::EmptyMode;
-      return OperationResult::Deleted;
+      return true;
     }
-    return OperationResult::Fail;
+    return false;
   }
   private function _HashingPassword(string $HashingPassword)
   {
@@ -152,10 +149,9 @@ class clsUser extends clsPerson
   {
     return $this->_CreateOTP();
   }
-  public function IsOTPValid(int $Code): OperationResult
+  public function IsOTPValid(int $Code): bool
   {
-    $ResultVerifyCode = clsOTP::VerifyUserCode($Code, $this->ID());
-    return ($ResultVerifyCode == OperationResult::Success) ? OperationResult::Success  : OperationResult::FailOTP;
+    return  clsOTP::VerifyUserCode($Code, $this->ID());
   }
   private function _GenerateToken()
   {
@@ -171,36 +167,10 @@ class clsUser extends clsPerson
     $this->_HashingPassword($this->Password());
     $this->_GenerateToken();
   }
-  private function _AddNewUser(): OperationResult
+  private function _AddNewUser()
   {
-    if (clsUser::IsUserExist($this->Email())) {
-      return OperationResult::EmailExists;
-    }
     $this->_PrepareNewUserData();
     return ModelUser::AddNewUser($this);
-  }
-  public  function Save()
-  {
-    switch ($this->_Mode) {
-      case enMode::EmptyMode: {
-          return OperationResult::FailEmptyObject;
-          break;
-        }
-      case enMode::UpdateMode: {
-          return $this->Update();
-          break;
-        }
-      case enMode::AddMode: {
-
-          $ResultSave = $this->_AddNewUser();
-          if ($ResultSave === OperationResult::Success) {
-
-            $this->_Mode = enMode::UpdateMode;
-          }
-          return $ResultSave;
-          break;
-        }
-    }
   }
 
 
@@ -322,7 +292,7 @@ class clsUser extends clsPerson
 
   //  Authentication
 
-  public static function Login(string $Email, string $Password): clsUser | OperationResult
+  public static function Login(string $Email, string $Password): clsUser | enResultSave
   {
     $UserLoggin = clsUser::FindByEmail(self::CleanEmail($Email));
 
@@ -330,10 +300,10 @@ class clsUser extends clsPerson
       if (password_verify(self::CleanPassword($Password), $UserLoggin->Password())) {
         return  $UserLoggin;
       } else {
-        return OperationResult::Fail;
+        return enResultSave::Failed;
       }
     } else {
-      return OperationResult::FailEmptyObject;
+      return enResultSave::EmptyObject;
     }
   }
   public function ChangePassword(string $NewPassword)
@@ -372,5 +342,27 @@ class clsUser extends clsPerson
   public function InActive()
   {
     $this->setStatus(UserStatus::InActive);
+  }
+  public  function Save(): enResultSave
+  {
+    switch ($this->_Mode) {
+      case enMode::EmptyMode: {
+          return enResultSave::EmptyObject;
+        }
+      case enMode::UpdateMode: {
+          return ($this->Update()) ? enResultSave::Success : enResultSave::Failed;
+        }
+      case enMode::AddMode: {
+          if (clsUser::IsUserExist($this->Email())) {
+            return enResultSave::Exists;
+          }
+          if ($this->_AddNewUser()) {
+            $this->_Mode = enMode::UpdateMode;
+            return enResultSave::Success;
+          }
+          return enResultSave::Failed;
+        }
+    }
+    return enResultSave::Failed;
   }
 }

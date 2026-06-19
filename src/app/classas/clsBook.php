@@ -1,13 +1,15 @@
 <?php
-enum enLanguage : int {
- case Arabic  = 1;
- case English = 2;
+enum enLanguage: int
+{
+    case Arabic  = 1;
+    case English = 2;
 };
- enum enFileType :int{
+enum enFileType: int
+{
     case Nono = 0;
     case PDF = 1;
     case ZIP = 2;
- };
+};
 class clsBook
 {
 private enMode $_Mode;
@@ -27,7 +29,24 @@ private int $_CountDownload;
 private DateTime $_CreatedAt;
 private int $_AuthorID;
 private int $_CategoryID;
-public function __construct(  enMode $Mode,  int $ID,  int $PublicID,  string $Title,  int $Pages,  enFileType $FileType,  int $FileSize,  string $Image,  int $Year,  string $Description,  string $Book,  string $Language,  int $ReadCount,  int $CountDownload,  string | null $CreatedAt,  int $AuthorID,  int $CategoryID
+public function __construct(
+    enMode $Mode,
+    int $ID,
+    int $PublicID,
+    string $Title,
+    int $Pages,
+    enFileType $FileType,
+    int $FileSize,
+    string $Image,
+    int $Year,
+    string $Description,
+    string $Book,
+    string $Language,
+    int $ReadCount,
+    int $CountDownload,
+    string | null $CreatedAt,
+    int $AuthorID,
+    int $CategoryID
 ) {
     $this->_Mode            = $Mode;
     $this->_ID              = $ID;
@@ -84,7 +103,7 @@ public function Pages()
 {
     return $this->_Pages;
 }
-public function SetFileType(int $FileType) 
+public function SetFileType(int $FileType)
 {
     $this->_FileType = enFileType::from($FileType);
 }
@@ -196,11 +215,11 @@ public static  function GetListBook(): array
     }
     return $ObjectBook;
 }
-public function IncrementReadCount() : void
+public function IncrementReadCount(): void
 {
- $this->_ReadCount++;
+    $this->_ReadCount++;
 }
-public function IncrementDownloadCount() : void
+public function IncrementDownloadCount(): void
 {
     $this->_CountDownload++;
 }
@@ -208,14 +227,12 @@ public function IsEmpty()
 {
     return ($this->_Mode == enMode::EmptyMode);
 }
-public static function Search(string $Keyword) : clsBook
+public static function Search(string $Keyword): clsBook
 {
     $ResultSearch = DABook::Search($Keyword);
     return (empty($ResultSearch)) ? self::_GetEmptyObject() : self::_ConvertDateDBToObject($ResultSearch);
-
-} 
-
-public function IsLanguage(string $Language) : bool
+}
+public function IsLanguage(string $Language): bool
 {
     return ($this->_Language === ucfirst($Language));
 }
@@ -229,14 +246,14 @@ public static function ExistsByPublicID(int $PublicID)
     $Book = clsBook::Find($PublicID);
     return (!$Book->IsEmpty());
 }
-public function Delete(): OperationResult
+public function Delete(): bool
 {
     $ResultDelete = DABook::delete($this->PublicID());
-    if ($ResultDelete === OperationResult::Deleted) {
+    if ($ResultDelete) {
         $this->_Mode = enMode::EmptyMode;
-        return OperationResult::Deleted;
+        return true;
     }
-    return OperationResult::Fail;
+    return false;
 }
 private function _PrepareDataBook()
 {
@@ -252,37 +269,38 @@ public static function GetAddNewBook(string $Title)
 {
     return new clsBook(enMode::AddMode, 0, 0, $Title, 0, enFileType::Nono, 0, "", 0, "", "", "", 0, 0, null, 0, 0);
 }
-private function _AddNewBook(): OperationResult
+private function _AddNewBook()
 {
-    if (clsBook::ExistsByTitle($this->_Title)) {
-        return OperationResult::ExistTitle;
-    }
     $this->_PrepareDataBook();
     return DABook::insertBook($this);
 }
-private function _Update(): OperationResult
+private function _Update(): bool
 {
     return DABook::Update($this);
 }
-public function Save() 
+public function Save(): enResultSave
 {
     switch ($this->_Mode) {
         case enMode::EmptyMode: {
-                return OperationResult::FailEmptyObject;
+                return enResultSave::EmptyObject;
                 break;
             }
         case enMode::UpdateMode: {
-                return $this->_Update();
+                return ($this->_Update()) ? enResultSave::Success : enResultSave::Failed;
                 break;
             }
         case enMode::AddMode: {
-                $ResultSave = $this->_AddNewBook();
-                if ($ResultSave == OperationResult::Success) {
-                    $this->_Mode = enMode::UpdateMode;
+                if (clsBook::ExistsByTitle($this->_Title)) {
+                    return enResultSave::Exists;
                 }
-                return $ResultSave;
+                if ($this->_AddNewBook()) {
+                    $this->_Mode = enMode::UpdateMode;
+                    return enResultSave::Success;
+                }
+                return enResultSave::Failed;
                 break;
             }
     }
+    return enResultSave::Failed;
 }
 }
